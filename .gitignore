@@ -1,7 +1,11 @@
 # Sensitive credentials and keys
 *.pem
-*.json
 *.csv
+# Allow scanner-config.json but exclude other JSON output files
+discovered-projects.json
+execution-summary.json
+*.credentials.json
+*.secrets.json
 rootkey*
 rsa-*
 pk-*
@@ -17,6 +21,12 @@ Secrets/
 *.log
 *.txt
 log_*
+
+# Project scanner output files (keep config, ignore results)
+discovered-projects.json
+execution-summary.json
+log-summary.txt
+logs/
 
 # Temporary files
 *_tmp.*

@@ -9,7 +9,15 @@ This repository contains projects and resources managed by the A6-9V organizatio
 ├── projects/               # Active development projects
 │   ├── Google AI Studio/   # AI Studio related projects
 │   └── LiteWriter/         # LiteWriter application
-├── docs/                   # Documentation and reference materials
+├── project-scanner/        # Project Discovery & Execution System
+│   ├── project-scanner.ps1    # Main discovery script
+│   ├── project-executor.ps1   # Background execution manager
+│   ├── project-logger.ps1      # Logging system
+│   ├── run-all-projects.ps1   # Main orchestrator
+│   ├── scanner-config.json    # Configuration
+│   └── README.md              # Scanner documentation
+├── storage-management/    # Storage and drive management tools
+├── Document,sheed,PDF, PICTURE/  # Documentation and media
 ├── Secrets/                # Protected credentials (not tracked in git)
 ├── TECHNO POVA 6 PRO/     # Device-specific files
 └── README.md               # This file
@@ -28,6 +36,25 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - Temporary files
 
 ## 🚀 Getting Started
+
+### Quick Start with Project Scanner
+
+The repository includes a comprehensive project discovery and execution system:
+
+```powershell
+cd D:\my-drive-projects\project-scanner
+.\run-all-projects.ps1
+```
+
+This will:
+1. Scan all local drives for development projects
+2. Discover scripts, applications, and code projects
+3. Execute them in the background
+4. Generate comprehensive reports
+
+See [project-scanner/README.md](project-scanner/README.md) for detailed documentation.
+
+### Git Workflow
 
 This repository uses Git for version control. To contribute:
 
