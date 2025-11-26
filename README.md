@@ -16,6 +16,15 @@ This repository contains projects and resources managed by the A6-9V organizatio
 │   ├── run-all-projects.ps1   # Main orchestrator
 │   ├── scanner-config.json    # Configuration
 │   └── README.md              # Scanner documentation
+├── system-setup/          # System Configuration & Optimization
+│   ├── complete-setup.ps1      # Main setup orchestrator
+│   ├── cleanup-all-drives.ps1  # Drive cleanup script
+│   ├── apply-drive-roles.ps1  # Drive permissions setup
+│   ├── apply-registry-settings.ps1  # Registry optimizations
+│   ├── cursor-settings.json   # Cursor IDE configuration
+│   ├── mcp-config.json        # MCP server configuration
+│   ├── ASUS-PC-SETUP.md       # Comprehensive setup guide
+│   └── README.md              # Setup documentation
 ├── storage-management/    # Storage and drive management tools
 ├── Document,sheed,PDF, PICTURE/  # Documentation and media
 ├── Secrets/                # Protected credentials (not tracked in git)
@@ -53,6 +62,24 @@ This will:
 4. Generate comprehensive reports
 
 See [project-scanner/README.md](project-scanner/README.md) for detailed documentation.
+
+### System Setup & Optimization
+
+Complete system configuration for ASUS devices:
+
+```powershell
+cd D:\my-drive-projects\system-setup
+.\complete-setup.ps1
+```
+
+This includes:
+- Drive cleanup and optimization
+- Drive role assignment and permissions
+- Registry optimizations
+- Cursor IDE configuration
+- MCP (Model Context Protocol) setup
+
+See [system-setup/README.md](system-setup/README.md) and [system-setup/ASUS-PC-SETUP.md](system-setup/ASUS-PC-SETUP.md) for details.
 
 ### Git Workflow
 
