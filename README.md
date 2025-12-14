@@ -1,6 +1,6 @@
 # A6-9V Project Repository - Complete Device Setup
 
-This repository contains the complete device skeleton structure, project blueprints, and setup scripts for the NuNa Windows 11 automation system.
+This repository contains the complete device skeleton structure, project blueprints, and setup scripts for the NuNa Windows 11 automation system, including the ZOLO-A6-9VxNUNA trading system.
 
 ## 📁 Project Structure
 
@@ -20,6 +20,13 @@ This repository contains the complete device skeleton structure, project bluepri
 │   ├── SYSTEM-INFO.md               # System specifications
 │   ├── WORKSPACE-SETUP.md           # Workspace setup guide
 │   └── SET-REPOS-PRIVATE.md         # Instructions for private repos
+├── vps-services/                     # VPS 24/7 Trading System Services
+│   ├── exness-service.ps1           # Exness MT5 Terminal service
+│   ├── research-service.ps1         # Perplexity AI research service
+│   ├── website-service.ps1          # GitHub website service
+│   ├── cicd-service.ps1             # CI/CD automation service
+│   ├── mql5-service.ps1              # MQL5 Forge integration
+│   └── master-controller.ps1       # Master service controller
 ├── projects/                         # Active development projects
 │   ├── Google AI Studio/            # AI Studio related projects
 │   └── LiteWriter/                  # LiteWriter application
@@ -50,6 +57,26 @@ This will set up:
 - ✅ Security settings
 - ✅ Cursor rules
 - ✅ All automation projects
+
+### VPS 24/7 Trading System
+
+Start the complete 24/7 automated trading system:
+
+```powershell
+# Run as Administrator (fully automated, no user interaction)
+.\auto-start-vps-admin.ps1
+```
+
+Or double-click: `AUTO-START-VPS.bat`
+
+This will:
+- ✅ Deploy all VPS services
+- ✅ Start Exness MT5 Terminal
+- ✅ Start Web Research Service (Perplexity AI)
+- ✅ Start GitHub Website Service (ZOLO-A6-9VxNUNA)
+- ✅ Start CI/CD Automation Service
+- ✅ Start MQL5 Forge Integration
+- ✅ Handle all errors automatically
 
 ### Windows Setup Automation
 
@@ -87,6 +114,15 @@ This will set up:
 - ✅ Token security validation
 - ✅ Script integrity verification
 
+### VPS 24/7 Trading System
+- ✅ Exness MT5 Terminal (24/7 operation)
+- ✅ Web Research Automation (Perplexity AI)
+- ✅ GitHub Website Hosting (ZOLO-A6-9VxNUNA)
+- ✅ CI/CD Automation (Python projects)
+- ✅ MQL5 Forge Integration
+- ✅ Automated error handling
+- ✅ Auto-restart capabilities
+
 ### Project Scanner
 - ✅ Scan all local drives for development projects
 - ✅ Discover scripts, applications, and code projects
@@ -119,6 +155,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
 - **WORKSPACE-SETUP.md** - Workspace setup guide
+- **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
@@ -145,9 +182,9 @@ Managed by **A6-9V** organization for better control and collaboration.
 
 This workspace is connected to multiple repositories:
 
-- **Primary**: https://github.com/Mouy-leng/Window-setup.git
-- **Secondary 1**: https://github.com/A6-9V/I-bride_bridges3rd.git
-- **Secondary 2**: https://github.com/A6-9V/my-drive-projects.git
+- **Primary (origin)**: https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git
+- **Secondary 1 (bridges3rd)**: https://github.com/A6-9V/I-bride_bridges3rd.git
+- **Secondary 2 (drive-projects)**: https://github.com/A6-9V/my-drive-projects.git
 
 ## 🔐 Making Repositories Private
 
@@ -159,6 +196,7 @@ See **SET-REPOS-PRIVATE.md** for instructions on making repositories private.
 - Duplicate files are excluded from version control
 - All sensitive data is gitignored for security
 - Complete device skeleton structure and blueprints included
+- VPS 24/7 trading system fully automated
 
 ## License
 

@@ -1,0 +1,78 @@
+﻿========================================
+  SYSTEM STATUS REPORT
+  Generated: 2025-12-14 20:02:42
+  System: NuNa (Windows 11 Home Single Language 25H2)
+========================================
+## 1. SYSTEM INFORMATION
+------------------------
+Computer Name: NUNA
+User: USER
+OS: Microsoft Windows 11 Home Single Language
+Architecture: 64-bit
+PowerShell Version: 5.1.26100.7344
+Execution Policy: Bypass
+## 2. SERVICE STATUS
+--------------------
+Exness MT5 Terminal: RUNNING (PID: 5740 19872)
+Firefox: RUNNING (22 process(es))
+Python: NOT RUNNING
+VPS Services: NOT RUNNING
+## 3. FILE SYSTEM STATUS
+------------------------
+Workspace Root: EXISTS
+VPS Services: EXISTS (6 files)
+Logs Directory: EXISTS (5 files)
+ZOLO Repository: EXISTS
+## 4. SECURITY STATUS
+---------------------
+Windows Defender: ENABLED
+Firewall Profiles:
+  - Domain: True   - Private: True   - Public: True
+
+Execution Policy: Bypass
+Admin Privileges: True
+## 5. NETWORK STATUS
+--------------------
+Internet Connection: CONNECTED
+Active Network Adapters: 
+  - Wi-Fi 2: 120 Mbps
+## 6. APPLICATION STATUS
+------------------------
+Exness MT5: INSTALLED
+Firefox: NOT FOUND
+Python: INSTALLED (C:\Users\USER\AppData\Local\Microsoft\WindowsApps\python.exe)
+Git: INSTALLED (C:\Program Files\Git\cmd\git.exe)
+## 7. REPOSITORY STATUS
+------------------------
+ZOLO-A6-9VxNUNA: EXISTS
+  Remote: bridges3rd	https://github.com/A6-9V/I-bride_bridges3rd.git (fetch)
+  Status: HAS CHANGES
+my-drive-projects: EXISTS
+  Status: CLEAN
+
+## 8. LOG FILES STATUS
+----------------------cicd-service.log: 19 lines (Last modified: 12/14/2025 20:02:59)
+master-controller.log: 0 lines (Last modified: 12/14/2025 20:02:36)
+mql5-service.log: 0 lines (Last modified: 12/14/2025 20:02:54)
+research-service.log: 0 lines (Last modified: 12/14/2025 20:02:43)
+website-service.log: 11 lines (Last modified: 12/14/2025 20:02:51)
+
+========================================
+  SUMMARY
+========================================
+
+System Status: NEEDS ATTENTION
+Services Running: Exness Terminal
+Security: Windows Defender Active
+Network: Connected
+
+Recommendations:
+
+- Start VPS Services (run start-vps-system.ps1)
+
+
+
+
+========================================
+Report generated: 2025-12-14 20:02:42
+========================================
