@@ -176,6 +176,15 @@ foreach ($remote in $remotes) {
     Write-Host "  Branch: $currentBranch" -ForegroundColor Gray
     
     try {
+        # First, try to pull and merge if needed
+        $pullOutput = git pull $remote.Name $currentBranch --no-edit 2>&1 | Out-String
+        if ($LASTEXITCODE -ne 0 -and $pullOutput -match "rejected|conflict") {
+            Write-Host "  [INFO] Remote has changes, attempting to merge..." -ForegroundColor Yellow
+            # Try to pull with rebase
+            git pull $remote.Name $currentBranch --rebase --no-edit 2>&1 | Out-Null
+        }
+        
+        # Now push
         $pushOutput = git push $remote.Name $currentBranch 2>&1 | Out-String
         
         if ($LASTEXITCODE -eq 0) {

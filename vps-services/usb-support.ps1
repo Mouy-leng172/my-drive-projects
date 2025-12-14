@@ -189,5 +189,8 @@ function Sync-MQL5ToUSB {
     }
 }
 
-# Export functions
-Export-ModuleMember -Function Get-USBDrives, Get-PreferredUSBDrive, Initialize-USBForMQL5, Sync-MQL5ToUSB
+# Export functions (only if running as module)
+# When sourced directly, functions are available in current scope
+if ($MyInvocation.MyCommand.ModuleName) {
+    Export-ModuleMember -Function Get-USBDrives, Get-PreferredUSBDrive, Initialize-USBForMQL5, Sync-MQL5ToUSB
+}
