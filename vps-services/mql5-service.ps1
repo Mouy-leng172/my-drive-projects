@@ -70,7 +70,7 @@ function Sync-MQL5Repository {
                 Write-Host "[$(Get-Date)] MQL5 repository updated successfully" | Out-File -Append "$logsPath\mql5-service.log"
                 
                 # Check for new MQL5 files and log them
-                $newFiles = git diff --name-only HEAD@ { 1 } HEAD 2>&1
+                $newFiles = git diff --name-only "HEAD@{1}" HEAD 2>&1
                 if ($newFiles) {
                     Write-Host "[$(Get-Date)] New/updated files:" | Out-File -Append "$logsPath\mql5-service.log"
                     $newFiles | Out-File -Append "$logsPath\mql5-service.log"
