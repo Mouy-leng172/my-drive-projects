@@ -207,11 +207,11 @@ function Compile-MQL5 {
 
         Write-Host "  Compiling: $($t.FullName)" -ForegroundColor White
         try {
-            $args = @(
+            $argumentList = @(
                 "/compile:`"$($t.FullName)`"",
                 "/log"
             )
-            $proc = Start-Process -FilePath $MetaEditor -ArgumentList $args -Wait -PassThru -NoNewWindow
+            $proc = Start-Process -FilePath $MetaEditor -ArgumentList $argumentList -Wait -PassThru -NoNewWindow
 
             if ((Test-Path $ex5) -and ((Get-Item $ex5).LastWriteTime -ge $startTime)) {
                 Write-Host "    [OK] $($t.Name)" -ForegroundColor Green
