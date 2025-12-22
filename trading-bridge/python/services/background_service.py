@@ -7,6 +7,7 @@ import threading
 import logging
 from pathlib import Path
 from datetime import datetime
+import socket
 
 # Add parent directories to path
 import sys
@@ -50,6 +51,18 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+def _safe_telegram_notify(message: str, *, tag: str) -> None:
+    """
+    Best-effort Telegram notification (never raises).
+    """
+    try:
+        from notifications.telegram_notifier import TelegramNotifier
+        notifier = TelegramNotifier()
+        if notifier.is_enabled():
+            notifier.send(message, tag=tag)
+    except Exception:
+        return
+
 
 class BackgroundTradingService:
     """Main background trading service"""
@@ -79,11 +92,19 @@ class BackgroundTradingService:
         """Start the trading service"""
         try:
             logger.info("Starting Background Trading Service...")
+            _safe_telegram_notify(
+                f"Service starting. Host={socket.gethostname()} Port={self.bridge_port}",
+                tag="START",
+            )
             
             if not self.modules_available:
                 logger.warning("Trading modules not fully available - running in minimal mode")
                 logger.warning("Service will run but trading functionality may be limited")
                 self.running = True
+                _safe_telegram_notify(
+                    "Modules not available (minimal mode). Check dependencies/imports.",
+                    tag="WARNING",
+                )
                 self._service_loop_minimal()
                 return
             
@@ -109,6 +130,7 @@ class BackgroundTradingService:
             # Start main loop
             self.running = True
             logger.info("Background Trading Service started")
+            _safe_telegram_notify("Service started successfully.", tag="OK")
             
             # Main service loop
             self._service_loop()
@@ -117,6 +139,7 @@ class BackgroundTradingService:
             logger.error(f"Failed to start service: {e}")
             import traceback
             logger.error(traceback.format_exc())
+            _safe_telegram_notify(f"Service failed to start: {e}", tag="ERROR")
             # Don't raise - allow service to continue in minimal mode
             self.running = True
             self._service_loop_minimal()
@@ -202,6 +225,7 @@ class BackgroundTradingService:
             self.bridge.stop()
         
         logger.info("Background Trading Service stopped")
+        _safe_telegram_notify("Service stopped.", tag="STOP")
     
     def get_status(self) -> dict:
         """Get service status"""

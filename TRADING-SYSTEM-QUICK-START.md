@@ -10,6 +10,13 @@
 .\START-TRADING-SYSTEM-COMPLETE.ps1
 ```
 
+### Option 2b: Start From Any Drive (Auto-Find)
+If the repo/trading-bridge folder is on a different drive letter, use:
+
+```powershell
+.\START-TRADING-ALL-DRIVES.ps1 -LaunchExness
+```
+
 ### Option 3: Simple Start (No Admin)
 ```powershell
 .\QUICK-START-SIMPLE.ps1
@@ -55,6 +62,14 @@
 ```powershell
 # Using Python
 python -c "from trading_bridge.python.security.credential_manager import CredentialManager; cm = CredentialManager(); cm.store_credential('EXNESS_API_KEY', 'your_key')"
+```
+
+### 4. Telegram Notifications (Optional)
+Set these (user-level example), then restart the Python service:
+
+```powershell
+setx TRADINGBRIDGE_TELEGRAM_BOT_TOKEN "PASTE_TOKEN_HERE"
+setx TRADINGBRIDGE_TELEGRAM_CHAT_ID "PASTE_CHAT_ID_HERE"
 ```
 
 ## 🔄 Auto-Start on Boot

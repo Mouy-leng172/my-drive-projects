@@ -9,8 +9,8 @@
 
 $ErrorActionPreference = "Continue"
 
-$workspaceRoot = "C:\Users\USER\OneDrive"
-$tradingBridgePath = Join-Path $workspaceRoot "trading-bridge"
+# Resolve paths relative to this repo (works from any drive)
+$tradingBridgePath = $PSScriptRoot
 $pythonServicePath = Join-Path $tradingBridgePath "python\services\background_service.py"
 $logsPath = Join-Path $tradingBridgePath "logs"
 
