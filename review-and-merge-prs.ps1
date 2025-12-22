@@ -14,6 +14,8 @@ Write-Host "`n=== Pull Request Management ===" -ForegroundColor Cyan
 Write-Host "Repository: A6-9V/my-drive-projects`n" -ForegroundColor Cyan
 
 # PR Database
+# NOTE: This is a static snapshot from 2025-12-22
+# For real-time data, use: gh pr list --json number,title,state
 $prs = @{
     3 = @{
         Title = "Trading system heartbeat"

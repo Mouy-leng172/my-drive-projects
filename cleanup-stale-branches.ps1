@@ -15,6 +15,8 @@ if ($DryRun) {
 }
 
 # Branches to keep (associated with open PRs or protected)
+# NOTE: This list is hardcoded based on analysis from 2025-12-22
+# For dynamic updates, consider using: gh pr list --json headRefName
 $branchesToKeep = @(
     "main",
     "cursor/agent-review-process-652c",  # PR #4
@@ -75,14 +77,17 @@ foreach ($branch in $staleBranches) {
     } else {
         try {
             Write-Host "  Deleting: $branch..." -NoNewline
-            git push origin --delete $branch 2>&1 | Out-Null
+            $output = git push origin --delete $branch 2>&1
             
             if ($LASTEXITCODE -eq 0) {
                 Write-Host " ✓ Deleted" -ForegroundColor Green
                 $deletedCount++
                 $deletedBranches += $branch
             } else {
-                Write-Host " ✗ Failed (may not exist)" -ForegroundColor Red
+                # Show actual error message for better diagnostics
+                $errorMsg = if ($output) { ($output | Out-String).Trim() } else { "Unknown error" }
+                Write-Host " ✗ Failed" -ForegroundColor Red
+                Write-Host "    Error: $errorMsg" -ForegroundColor DarkRed
                 $errorCount++
                 $failedBranches += $branch
             }
