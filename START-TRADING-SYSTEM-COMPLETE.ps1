@@ -9,7 +9,7 @@
 
 $ErrorActionPreference = "Continue"
 
-$workspaceRoot = "C:\Users\USER\OneDrive"
+$workspaceRoot = $PSScriptRoot
 $tradingBridgePath = Join-Path $workspaceRoot "trading-bridge"
 
 Write-Host "========================================" -ForegroundColor Cyan

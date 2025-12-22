@@ -125,6 +125,34 @@ See `SECURITY.md` for security best practices.
 3. **Broker API errors**: Check API keys in Windows Credential Manager
 4. **MQL5 EA not receiving signals**: Verify EA is attached to chart and bridge is running
 
+## Telegram Notifications (Optional)
+
+The Python background service can send Telegram alerts on:
+- Service start
+- Minimal-mode warnings (missing modules)
+- Startup errors
+- Service stop
+
+### Configure secrets (recommended)
+
+Store these keys via Windows Credential Manager (preferred) or environment variables:
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+
+Because the system uses the `TradingBridge_` prefix internally, the environment variable fallback names are:
+- `TRADINGBRIDGE_TELEGRAM_BOT_TOKEN`
+- `TRADINGBRIDGE_TELEGRAM_CHAT_ID`
+
+### Quick env-var setup (example)
+
+```powershell
+# User-level
+setx TRADINGBRIDGE_TELEGRAM_BOT_TOKEN "PASTE_TOKEN_HERE"
+setx TRADINGBRIDGE_TELEGRAM_CHAT_ID "PASTE_CHAT_ID_HERE"
+```
+
+Restart the service after setting them.
+
 ## Logs
 
 All logs are in `trading-bridge/logs/`:

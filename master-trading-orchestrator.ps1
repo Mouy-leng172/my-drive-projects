@@ -13,7 +13,7 @@
 
 $ErrorActionPreference = "Continue"
 
-$workspaceRoot = "C:\Users\USER\OneDrive"
+$workspaceRoot = $PSScriptRoot
 $tradingBridgePath = Join-Path $workspaceRoot "trading-bridge"
 $logsPath = Join-Path $tradingBridgePath "logs"
 $vpsServicesPath = Join-Path $workspaceRoot "vps-services"
