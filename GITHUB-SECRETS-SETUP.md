@@ -6,10 +6,15 @@ This guide provides instructions for setting up GitHub repository secrets for OA
 
 ## OAuth Credentials
 
-The following OAuth credentials are configured for the ZOLO-A6-9VxNUNA trading system:
+The following OAuth credentials need to be configured for the ZOLO-A6-9VxNUNA trading system:
 
-- **Client ID**: `Ov23liVH34OCl6XkcrH6`
-- **Client Secret**: `666665669ac851c05533d8ee472d64cbd2061eba`
+- **Client ID**: Your OAuth application Client ID
+- **Client Secret**: Your OAuth application Client Secret
+
+**Security Note:** Never commit these values to version control. The actual values should be:
+1. Stored securely (e.g., password manager, secure vault)
+2. Passed as parameters to the setup script
+3. Set directly in GitHub repository secrets via the web interface
 
 ## Target Repository
 
@@ -42,8 +47,16 @@ You can also pass custom values to the script:
 ```powershell
 .\setup-github-secrets.ps1 `
     -Repository "owner/repo-name" `
-    -ClientId "your-client-id" `
-    -ClientSecret "your-client-secret"
+    -ClientId "your-client-id-here" `
+    -ClientSecret "your-client-secret-here"
+```
+
+**Example for ZOLO-A6-9VxNUNA repository:**
+```powershell
+.\setup-github-secrets.ps1 `
+    -Repository "Mouy-leng/ZOLO-A6-9VxNUNA-" `
+    -ClientId "YOUR_CLIENT_ID" `
+    -ClientSecret "YOUR_CLIENT_SECRET"
 ```
 
 ## Method 2: Using GitHub CLI Manually
@@ -74,8 +87,8 @@ You can also pass custom values to the script:
 
 2. **Set the secrets:**
    ```bash
-   gh secret set CLIENT_ID --body "Ov23liVH34OCl6XkcrH6" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
-   gh secret set CLIENT_SECRET --body "666665669ac851c05533d8ee472d64cbd2061eba" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
+   gh secret set CLIENT_ID --body "YOUR_CLIENT_ID_HERE" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
+   gh secret set CLIENT_SECRET --body "YOUR_CLIENT_SECRET_HERE" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
    ```
    
    **Important Notes:**
@@ -105,13 +118,13 @@ If you prefer a GUI approach or cannot use GitHub CLI:
 4. **Add CLIENT_ID secret:**
    - Click **New repository secret**
    - **Name**: `CLIENT_ID`
-   - **Secret**: `Ov23liVH34OCl6XkcrH6`
+   - **Secret**: `YOUR_CLIENT_ID_HERE`
    - Click **Add secret**
 
 5. **Add CLIENT_SECRET secret:**
    - Click **New repository secret** again
    - **Name**: `CLIENT_SECRET`
-   - **Secret**: `666665669ac851c05533d8ee472d64cbd2061eba`
+   - **Secret**: `YOUR_CLIENT_SECRET_HERE`
    - Click **Add secret**
 
 6. **Verify:**

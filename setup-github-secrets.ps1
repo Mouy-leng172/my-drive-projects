@@ -5,11 +5,11 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Repository = "Mouy-leng/ZOLO-A6-9VxNUNA-",
     
-    [Parameter(Mandatory=$false)]
-    [string]$ClientId = "Ov23liVH34OCl6XkcrH6",
+    [Parameter(Mandatory=$true)]
+    [string]$ClientId,
     
-    [Parameter(Mandatory=$false)]
-    [string]$ClientSecret = "666665669ac851c05533d8ee472d64cbd2061eba"
+    [Parameter(Mandatory=$true)]
+    [string]$ClientSecret
 )
 
 Write-Host "`n========================================" -ForegroundColor Cyan
@@ -153,18 +153,18 @@ function Show-ManualInstructions {
     Write-Host "4. Click 'New repository secret'" -ForegroundColor White
     Write-Host "5. Add the first secret:" -ForegroundColor White
     Write-Host "   - Name: CLIENT_ID" -ForegroundColor Cyan
-    Write-Host "   - Secret: $ClientId" -ForegroundColor Gray
+    Write-Host "   - Secret: [YOUR_CLIENT_ID]" -ForegroundColor Gray
     Write-Host "6. Click 'Add secret'" -ForegroundColor White
     Write-Host "7. Repeat for the second secret:" -ForegroundColor White
     Write-Host "   - Name: CLIENT_SECRET" -ForegroundColor Cyan
-    Write-Host "   - Secret: (provided value)" -ForegroundColor Gray
+    Write-Host "   - Secret: [YOUR_CLIENT_SECRET]" -ForegroundColor Gray
     Write-Host "`nNote: Secret names cannot start with 'GITHUB_' prefix" -ForegroundColor Yellow
 }
 
 # Main execution
 Write-Host "Target Repository: $Repository" -ForegroundColor White
-Write-Host "Client ID: $ClientId" -ForegroundColor White
-Write-Host "Client Secret: [HIDDEN FOR SECURITY]`n" -ForegroundColor White
+Write-Host "Client ID: [REDACTED FOR SECURITY]" -ForegroundColor White
+Write-Host "Client Secret: [REDACTED FOR SECURITY]`n" -ForegroundColor White
 
 # Step 1: Check GitHub CLI installation
 if (-not (Test-GitHubCLI)) {
