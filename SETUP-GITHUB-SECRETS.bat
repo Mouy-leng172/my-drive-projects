@@ -58,6 +58,7 @@ if not defined OAUTH_CLIENT_SECRET (
 
 REM Run the PowerShell script with environment variables
 echo [INFO] Starting GitHub Secrets setup...
+echo [INFO] Note: Using -ExecutionPolicy Bypass for script execution
 echo.
 
 powershell -ExecutionPolicy Bypass -Command "& '%~dp0setup-github-secrets.ps1' -ClientId $env:OAUTH_CLIENT_ID -ClientSecret $env:OAUTH_CLIENT_SECRET"

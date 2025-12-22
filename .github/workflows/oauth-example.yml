@@ -4,6 +4,10 @@
 
 name: OAuth Integration Example
 
+# Minimal permissions for security
+permissions:
+  contents: read
+
 on:
   # Allow manual trigger
   workflow_dispatch:
@@ -16,6 +20,10 @@ jobs:
   oauth-example:
     name: OAuth Authentication Example
     runs-on: ubuntu-latest
+    
+    # Minimal permissions for this job
+    permissions:
+      contents: read
     
     # Set secrets as environment variables for the entire job
     env:
@@ -85,6 +93,10 @@ jobs:
     name: OAuth in Individual Steps
     runs-on: ubuntu-latest
     
+    # Minimal permissions for this job
+    permissions:
+      contents: read
+    
     steps:
       - name: Step with explicit environment variables
         env:
@@ -107,6 +119,10 @@ jobs:
     runs-on: ubuntu-latest
     # Uncomment to use GitHub environments
     # environment: production
+    
+    # Minimal permissions for this job
+    permissions:
+      contents: read
     
     steps:
       - name: Production authentication
