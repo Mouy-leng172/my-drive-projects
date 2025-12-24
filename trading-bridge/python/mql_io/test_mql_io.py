@@ -19,7 +19,7 @@ def test_service():
     print("✓ Service initialized")
     
     status = service.get_status()
-    assert status['running'] == False, "Service should not be running initially"
+    assert not status['running'], "Service should not be running initially"
     print("✓ Service status correct")
     
     # Test configuration

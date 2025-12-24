@@ -16,6 +16,8 @@ class MQLIOOperationsManager:
     Handles MQL5 operations, state management, and coordination
     """
     
+    MAX_OPERATIONS_IN_FILE = 1000
+    
     def __init__(self, data_dir: Optional[Path] = None):
         """
         Initialize operations manager
@@ -70,7 +72,7 @@ class MQLIOOperationsManager:
         """Save operations history"""
         try:
             with open(self.operations_file, 'w') as f:
-                json.dump(self.operations[-1000:], f, indent=2)  # Keep last 1000
+                json.dump(self.operations[-self.MAX_OPERATIONS_IN_FILE:], f, indent=2)
         except Exception as e:
             logger.error(f"Failed to save operations: {e}")
     
@@ -86,11 +88,13 @@ class MQLIOOperationsManager:
             Success status
         """
         try:
+            from datetime import datetime
+            
             self.ea_state[ea_name] = {
                 "name": ea_name,
                 "config": config,
                 "status": "registered",
-                "registered_at": str(Path.cwd())
+                "registered_at": datetime.now().isoformat()
             }
             self._save_ea_state()
             logger.info(f"Registered EA: {ea_name}")

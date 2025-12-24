@@ -197,10 +197,13 @@ class MQLIOService:
         retention_days = self.config.get("log_retention_days", 30)
         cutoff_time = datetime.now().timestamp() - (retention_days * 86400)
         
-        # Filter logs
+        # Convert cutoff to ISO format for string comparison (more efficient)
+        cutoff_iso = datetime.fromtimestamp(cutoff_time).isoformat()
+        
+        # Filter logs using string comparison
         self.operations_log = [
             log for log in self.operations_log
-            if datetime.fromisoformat(log["timestamp"]).timestamp() > cutoff_time
+            if log.get("timestamp", "") > cutoff_iso
         ]
     
     def get_status(self) -> Dict[str, Any]:
