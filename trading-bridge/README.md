@@ -7,6 +7,7 @@ Complete automated trading system with Python-MQL5 bridge, multi-broker API supp
 This system provides:
 - **Python Trading Engine** - Strategy analysis and signal generation
 - **MQL5 Bridge** - ZeroMQ-based communication between Python and MQL5
+- **MQL.io Service** - Comprehensive MQL5 operations management
 - **Multi-Broker Support** - Trade on Exness and other brokers with API access
 - **Multi-Symbol Trading** - Manage trading across multiple symbols simultaneously
 - **Background Service** - Runs 24/7 without user interaction
@@ -21,6 +22,7 @@ This system provides:
 │  - Python Code  │         │  - MT5 Terminal │
 │  - Strategy     │         │  - Execution    │
 │  - Analysis     │         │  - Uptime       │
+│  - MQL.io       │         │                 │
 └─────────────────┘         └─────────────────┘
          │                           │
          └───────────┬───────────────┘
@@ -68,7 +70,18 @@ Copy `config/symbols.json.example` to `config/symbols.json` and configure your t
 .\start-trading-system-admin.ps1
 ```
 
-### 7. Setup Auto-Start (Optional)
+### 7. Start MQL.io Service (Optional - NEW)
+
+```powershell
+.\start-mql-io-service.ps1
+```
+
+Or use the batch file:
+```
+START-MQL-IO-SERVICE.bat
+```
+
+### 8. Setup Auto-Start (Optional)
 
 ```powershell
 .\setup-trading-auto-start.ps1
@@ -81,7 +94,8 @@ trading-bridge/
 ├── python/
 │   ├── bridge/          # MQL5 bridge
 │   ├── brokers/         # Broker API implementations
-│   ├── strategies/       # Trading strategies
+│   ├── mql_io/          # MQL.io service (NEW)
+│   ├── strategies/      # Trading strategies
 │   ├── trader/          # Multi-symbol trader
 │   ├── services/        # Background services
 │   └── security/        # Credential management
@@ -98,6 +112,12 @@ trading-bridge/
 ### Python Bridge
 - **mql5_bridge.py** - ZeroMQ server for Python side
 - **signal_manager.py** - Trade signal queue and validation
+
+### MQL.io Service (NEW)
+- **mql_io_service.py** - MQL5 operations management service
+- **api_handler.py** - RESTful API interface
+- **operations_manager.py** - State and operations management
+- See `MQL-IO-README.md` for detailed documentation
 
 ### Broker APIs
 - **base_broker.py** - Abstract base class
