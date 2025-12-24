@@ -25,8 +25,18 @@ This repository contains the complete device skeleton structure, project bluepri
 │   ├── research-service.ps1         # Perplexity AI research service
 │   ├── website-service.ps1          # GitHub website service
 │   ├── cicd-service.ps1             # CI/CD automation service
-│   ├── mql5-service.ps1              # MQL5 Forge integration
-│   └── master-controller.ps1       # Master service controller
+│   ├── mql5-service.ps1             # MQL5 Forge integration
+│   └── master-controller.ps1        # Master service controller
+├── trading-bridge/                   # Trading Bridge & MQL.io System
+│   ├── python/                      # Python trading components
+│   │   ├── bridge/                  # MQL5 bridge
+│   │   ├── brokers/                 # Broker APIs
+│   │   ├── mql_io/                  # MQL.io service (NEW)
+│   │   ├── services/                # Background services
+│   │   └── trader/                  # Multi-symbol trader
+│   ├── mql5/                        # MQL5 Expert Advisors
+│   ├── config/                      # Configuration
+│   └── MQL-IO-README.md             # MQL.io documentation
 ├── projects/                         # Active development projects
 │   ├── Google AI Studio/            # AI Studio related projects
 │   └── LiteWriter/                  # LiteWriter application
@@ -77,6 +87,26 @@ This will:
 - ✅ Start CI/CD Automation Service
 - ✅ Start MQL5 Forge Integration
 - ✅ Handle all errors automatically
+
+### MQL.io Service (NEW)
+
+Start the MQL5 operations management service:
+
+```powershell
+.\start-mql-io-service.ps1
+```
+
+Or double-click: `START-MQL-IO-SERVICE.bat`
+
+MQL.io provides:
+- ✅ Expert Advisor monitoring and management
+- ✅ Script execution tracking
+- ✅ Indicator monitoring
+- ✅ Operations logging
+- ✅ API interface for programmatic access
+- ✅ Auto-recovery (optional)
+
+See `trading-bridge/MQL-IO-README.md` for complete documentation.
 
 ### Windows Setup Automation
 
