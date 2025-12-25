@@ -202,12 +202,22 @@ def main():
             return 1
     
     if args.start:
-        start = datetime.fromisoformat(args.start)
-        entries = [e for e in entries if e.timestamp >= start]
+        try:
+            start = datetime.fromisoformat(args.start)
+            entries = [e for e in entries if e.timestamp >= start]
+        except ValueError:
+            print(f"Invalid start time format: {args.start}", file=sys.stderr)
+            print("Expected format: YYYY-MM-DD HH:MM:SS", file=sys.stderr)
+            return 1
     
     if args.end:
-        end = datetime.fromisoformat(args.end)
-        entries = [e for e in entries if e.timestamp <= end]
+        try:
+            end = datetime.fromisoformat(args.end)
+            entries = [e for e in entries if e.timestamp <= end]
+        except ValueError:
+            print(f"Invalid end time format: {args.end}", file=sys.stderr)
+            print("Expected format: YYYY-MM-DD HH:MM:SS", file=sys.stderr)
+            return 1
     
     # Show summary if requested (from filtered entries)
     if args.summary:
