@@ -211,11 +211,7 @@ def main():
     
     # Show summary if requested (from filtered entries)
     if args.summary:
-        # Temporarily set parser entries to filtered entries for summary
-        original_entries = parser.entries
-        parser.entries = entries
-        summary = parser.get_summary()
-        parser.entries = original_entries
+        summary = parser.get_summary(entries)
         print(json.dumps(summary, indent=2))
         return 0
     

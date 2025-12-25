@@ -196,33 +196,38 @@ class MT5LogParser:
         with open(filepath, 'r', encoding='utf-8') as f:
             return self.parse_text(f.read())
     
-    def get_summary(self) -> Dict:
+    def get_summary(self, entries: Optional[List[LogEntry]] = None) -> Dict:
         """
         Get summary statistics of parsed logs
+        
+        Args:
+            entries: Optional list of entries to summarize. If None, uses self.entries
         
         Returns:
             Dictionary with summary statistics
         """
-        if not self.entries:
+        entries_to_summarize = entries if entries is not None else self.entries
+        
+        if not entries_to_summarize:
             return {}
         
-        account_ids = set(e.account_id for e in self.entries)
+        account_ids = set(e.account_id for e in entries_to_summarize)
         event_counts = {}
-        for entry in self.entries:
+        for entry in entries_to_summarize:
             event_type = entry.event_type.value
             event_counts[event_type] = event_counts.get(event_type, 0) + 1
         
-        servers = set(e.server for e in self.entries if e.server)
+        servers = set(e.server for e in entries_to_summarize if e.server)
         
         return {
-            'total_entries': len(self.entries),
+            'total_entries': len(entries_to_summarize),
             'account_ids': list(account_ids),
             'event_counts': event_counts,
             'servers': list(servers),
             'time_range': {
-                'start': min(e.timestamp for e in self.entries).isoformat(),
-                'end': max(e.timestamp for e in self.entries).isoformat()
-            } if self.entries else None
+                'start': min(e.timestamp for e in entries_to_summarize).isoformat(),
+                'end': max(e.timestamp for e in entries_to_summarize).isoformat()
+            } if entries_to_summarize else None
         }
     
     def filter_by_account(self, account_id: str) -> List[LogEntry]:
