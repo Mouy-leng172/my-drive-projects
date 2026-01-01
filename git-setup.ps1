@@ -95,7 +95,7 @@ if ($remotes -match "origin") {
 }
 
 # Add MQL5 Forge remote if not already present
-Write-Host "[3.5] Setting up MQL5 Forge remote..." -ForegroundColor Yellow
+Write-Host "[4] Setting up MQL5 Forge remote..." -ForegroundColor Yellow
 $mql5ForgeUrl = "https://forge.mql5.io/LengKundee/A6-9V_VL6-N9.git"
 $mql5RemoteName = "mql5-forge"
 
