@@ -100,18 +100,17 @@ function Setup-MQL5ForgeRemote {
                 $verifyUrl = git remote get-url $RemoteName 2>&1
                 Write-Host "  [VERIFY] Remote URL: $verifyUrl" -ForegroundColor Gray
                 
-                Pop-Location
                 return $true
             } else {
                 Write-Host "  [ERROR] Failed to add remote" -ForegroundColor Red
-                Pop-Location
                 return $false
             }
         }
     } catch {
         Write-Host "  [ERROR] Exception: $_" -ForegroundColor Red
-        Pop-Location
         return $false
+    } finally {
+        Pop-Location
     }
 }
 
