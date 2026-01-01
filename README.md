@@ -206,6 +206,7 @@ See **GITHUB-SECRETS-SETUP.md** for complete instructions on setting up GitHub r
 - **SYSTEM-INFO.md** - System specifications
 - **WORKSPACE-SETUP.md** - Workspace setup guide
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
+- **MQL5-FORGE-INTEGRATION.md** - MQL5 Forge repository integration guide
 - **AUTO-MERGE-SETUP-GUIDE.md** - Automatic PR merging setup
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
@@ -237,6 +238,28 @@ This workspace is connected to multiple repositories:
 - **Primary (origin)**: https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git
 - **Secondary 1 (bridges3rd)**: https://github.com/A6-9V/I-bride_bridges3rd.git
 - **Secondary 2 (drive-projects)**: https://github.com/A6-9V/my-drive-projects.git
+- **MQL5 Forge (mql5-forge)**: https://forge.mql5.io/LengKundee/A6-9V_VL6-N9.git
+
+### MQL5 Forge Integration
+
+The MQL5 Forge repository is automatically configured as an additional remote for MQL5 trading code management:
+
+```powershell
+# Setup MQL5 Forge remote for current repository
+.\setup-mql5-forge-remote.ps1
+
+# Setup MQL5 Forge remote for all repositories on all drives
+.\setup-mql5-forge-remote.ps1 -AllDrives
+
+# Setup MQL5 Forge remote for specific repository
+.\setup-mql5-forge-remote.ps1 -RepoPath "C:\Users\USER\OneDrive"
+```
+
+The MQL5 Forge remote allows:
+- ✅ Version control for MQL5 Expert Advisors, Scripts, and Indicators
+- ✅ Synchronization with MQL5 Forge community platform
+- ✅ Backup and recovery of trading code
+- ✅ Collaboration with other MQL5 developers
 
 ## 🗄️ Graph Database Architecture & Connection Diagram
 

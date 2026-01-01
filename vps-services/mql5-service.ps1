@@ -2,7 +2,7 @@
 $ErrorActionPreference = "Continue"
 $workspaceRoot = "C:\Users\USER\OneDrive"
 $logsPath = "C:\Users\USER\OneDrive\vps-logs"
-$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/mql5"
+$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/A6-9V_VL6-N9.git"
 
 # Configuration variables (with defaults if not set)
 $mql5ConfigFile = Join-Path $workspaceRoot ".mql5-config"

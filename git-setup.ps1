@@ -94,6 +94,28 @@ if ($remotes -match "origin") {
     git remote add origin "https://github.com/Mouy-leng/Window-setup.git"
 }
 
+# Add MQL5 Forge remote if not already present
+Write-Host "[3.5] Setting up MQL5 Forge remote..." -ForegroundColor Yellow
+$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/A6-9V_VL6-N9.git"
+$mql5RemoteName = "mql5-forge"
+
+$remotes = git remote 2>&1
+if ($remotes -contains $mql5RemoteName) {
+    $currentMql5Url = git remote get-url $mql5RemoteName 2>&1
+    if ($currentMql5Url -ne $mql5ForgeUrl) {
+        Write-Host "    Updating MQL5 Forge remote URL..." -ForegroundColor Yellow
+        git remote set-url $mql5RemoteName $mql5ForgeUrl 2>&1 | Out-Null
+    } else {
+        Write-Host "    MQL5 Forge remote already configured" -ForegroundColor Green
+    }
+} else {
+    Write-Host "    Adding MQL5 Forge remote..." -ForegroundColor Yellow
+    git remote add $mql5RemoteName $mql5ForgeUrl 2>&1 | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "    MQL5 Forge remote added successfully" -ForegroundColor Green
+    }
+}
+
 # Verify remotes
 Write-Host "[4] Verifying remotes..." -ForegroundColor Yellow
 git remote -v
