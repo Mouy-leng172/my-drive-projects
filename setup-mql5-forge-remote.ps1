@@ -165,7 +165,7 @@ function Find-AllGitRepositories {
                     }
                     
                     # Check subdirectories (limited depth)
-                    $gitDirs = Get-ChildItem -Path $commonPath -Directory -Filter ".git" -Recurse -Depth 1 -ErrorAction SilentlyContinue | Select-Object -First 5
+                    $gitDirs = Get-ChildItem -Path $commonPath -Directory -Filter ".git" -Recurse -Depth 1 -ErrorAction SilentlyContinue
                     foreach ($gitDir in $gitDirs) {
                         $repoPath = $gitDir.Parent.FullName
                         if ($repoPath -notin $repositories) {
