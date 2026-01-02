@@ -108,6 +108,33 @@ MQL.io provides:
 
 See `trading-bridge/MQL-IO-README.md` for complete documentation.
 
+### Google Gemini CLI (NEW)
+
+Install AI-powered command-line assistant for code analysis, automation, and development:
+
+```bash
+# Linux/macOS
+./install-gemini-cli.sh
+
+# Windows (Run as Administrator)
+INSTALL-GEMINI-CLI.bat
+```
+
+Or use PowerShell directly:
+```powershell
+.\install-gemini-cli.ps1
+```
+
+Gemini CLI provides:
+- ✅ AI-powered code review and analysis
+- ✅ Automated documentation generation
+- ✅ Git workflow integration
+- ✅ DevOps automation assistance
+- ✅ Multi-modal capabilities (code, images, PDFs)
+- ✅ Interactive and scriptable modes
+
+See `GEMINI-CLI-SETUP-GUIDE.md` for complete documentation and `GEMINI-CLI-QUICK-START.md` for quick reference.
+
 ### Windows Setup Automation
 
 ```powershell
@@ -145,6 +172,14 @@ See `trading-bridge/MQL-IO-README.md` for complete documentation.
 - ✅ Comprehensive security checks
 - ✅ Token security validation
 - ✅ Script integrity verification
+
+### AI Development Tools
+- ✅ Google Gemini CLI v0.22.5
+- ✅ AI-powered code analysis and review
+- ✅ Automated documentation generation
+- ✅ Git workflow AI integration
+- ✅ Multi-modal AI capabilities (code, images, PDFs)
+- ✅ Interactive and scriptable AI assistance
 
 ### VPS 24/7 Trading System
 - ✅ Exness MT5 Terminal (24/7 operation)
@@ -201,6 +236,7 @@ See **GITHUB-SECRETS-SETUP.md** for complete instructions on setting up GitHub r
 
 ## 📚 Documentation
 
+### Setup Guides
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
@@ -211,6 +247,10 @@ See **GITHUB-SECRETS-SETUP.md** for complete instructions on setting up GitHub r
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **GITHUB-SECRETS-SETUP.md** - GitHub secrets and OAuth setup
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+
+### AI Tools Documentation
+- **GEMINI-CLI-SETUP-GUIDE.md** - Complete Gemini CLI installation and configuration guide
+- **GEMINI-CLI-QUICK-START.md** - Quick reference for Gemini CLI commands and workflows
 
 ## 🏢 Organization
 

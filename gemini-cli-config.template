@@ -1,0 +1,164 @@
+# Gemini CLI Configuration Template
+# Copy this file to create your local Gemini CLI configuration
+# DO NOT commit your actual API keys or credentials to version control
+
+# ============================================
+# GEMINI CLI CONFIGURATION
+# ============================================
+
+# Environment Variable Setup
+# --------------------------
+# Set your Gemini API key for authentication
+# Get your API key from: https://makersuite.google.com/app/apikey
+
+# Linux/macOS (Add to ~/.bashrc or ~/.zshrc):
+# export GEMINI_API_KEY="your_api_key_here"
+
+# Windows PowerShell (Add to $PROFILE):
+# $env:GEMINI_API_KEY = "your_api_key_here"
+
+# ============================================
+# USAGE EXAMPLES
+# ============================================
+
+# Basic Commands
+# --------------
+# gemini                                    # Interactive mode
+# gemini "Your prompt here"                 # One-shot prompt
+# gemini --help                             # View all options
+
+# File Analysis
+# -------------
+# gemini "Review this code" --file script.py
+# gemini "Explain this image" --file diagram.png
+# gemini "Summarize this PDF" --file document.pdf
+
+# Model Selection
+# ---------------
+# gemini --model gemini-pro "Your prompt"
+# gemini --model gemini-pro-vision "Analyze this image" --file image.jpg
+
+# Output Formats
+# --------------
+# gemini --output-format text "Your prompt"
+# gemini --output-format json "Your prompt"
+# gemini --output-format stream-json "Your prompt"
+
+# ============================================
+# PROJECT-SPECIFIC CONFIGURATIONS
+# ============================================
+
+# Trading System Integration
+# ---------------------------
+# Use Gemini CLI for:
+# - Code review of trading strategies
+# - EA (Expert Advisor) optimization suggestions
+# - Security audits of trading scripts
+# - Documentation generation
+
+# Example: Review trading strategy
+# gemini "Review this trading strategy for risks" --file trading-bridge/python/trader/strategy.py
+
+# Example: Optimize MQL5 code
+# gemini "Suggest optimizations for this MQL5 EA" --file trading-bridge/mql5/ExpertAdvisor.mq5
+
+# Git Workflow Integration
+# -------------------------
+# Example: Generate commit message
+# git diff --staged | gemini "Generate a concise commit message"
+
+# Example: Review PR
+# gh pr diff 123 | gemini "Provide a comprehensive code review"
+
+# Automation Scripts
+# ------------------
+# Example: PowerShell integration
+# $code = Get-Content -Path script.ps1 -Raw
+# $review = gemini "Review this PowerShell script" --file script.ps1
+
+# Example: Batch documentation
+# foreach ($file in Get-ChildItem *.ps1) {
+#     gemini "Generate documentation" --file $file.Name > "$($file.BaseName)-docs.md"
+# }
+
+# ============================================
+# BEST PRACTICES
+# ============================================
+
+# 1. Security
+#    - Never commit API keys to version control
+#    - Use environment variables for credentials
+#    - Review AI-generated code before deployment
+
+# 2. Rate Limits
+#    - Use API key for higher rate limits
+#    - Implement retry logic for production scripts
+#    - Cache responses when appropriate
+
+# 3. Context Management
+#    - Provide clear, specific prompts
+#    - Include relevant context in queries
+#    - Use --prompt-interactive for ongoing work
+
+# 4. Integration
+#    - Combine with existing tools (git, eslint, etc.)
+#    - Automate repetitive tasks
+#    - Use in pre-commit hooks for quality checks
+
+# ============================================
+# TROUBLESHOOTING
+# ============================================
+
+# Command not found:
+# - Check PATH: echo $PATH (Linux/macOS) or $env:PATH (Windows)
+# - Verify installation: npm list -g @google/gemini-cli
+# - Reinstall: npm install -g @google/gemini-cli@0.22.5
+
+# Authentication errors:
+# - Verify API key is set: echo $GEMINI_API_KEY
+# - Check API key validity at Google AI Studio
+# - Try OAuth login: gemini (follow browser prompts)
+
+# Performance issues:
+# - Use specific models for tasks (gemini-pro vs gemini-pro-vision)
+# - Reduce context size for faster responses
+# - Consider caching frequent queries
+
+# ============================================
+# RESOURCES
+# ============================================
+
+# Documentation:
+# - Setup Guide: GEMINI-CLI-SETUP-GUIDE.md
+# - Quick Start: GEMINI-CLI-QUICK-START.md
+# - Official Docs: https://google-gemini.github.io/gemini-cli/
+# - GitHub: https://github.com/google-gemini/gemini-cli
+
+# Support:
+# - GitHub Issues: https://github.com/google-gemini/gemini-cli/issues
+# - Google AI Studio: https://makersuite.google.com/
+
+# ============================================
+# VERSION INFORMATION
+# ============================================
+
+# Gemini CLI Version: 0.22.5
+# Installation Date: Run `gemini --version` to verify
+# Last Updated: 2026-01-02
+
+# ============================================
+# NOTES
+# ============================================
+
+# This is a template file for reference only.
+# Actual configuration is done via:
+# 1. Environment variables (recommended for API keys)
+# 2. Command-line flags (for per-use settings)
+# 3. Gemini CLI's built-in configuration on first run
+
+# For secure credential management in this project:
+# - API keys should NEVER be committed to git
+# - Use Windows Credential Manager (Windows)
+# - Use keychain (macOS)
+# - Use secret management tools (Linux)
+# - Follow the patterns in AUTOMATION-RULES.md
