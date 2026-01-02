@@ -50,8 +50,11 @@ function initializeCanvas() {
     ctx.textAlign = 'center';
     ctx.fillText('Canvas API Demo', 150, 30);
     
-    // Animate canvas
+    // Animate canvas with performance optimization
     let angle = 0;
+    let animationId = null;
+    let isAnimating = false;
+    
     function animate() {
         // Clear previous frame
         ctx.fillStyle = '#1a1a25';
@@ -78,10 +81,41 @@ function initializeCanvas() {
         ctx.stroke();
         
         angle += 0.05;
-        requestAnimationFrame(animate);
+        
+        if (isAnimating) {
+            animationId = requestAnimationFrame(animate);
+        }
     }
     
-    animate();
+    // Use Intersection Observer to pause animation when canvas is not visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                isAnimating = true;
+                animate();
+            } else {
+                isAnimating = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    observer.observe(canvas);
+    
+    // Stop animation when page is hidden (tab switching)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            isAnimating = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        } else if (canvas.getBoundingClientRect().top < window.innerHeight) {
+            isAnimating = true;
+            animate();
+        }
+    });
 }
 
 /**
