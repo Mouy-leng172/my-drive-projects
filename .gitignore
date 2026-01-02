@@ -43,6 +43,9 @@ core.*
 git-credentials.txt
 .github-token
 mql5-config.txt
+.env
+.env.local
+.env.*.local
 
 # Sensitive credentials and keys (from my-drive-projects)
 *.pem
@@ -153,3 +156,12 @@ repo-automation-report-*.md
 __pycache__/
 *.pyc
 *.pyo
+
+# Python virtual environment
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
