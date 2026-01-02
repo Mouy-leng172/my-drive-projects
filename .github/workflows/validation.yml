@@ -1,0 +1,375 @@
+name: Setup Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate-structure:
+    name: Validate Repository Structure
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check required files
+        shell: powershell
+        run: |
+          Write-Host "Checking required documentation files..." -ForegroundColor Cyan
+          
+          $requiredFiles = @(
+            "README.md",
+            "HOW-TO-RUN.md",
+            "PREREQUISITES.md",
+            "SECURITY.md",
+            "TROUBLESHOOTING.md",
+            ".gitignore",
+            ".env.example"
+          )
+          
+          $missing = @()
+          foreach ($file in $requiredFiles) {
+            if (Test-Path $file) {
+              Write-Host "[OK] $file" -ForegroundColor Green
+            } else {
+              Write-Host "[MISSING] $file" -ForegroundColor Red
+              $missing += $file
+            }
+          }
+          
+          if ($missing.Count -gt 0) {
+            Write-Host "`nMissing files: $($missing -join ', ')" -ForegroundColor Red
+            exit 1
+          }
+          
+          Write-Host "`nAll required files present!" -ForegroundColor Green
+      
+      - name: Check directory structure
+        shell: powershell
+        run: |
+          Write-Host "Checking directory structure..." -ForegroundColor Cyan
+          
+          $requiredDirs = @(
+            "trading-bridge",
+            "trading-bridge/python",
+            "trading-bridge/config",
+            "vps-services",
+            ".cursor",
+            ".github"
+          )
+          
+          foreach ($dir in $requiredDirs) {
+            if (Test-Path $dir) {
+              Write-Host "[OK] $dir/" -ForegroundColor Green
+            } else {
+              Write-Host "[WARNING] $dir/ not found" -ForegroundColor Yellow
+            }
+          }
+      
+      - name: Validate .gitignore
+        shell: powershell
+        run: |
+          Write-Host "Validating .gitignore..." -ForegroundColor Cyan
+          
+          $gitignoreContent = Get-Content .gitignore -Raw
+          
+          $criticalPatterns = @(
+            "*.token",
+            "*.secret",
+            "*credentials*",
+            ".env",
+            "brokers.json"
+          )
+          
+          $allPresent = $true
+          foreach ($pattern in $criticalPatterns) {
+            if ($gitignoreContent -like "*$pattern*") {
+              Write-Host "[OK] $pattern is gitignored" -ForegroundColor Green
+            } else {
+              Write-Host "[ERROR] $pattern is NOT gitignored!" -ForegroundColor Red
+              $allPresent = $false
+            }
+          }
+          
+          if (-not $allPresent) {
+            Write-Host "`nCritical security patterns missing from .gitignore!" -ForegroundColor Red
+            exit 1
+          }
+          
+          Write-Host "`nAll critical patterns are gitignored!" -ForegroundColor Green
+
+  validate-python:
+    name: Validate Python Configuration
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Check Python files
+        shell: powershell
+        run: |
+          Write-Host "Checking for Python files..." -ForegroundColor Cyan
+          $pythonFiles = Get-ChildItem -Path . -Filter "*.py" -Recurse -File | Measure-Object
+          Write-Host "Found $($pythonFiles.Count) Python files" -ForegroundColor Green
+      
+      - name: Validate requirements.txt
+        shell: powershell
+        run: |
+          Write-Host "Validating requirements.txt..." -ForegroundColor Cyan
+          
+          if (Test-Path "trading-bridge/requirements.txt") {
+            Write-Host "[OK] requirements.txt exists" -ForegroundColor Green
+            
+            $requirements = Get-Content "trading-bridge/requirements.txt"
+            Write-Host "`nRequired packages:"
+            $requirements | ForEach-Object { Write-Host "  - $_" }
+          } else {
+            Write-Host "[ERROR] requirements.txt not found!" -ForegroundColor Red
+            exit 1
+          }
+      
+      - name: Install dependencies (dry-run)
+        shell: powershell
+        run: |
+          Write-Host "Testing dependency installation..." -ForegroundColor Cyan
+          python -m pip install --upgrade pip
+          pip install --dry-run -r trading-bridge/requirements.txt
+          Write-Host "Dependencies can be installed successfully" -ForegroundColor Green
+
+  validate-scripts:
+    name: Validate PowerShell Scripts
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check PowerShell scripts
+        shell: powershell
+        run: |
+          Write-Host "Checking PowerShell scripts..." -ForegroundColor Cyan
+          
+          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -File | Measure-Object
+          Write-Host "Found $($scripts.Count) PowerShell scripts" -ForegroundColor Green
+      
+      - name: Syntax check critical scripts
+        shell: powershell
+        run: |
+          Write-Host "Running syntax checks..." -ForegroundColor Cyan
+          
+          $criticalScripts = @(
+            "validate-setup.ps1",
+            "quick-start.ps1"
+          )
+          
+          foreach ($script in $criticalScripts) {
+            if (Test-Path $script) {
+              Write-Host "Checking $script..." -ForegroundColor Cyan
+              try {
+                $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content $script -Raw), [ref]$null)
+                Write-Host "[OK] $script syntax valid" -ForegroundColor Green
+              } catch {
+                Write-Host "[ERROR] $script has syntax errors: $_" -ForegroundColor Red
+                exit 1
+              }
+            }
+          }
+          
+          Write-Host "`nAll critical scripts have valid syntax!" -ForegroundColor Green
+
+  validate-config-examples:
+    name: Validate Configuration Examples
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check config examples
+        shell: powershell
+        run: |
+          Write-Host "Checking configuration examples..." -ForegroundColor Cyan
+          
+          $configExamples = @(
+            "trading-bridge/config/brokers.json.example",
+            "trading-bridge/config/symbols.json.example",
+            ".env.example"
+          )
+          
+          foreach ($config in $configExamples) {
+            if (Test-Path $config) {
+              Write-Host "[OK] $config" -ForegroundColor Green
+            } else {
+              Write-Host "[WARNING] $config not found" -ForegroundColor Yellow
+            }
+          }
+      
+      - name: Validate JSON examples
+        shell: powershell
+        run: |
+          Write-Host "Validating JSON files..." -ForegroundColor Cyan
+          
+          $jsonFiles = Get-ChildItem -Path "trading-bridge/config" -Filter "*.json.example" -File
+          
+          foreach ($file in $jsonFiles) {
+            Write-Host "Validating $($file.Name)..." -ForegroundColor Cyan
+            try {
+              $null = Get-Content $file.FullName -Raw | ConvertFrom-Json
+              Write-Host "[OK] $($file.Name) is valid JSON" -ForegroundColor Green
+            } catch {
+              Write-Host "[ERROR] $($file.Name) has invalid JSON: $_" -ForegroundColor Red
+              exit 1
+            }
+          }
+          
+          Write-Host "`nAll JSON examples are valid!" -ForegroundColor Green
+
+  security-check:
+    name: Security Validation
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check for exposed secrets
+        shell: powershell
+        run: |
+          Write-Host "Checking for accidentally committed secrets..." -ForegroundColor Cyan
+          
+          $dangerousPatterns = @(
+            "ghp_",
+            "gho_",
+            "github_pat_",
+            "-----BEGIN",
+            "PRIVATE KEY",
+            "api_key.*=.*[A-Za-z0-9]{20,}",
+            "password.*=.*[^\s]+"
+          )
+          
+          $found = $false
+          foreach ($pattern in $dangerousPatterns) {
+            $matches = Get-ChildItem -Recurse -File -Exclude "*.md","*.example","SECURITY.md" | Select-String -Pattern $pattern -SimpleMatch:$false
+            if ($matches) {
+              Write-Host "[WARNING] Potential secret found: $pattern" -ForegroundColor Yellow
+              $matches | ForEach-Object { Write-Host "  $($_.Path):$($_.LineNumber)" -ForegroundColor Gray }
+              $found = $true
+            }
+          }
+          
+          if (-not $found) {
+            Write-Host "No obvious secrets found in committed files" -ForegroundColor Green
+          } else {
+            Write-Host "`nPlease review the warnings above" -ForegroundColor Yellow
+            Write-Host "False positives are expected in documentation" -ForegroundColor Gray
+          }
+      
+      - name: Verify sensitive files are gitignored
+        shell: powershell
+        run: |
+          Write-Host "Verifying sensitive files are not tracked..." -ForegroundColor Cyan
+          
+          $sensitiveFiles = @(
+            ".env",
+            "git-credentials.txt",
+            "trading-bridge/config/brokers.json",
+            "trading-bridge/config/symbols.json"
+          )
+          
+          $tracked = @()
+          foreach ($file in $sensitiveFiles) {
+            $isTracked = git ls-files $file 2>$null
+            if ($isTracked) {
+              Write-Host "[ERROR] $file is tracked in git!" -ForegroundColor Red
+              $tracked += $file
+            } else {
+              Write-Host "[OK] $file is not tracked" -ForegroundColor Green
+            }
+          }
+          
+          if ($tracked.Count -gt 0) {
+            Write-Host "`nERROR: Sensitive files are tracked!" -ForegroundColor Red
+            exit 1
+          }
+
+  documentation-check:
+    name: Documentation Validation
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check documentation completeness
+        shell: powershell
+        run: |
+          Write-Host "Checking documentation..." -ForegroundColor Cyan
+          
+          # Check if key sections exist in README
+          $readme = Get-Content README.md -Raw
+          
+          $requiredSections = @(
+            "Getting Started",
+            "Quick Start",
+            "Prerequisites",
+            "Documentation"
+          )
+          
+          foreach ($section in $requiredSections) {
+            if ($readme -match $section) {
+              Write-Host "[OK] README contains '$section' section" -ForegroundColor Green
+            } else {
+              Write-Host "[WARNING] README missing '$section' section" -ForegroundColor Yellow
+            }
+          }
+      
+      - name: Check for broken internal links
+        shell: powershell
+        run: |
+          Write-Host "Checking for referenced files..." -ForegroundColor Cyan
+          
+          $readme = Get-Content README.md -Raw
+          
+          # Extract markdown links [text](file.md)
+          $links = [regex]::Matches($readme, '\[.*?\]\((.*?\.md)\)')
+          
+          foreach ($link in $links) {
+            $file = $link.Groups[1].Value
+            # Remove any anchors
+            $file = $file -replace '#.*$', ''
+            
+            if ($file -notmatch '^https?://') {
+              if (Test-Path $file) {
+                Write-Host "[OK] $file exists" -ForegroundColor Green
+              } else {
+                Write-Host "[WARNING] $file referenced but not found" -ForegroundColor Yellow
+              }
+            }
+          }
+
+  summary:
+    name: Validation Summary
+    runs-on: windows-latest
+    needs: [validate-structure, validate-python, validate-scripts, validate-config-examples, security-check, documentation-check]
+    if: always()
+    
+    steps:
+      - name: Summary
+        shell: powershell
+        run: |
+          Write-Host "`n========================================" -ForegroundColor Cyan
+          Write-Host "   Validation Complete" -ForegroundColor Cyan
+          Write-Host "========================================`n" -ForegroundColor Cyan
+          
+          Write-Host "All validation checks completed!" -ForegroundColor Green
+          Write-Host "Check individual job results for details." -ForegroundColor Gray
