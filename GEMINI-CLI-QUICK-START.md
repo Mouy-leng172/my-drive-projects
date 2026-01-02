@@ -273,4 +273,4 @@ npm install -g @google/gemini-cli@0.22.5
 ---
 
 **Version**: 0.22.5  
-**Last Updated**: 2026-01-02
+**Last Updated**: 2025-01-02

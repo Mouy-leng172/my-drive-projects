@@ -153,7 +153,7 @@ Write-Host ""
 Write-Host "[TEST 9] Checking API key configuration (optional)..." -ForegroundColor Yellow
 if ($env:GEMINI_API_KEY) {
     Write-Host "[PASS] GEMINI_API_KEY environment variable is set" -ForegroundColor Green
-    Write-Host "[INFO] API key length: $($env:GEMINI_API_KEY.Length) characters" -ForegroundColor Yellow
+    Write-Host "[INFO] API key is configured" -ForegroundColor Yellow
     $testsPassed++
 }
 else {

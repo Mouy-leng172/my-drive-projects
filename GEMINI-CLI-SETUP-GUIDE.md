@@ -341,6 +341,6 @@ Google Gemini CLI is released under the Apache 2.0 License.
 
 ---
 
-**Last Updated**: 2026-01-02  
+**Last Updated**: 2025-01-02  
 **System**: NuNa (Windows 11 Home Single Language 25H2)  
 **Gemini CLI Version**: v0.22.5

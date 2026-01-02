@@ -111,7 +111,7 @@ echo ""
 echo -e "${YELLOW}[TEST 9] Checking API key configuration (optional)...${NC}"
 if [ -n "$GEMINI_API_KEY" ]; then
     echo -e "${GREEN}[PASS] GEMINI_API_KEY environment variable is set${NC}"
-    echo -e "${YELLOW}[INFO] API key length: ${#GEMINI_API_KEY} characters${NC}"
+    echo -e "${YELLOW}[INFO] API key is configured${NC}"
 else
     echo -e "${YELLOW}[INFO] GEMINI_API_KEY not set (will use OAuth on first run)${NC}"
     echo -e "${YELLOW}[INFO] Set API key: export GEMINI_API_KEY=\"your_key\"${NC}"
