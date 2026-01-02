@@ -7,10 +7,16 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# Default permissions for all jobs
+permissions:
+  contents: read
+
 jobs:
   validate-structure:
     name: Validate Repository Structure
     runs-on: windows-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -105,6 +111,8 @@ jobs:
   validate-python:
     name: Validate Python Configuration
     runs-on: windows-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -149,6 +157,8 @@ jobs:
   validate-scripts:
     name: Validate PowerShell Scripts
     runs-on: windows-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -190,6 +200,8 @@ jobs:
   validate-config-examples:
     name: Validate Configuration Examples
     runs-on: windows-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -237,6 +249,8 @@ jobs:
   security-check:
     name: Security Validation
     runs-on: windows-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -305,6 +319,8 @@ jobs:
   documentation-check:
     name: Documentation Validation
     runs-on: windows-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -362,6 +378,8 @@ jobs:
     runs-on: windows-latest
     needs: [validate-structure, validate-python, validate-scripts, validate-config-examples, security-check, documentation-check]
     if: always()
+    permissions:
+      contents: read
     
     steps:
       - name: Summary
