@@ -11,14 +11,14 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 
 Write-Host @"
 
-╔════════════════════════════════════════════════════════════╗
-║                                                            ║
-║       Welcome to A6-9V/my-drive-projects Setup            ║
-║                                                            ║
-║       This script will guide you through the               ║
-║       initial setup process.                               ║
-║                                                            ║
-╚════════════════════════════════════════════════════════════╝
+============================================================
+                                                            
+       Welcome to A6-9V/my-drive-projects Setup            
+                                                            
+       This script will guide you through the               
+       initial setup process.                               
+                                                            
+============================================================
 
 "@ -ForegroundColor Cyan
 
@@ -290,11 +290,11 @@ switch ($postChoice) {
 }
 
 # Step 5: Summary and Next Steps
-Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Green
-Write-Host "║                                                            ║" -ForegroundColor Green
-Write-Host "║                  Setup Complete!                           ║" -ForegroundColor Green
-Write-Host "║                                                            ║" -ForegroundColor Green
-Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Green
+Write-Host "`n========================================" -ForegroundColor Green
+Write-Host "||                                    ||" -ForegroundColor Green
+Write-Host "||          Setup Complete!           ||" -ForegroundColor Green
+Write-Host "||                                    ||" -ForegroundColor Green
+Write-Host "========================================`n" -ForegroundColor Green
 
 Write-Host "Next Steps:" -ForegroundColor Cyan
 Write-Host ""

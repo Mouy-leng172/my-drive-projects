@@ -160,8 +160,9 @@ if (Test-Path $requirementsFile) {
     $dependencies = @("zmq", "requests", "dotenv", "cryptography", "schedule")
     foreach ($dep in $dependencies) {
         $packageName = if ($dep -eq "zmq") { "pyzmq" } elseif ($dep -eq "dotenv") { "python-dotenv" } else { $dep }
+        $currentDep = $dep  # Create a local copy for use in scriptblock
         Test-Prerequisite -Name "Python package: $packageName" -Test {
-            $result = python -c "import $using:dep" 2>&1
+            $result = python -c "import $currentDep" 2>&1
             return $LASTEXITCODE -eq 0
         } -SuccessMessage "$packageName installed" `
           -FailureMessage "$packageName not installed" `
@@ -247,7 +248,7 @@ $computerSystem = Get-CimInstance Win32_ComputerSystem
 $totalRAM = [math]::Round($computerSystem.TotalPhysicalMemory / 1GB, 2)
 
 Test-Prerequisite -Name "RAM" -Test {
-    return $using:totalRAM -ge 8
+    return $totalRAM -ge 8
 } -SuccessMessage "${totalRAM}GB RAM detected" `
   -FailureMessage "${totalRAM}GB RAM (8GB minimum required)" `
   -RecommendedAction "Upgrade RAM to at least 8GB"
@@ -256,7 +257,7 @@ $freeSpace = Get-PSDrive C | Select-Object -ExpandProperty Free
 $freeSpaceGB = [math]::Round($freeSpace / 1GB, 2)
 
 Test-Prerequisite -Name "Disk Space" -Test {
-    return $using:freeSpaceGB -ge 50
+    return $freeSpaceGB -ge 50
 } -SuccessMessage "${freeSpaceGB}GB free space on C:" `
   -FailureMessage "${freeSpaceGB}GB free space (50GB recommended)" `
   -RecommendedAction "Free up disk space or use external drive" `
