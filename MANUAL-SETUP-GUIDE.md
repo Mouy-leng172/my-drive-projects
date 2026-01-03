@@ -61,7 +61,7 @@
 
 2. **Sign in to Google Drive**
    - Open Google Drive from Start Menu
-   - Enter: `keamouyleng@proton.me`
+   - Enter your Google account email
    - Enter your password
    - Follow the verification steps
 
@@ -111,7 +111,7 @@
 1. Open Chrome
 2. Click the profile icon (top right)
 3. Click "Sign in to Chrome"
-4. Enter: `keamouyleng@proton.me`
+4. Enter your Google account email
 5. Enter your password
 6. Go to Settings (chrome://settings/)
 7. Click "Sync and Google services"

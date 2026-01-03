@@ -39,7 +39,7 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
 
 3. CONFIGURE GOOGLE DRIVE:
    - Open Google Drive File Stream
-   - Sign in with: keamouyleng@proton.me
+   - Sign in with your Google account
    - Verify sync is working
 
 4. CONFIGURE DROPBOX (if installed):
@@ -63,7 +63,7 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
 
 7. ENABLE BROWSER SYNC:
    Chrome:
-   - Sign in with keamouyleng@proton.me
+   - Sign in with your Google account
    - Settings > Sync and Google services > Manage what you sync
    - Enable all sync options
    
