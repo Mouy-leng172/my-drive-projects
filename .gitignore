@@ -149,6 +149,10 @@ repo-automation-*.log
 repo-automation-*.md
 repo-automation-report-*.md
 
+# Fork and update reference summaries
+fork-summary-*.md
+update-references-summary-*.md
+
 # Python cache
 __pycache__/
 *.pyc
