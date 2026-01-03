@@ -486,4 +486,4 @@ For issues, questions, or contributions:
 
 **Last Updated**: 2026-01-02  
 **Repository**: A6-9V/my-drive-projects  
-**Maintained by**: Lengkundee01 / A6-9V
+**Maintained by**: A6-9V (keamouyleng@proton.me)

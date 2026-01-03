@@ -552,7 +552,7 @@ This project is for personal use.
 
 ## Author
 
-Lengkundee01 / A6-9V
+A6-9V (keamouyleng@proton.me)
 
 ## Last Updated
 

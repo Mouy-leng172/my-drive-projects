@@ -287,4 +287,4 @@ For issues or questions:
 
 **Last Updated**: 2026-01-01  
 **Version**: 1.0.0  
-**Author**: A6-9V / Lengkundee01
+**Author**: A6-9V (keamouyleng@proton.me)
