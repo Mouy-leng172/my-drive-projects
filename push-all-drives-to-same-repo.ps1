@@ -17,6 +17,10 @@ Write-Host ""
 $targetRepo = "https://github.com/A6-9V/my-drive-projects.git"
 $targetRemoteName = "drive-projects"
 
+# MQL5 Forge repository (secondary remote)
+$mql5ForgeRepo = "https://forge.mql5.io/LengKundee/A6-9V_VL6-N9.git"
+$mql5RemoteName = "mql5-forge"
+
 # Get all file system drives
 Write-Host "[1/4] Scanning all drives for git repositories..." -ForegroundColor Yellow
 $drives = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Name -match '^[A-Z]$' }
@@ -168,6 +172,20 @@ foreach ($repo in $repositories) {
             if ($existingUrl -ne $targetRepo) {
                 Write-Host "  [INFO] Updating remote URL to target repository" -ForegroundColor Yellow
                 git remote set-url $targetRemoteName $targetRepo 2>&1 | Out-Null
+            }
+        }
+        
+        # Check if MQL5 Forge remote exists, if not add it
+        $remotes = git remote 2>&1
+        if ($mql5RemoteName -notin $remotes) {
+            Write-Host "  [INFO] Adding MQL5 Forge remote: $mql5RemoteName" -ForegroundColor Yellow
+            git remote add $mql5RemoteName $mql5ForgeRepo 2>&1 | Out-Null
+        } else {
+            # Update remote URL to ensure it points to MQL5 Forge repo
+            $existingUrl = git remote get-url $mql5RemoteName 2>&1
+            if ($existingUrl -ne $mql5ForgeRepo) {
+                Write-Host "  [INFO] Updating MQL5 Forge remote URL" -ForegroundColor Yellow
+                git remote set-url $mql5RemoteName $mql5ForgeRepo 2>&1 | Out-Null
             }
         }
         
