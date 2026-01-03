@@ -103,12 +103,12 @@ C:\Users\USER\OneDrive\
 ## Cloud Services Configuration
 
 ### OneDrive
-- **Account**: keamouyleng@proton.me
+- **Account**: Microsoft account for OneDrive sync
 - **Path**: `C:\Users\USER\OneDrive`
 - **Sync**: Enabled for all folders
 
 ### Google Drive
-- **Account**: keamouyleng@proton.me
+- **Account**: Google account for Drive sync
 - **Path**: `%PROGRAMFILES%\Google\Drive File Stream\googledrivesync.exe`
 - **Sync**: File Stream enabled
 

@@ -1,7 +1,7 @@
 # Manual Setup Guide for A6-9V
 ## Step-by-Step Instructions
 
-### Step 1: Sign in to Microsoft Account (keamouyleng@proton.me)
+### Step 1: Sign in to Microsoft Account
 
 1. **Open Windows Settings**
    - Press `Windows Key + I`
@@ -13,7 +13,7 @@
 
 3. **Sign in to Microsoft Account**
    - Click "Sign in with a Microsoft account instead"
-   - Enter: `keamouyleng@proton.me`
+   - Enter your Microsoft account email
    - Enter your password
    - Follow the verification steps if prompted
 
@@ -36,7 +36,7 @@
    - Or search for "OneDrive" in Start Menu
 
 2. **Sign in**
-   - Enter: `keamouyleng@proton.me`
+   - Enter your Microsoft account email
    - Enter your password
    - Click "Sign in"
 
@@ -130,7 +130,7 @@
 1. Open Edge
 2. Click the profile icon (top right)
 3. Click "Sign in to sync data"
-4. Enter: `keamouyleng@proton.me`
+4. Enter your Microsoft account email
 5. Enter your password
 6. Go to Settings (edge://settings/)
 7. Click "Profiles" > "Sync"

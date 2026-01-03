@@ -5,7 +5,7 @@
 .DESCRIPTION
     This script analyzes and configures:
     1. Windows Settings and Profile
-    2. Account Sync (keamouyleng@proton.me)
+    2. Account Sync
     3. Browser Defaults
     4. Default Apps
     5. Security Settings
@@ -26,7 +26,7 @@ $currentUser = $env:USERNAME
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Complete Windows Setup & Configuration" -ForegroundColor Cyan
 Write-Host "  User: $currentUser" -ForegroundColor Cyan
-Write-Host "  Account: $userEmail" -ForegroundColor Cyan
+Write-Host "  Primary Email: $userEmail" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 

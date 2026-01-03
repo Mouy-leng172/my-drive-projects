@@ -1,6 +1,7 @@
 ========================================
   Complete Windows Setup Instructions
-  For: keamouyleng@proton.me
+  For: A6-9V
+  Primary Email: keamouyleng@proton.me
 ========================================
 
 WHAT THIS SCRIPT DOES:
@@ -28,12 +29,12 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
 1. SIGN IN TO MICROSOFT ACCOUNT:
    - Open Settings (Windows + I)
    - Go to Accounts > Your info
-   - Sign in with: keamouyleng@proton.me
+   - Sign in with your Microsoft account
    - Enable sync in Settings > Accounts > Sync your settings
 
 2. CONFIGURE ONEDRIVE:
    - Open OneDrive from Start menu
-   - Sign in with: keamouyleng@proton.me
+   - Sign in with your Microsoft account
    - Choose folders to sync
    - Verify sync is working
 
@@ -68,7 +69,7 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
    - Enable all sync options
    
    Edge:
-   - Sign in with keamouyleng@proton.me
+   - Sign in with your Microsoft account
    - Settings > Profiles > Sync > Turn on sync
    
    Firefox:
@@ -97,7 +98,10 @@ TROUBLESHOOTING:
 YOUR ACCOUNT:
 -------------
 - Primary Email: keamouyleng@proton.me
-- Make sure your account is properly signed in
+- For cloud services, use appropriate account types:
+  * OneDrive: Microsoft account
+  * Google Drive/Chrome: Google account
+  * Dropbox: Dropbox account
 
 ========================================
 Setup Complete!
