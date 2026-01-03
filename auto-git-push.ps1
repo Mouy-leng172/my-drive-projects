@@ -37,7 +37,12 @@ function Ensure-GitHubCliAuth {
     return $true
 }
 
-$repoPath = "C:\Users\USER\OneDrive"
+$defaultRepoPath = $null
+if ($env:USERPROFILE) {
+    $defaultRepoPath = Join-Path $env:USERPROFILE "OneDrive"
+}
+
+$repoPath = if ($defaultRepoPath -and (Test-Path $defaultRepoPath)) { $defaultRepoPath } else { "C:\Users\USER\OneDrive" }
 Set-Location $repoPath
 
 Write-Host "Automated Git Push" -ForegroundColor Cyan
