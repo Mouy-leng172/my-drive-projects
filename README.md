@@ -40,7 +40,7 @@ This repository contains the complete device skeleton structure, project bluepri
 ├── projects/                         # Active development projects
 │   ├── Google AI Studio/            # AI Studio related projects
 │   ├── LiteWriter/                  # LiteWriter application
-│   └── Web-Dev-For-Beginners/       # Microsoft's web dev curriculum (via mouyleng/GenX_FX)
+│   ├── Web-Dev-For-Beginners/       # Microsoft's web dev curriculum (via mouyleng/GenX_FX)
 ├── project-scanner/                  # Project Discovery & Execution System
 ├── system-setup/                     # System Configuration & Optimization
 ├── storage-management/               # Storage and drive management tools

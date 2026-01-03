@@ -158,13 +158,13 @@ function Add-AsClone {
             
             # Set up remotes
             Set-Location $TargetFullPath
-            git remote add upstream $GenXFXRepo
-            git remote add original $OriginalRepo
+            git remote add genx $GenXFXRepo
+            git remote add microsoft $OriginalRepo
             
             Write-Host "[OK] Remote tracking configured" -ForegroundColor Green
             Write-Host "  - origin: $GenXFXRepo" -ForegroundColor White
-            Write-Host "  - upstream: $GenXFXRepo" -ForegroundColor White
-            Write-Host "  - original: $OriginalRepo" -ForegroundColor White
+            Write-Host "  - genx: $GenXFXRepo" -ForegroundColor White
+            Write-Host "  - microsoft: $OriginalRepo" -ForegroundColor White
             
             Set-Location $ProjectRoot
             return $true
@@ -288,18 +288,16 @@ function Update-MainReadme {
         
         Write-Host "[INFO] README update needed (manual step)" -ForegroundColor Yellow
         Write-Host "Add this section to README.md under projects:" -ForegroundColor Cyan
-        Write-Host @"
-
-### Web Development Learning
-
-- **Web-Dev-For-Beginners**: Microsoft's comprehensive web development curriculum
-  - 24 Lessons covering HTML, CSS, JavaScript
-  - 12 Weeks of structured learning
-  - Hands-on projects and exercises
-  - Fork chain: Microsoft → mouyleng/GenX_FX → A6-9V
-  - Documentation: See WEB-DEV-FOR-BEGINNERS-FORK-GUIDE.md
-
-"@ -ForegroundColor White
+        Write-Host ""
+        Write-Host "### Web Development Learning"
+        Write-Host ""
+        Write-Host "- **Web-Dev-For-Beginners**: Microsoft's comprehensive web development curriculum"
+        Write-Host "  - 24 Lessons covering HTML, CSS, JavaScript"
+        Write-Host "  - 12 Weeks of structured learning"
+        Write-Host "  - Hands-on projects and exercises"
+        Write-Host "  - Fork chain: Microsoft → mouyleng/GenX_FX → A6-9V"
+        Write-Host "  - Documentation: See WEB-DEV-FOR-BEGINNERS-FORK-GUIDE.md"
+        Write-Host ""
         
         return $true
     }
