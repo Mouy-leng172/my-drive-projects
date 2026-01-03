@@ -179,12 +179,13 @@ function Update-RepositoryReferences {
                 Write-Info "Changes detected. Creating commit..."
                 
                 # Configure git if needed
-                $gitUserName = git config user.name 2>&1
-                if (-not $gitUserName) {
+                $gitUserName = git config user.name 2>$null
+                $gitUserNameExitCode = $LASTEXITCODE
+                if ($gitUserNameExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($gitUserName)) {
                     # Try to get authenticated GitHub user
                     try {
                         $ghUser = gh api user --jq .login 2>&1
-                        if ($LASTEXITCODE -eq 0 -and $ghUser) {
+                        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($ghUser)) {
                             git config user.name $ghUser
                             git config user.email "$ghUser@users.noreply.github.com"
                         } else {
@@ -215,8 +216,9 @@ function Update-RepositoryReferences {
                     Write-Success "Changes pushed successfully"
                     
                     # Get default branch name
-                    $defaultBranch = gh repo view $RepoName --json defaultBranchRef --jq .defaultBranchRef.name 2>&1
-                    if ($LASTEXITCODE -ne 0 -or -not $defaultBranch) {
+                    $defaultBranch = gh repo view $RepoName --json defaultBranchRef --jq .defaultBranchRef.name 2>$null
+                    $branchQueryExitCode = $LASTEXITCODE
+                    if ($branchQueryExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($defaultBranch)) {
                         $defaultBranch = "main"
                         Write-Warning "Could not determine default branch, using: $defaultBranch"
                     }
@@ -307,7 +309,7 @@ $summary += @"
 
 foreach ($oldRef in $referenceReplacements.Keys) {
     $newRef = $referenceReplacements[$oldRef]
-    $summary += "- ``$oldRef`` -> ``$newRef```n"
+    $summary += "- ``$oldRef`` -> ``$newRef`n"
 }
 
 $summary += @"
