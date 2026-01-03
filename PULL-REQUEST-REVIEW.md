@@ -863,7 +863,9 @@ Analysis:
 - ✅ Efficient with `git diff-tree`
 - ⚠️ May run unexpectedly after merge
 - ⚠️ No user notification before install
+- ⚠️ **Platform Issue:** Mixes shell script with PowerShell execution (Windows-only)
 - 💡 Consider adding confirmation prompt
+- 💡 Consider platform detection or separate hooks for Windows/Unix
 
 **PDF Collection:**
 ```powershell
@@ -878,9 +880,10 @@ Analysis:
 
 **API Key Management:**
 ```powershell
-[System.Environment]::SetEnvironmentVariable('GOOGLE_AI_API_KEY', 'key', 'User')
-[System.Environment]::SetEnvironmentVariable('QODO_API_KEY', 'key', 'User')
-[System.Environment]::SetEnvironmentVariable('KOMBAI_API_KEY', 'key', 'User')
+# Example - replace 'your-actual-api-key-here' with real API keys
+[System.Environment]::SetEnvironmentVariable('GOOGLE_AI_API_KEY', 'your-actual-api-key-here', 'User')
+[System.Environment]::SetEnvironmentVariable('QODO_API_KEY', 'your-actual-api-key-here', 'User')
+[System.Environment]::SetEnvironmentVariable('KOMBAI_API_KEY', 'your-actual-api-key-here', 'User')
 ```
 
 Analysis:
