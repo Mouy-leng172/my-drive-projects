@@ -181,8 +181,21 @@ function Update-RepositoryReferences {
                 # Configure git if needed
                 $gitUserName = git config user.name 2>&1
                 if (-not $gitUserName) {
-                    git config user.name "GitHub Copilot"
-                    git config user.email "copilot@github.com"
+                    # Try to get authenticated GitHub user
+                    try {
+                        $ghUser = gh api user --jq .login 2>&1
+                        if ($LASTEXITCODE -eq 0 -and $ghUser) {
+                            git config user.name $ghUser
+                            git config user.email "$ghUser@users.noreply.github.com"
+                        } else {
+                            # Fallback to generic values
+                            git config user.name "GitHub Automation"
+                            git config user.email "automation@github.com"
+                        }
+                    } catch {
+                        git config user.name "GitHub Automation"
+                        git config user.email "automation@github.com"
+                    }
                 }
                 
                 # Create a new branch
@@ -201,9 +214,16 @@ function Update-RepositoryReferences {
                 if ($LASTEXITCODE -eq 0) {
                     Write-Success "Changes pushed successfully"
                     
+                    # Get default branch name
+                    $defaultBranch = gh repo view $RepoName --json defaultBranchRef --jq .defaultBranchRef.name 2>&1
+                    if ($LASTEXITCODE -ne 0 -or -not $defaultBranch) {
+                        $defaultBranch = "main"
+                        Write-Warning "Could not determine default branch, using: $defaultBranch"
+                    }
+                    
                     # Create pull request
-                    Write-Info "Creating pull request..."
-                    $prUrl = gh pr create --title "Update awesome-selfhosted references to A6-9V fork" --body "This PR updates all references from awesome-selfhosted/awesome-selfhosted to A6-9V/awesome-selfhosted." --base main 2>&1
+                    Write-Info "Creating pull request against branch: $defaultBranch"
+                    $prUrl = gh pr create --title "Update awesome-selfhosted references to A6-9V fork" --body "This PR updates all references from awesome-selfhosted/awesome-selfhosted to A6-9V/awesome-selfhosted." --base $defaultBranch 2>&1
                     
                     if ($LASTEXITCODE -eq 0) {
                         Write-Success "Pull request created: $prUrl"

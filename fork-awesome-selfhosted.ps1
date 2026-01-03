@@ -2,7 +2,8 @@
 # This script automates the forking process using GitHub CLI
 
 param(
-    [switch]$DryRun = $false
+    [switch]$DryRun = $false,
+    [switch]$AutoSync = $false
 )
 
 $ErrorActionPreference = "Continue"
@@ -96,16 +97,26 @@ try {
         Write-Info "Repository: https://github.com/A6-9V/awesome-selfhosted"
         Write-Info "To update the fork, use: gh repo sync A6-9V/awesome-selfhosted"
         
-        # Ask user if they want to sync instead
+        # Handle sync based on parameters
         if (-not $DryRun) {
-            $response = Read-Host "Do you want to sync the existing fork? (y/n)"
-            if ($response -eq 'y' -or $response -eq 'Y') {
-                Write-Info "Syncing fork with upstream..."
+            if ($AutoSync) {
+                Write-Info "Auto-sync enabled. Syncing fork with upstream..."
                 gh repo sync A6-9V/awesome-selfhosted --source awesome-selfhosted/awesome-selfhosted
                 if ($LASTEXITCODE -eq 0) {
                     Write-Success "Fork synced successfully"
                 } else {
                     Write-Error "Failed to sync fork"
+                }
+            } else {
+                $response = Read-Host "Do you want to sync the existing fork? (y/n)"
+                if ($response -eq 'y' -or $response -eq 'Y') {
+                    Write-Info "Syncing fork with upstream..."
+                    gh repo sync A6-9V/awesome-selfhosted --source awesome-selfhosted/awesome-selfhosted
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-Success "Fork synced successfully"
+                    } else {
+                        Write-Error "Failed to sync fork"
+                    }
                 }
             }
         }
