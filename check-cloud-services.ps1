@@ -131,9 +131,7 @@ if ($dropboxFound) {
 
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Yellow
-Write-Host "  1. Sign in to each service with your accounts:" -ForegroundColor White
-Write-Host "     - OneDrive: Lengkundee01@outlook.com" -ForegroundColor White
-Write-Host "     - Google Drive: Lengkundee01@gmail.com" -ForegroundColor White
+Write-Host "  1. Sign in to each service with your account (keamouyleng@proton.me)" -ForegroundColor White
 Write-Host "  2. Verify sync is working by checking system tray icons" -ForegroundColor White
 Write-Host "  3. Create test files in each cloud folder to verify sync" -ForegroundColor White
 Write-Host ""

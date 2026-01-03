@@ -103,12 +103,12 @@ C:\Users\USER\OneDrive\
 ## Cloud Services Configuration
 
 ### OneDrive
-- **Account**: Lengkundee01@outlook.com
+- **Account**: keamouyleng@proton.me
 - **Path**: `C:\Users\USER\OneDrive`
 - **Sync**: Enabled for all folders
 
 ### Google Drive
-- **Account**: Lengkundee01@gmail.com
+- **Account**: keamouyleng@proton.me
 - **Path**: `%PROGRAMFILES%\Google\Drive File Stream\googledrivesync.exe`
 - **Sync**: File Stream enabled
 
@@ -192,8 +192,7 @@ C:\Users\USER\OneDrive\
 ## Network Configuration
 
 ### Accounts
-- **Microsoft/Outlook**: Lengkundee01@outlook.com
-- **Google/Gmail**: Lengkundee01@gmail.com
+- **Primary Email**: keamouyleng@proton.me
 - **GitHub**: Mouy-leng
 
 ### Sync Settings

@@ -28,7 +28,7 @@ Write-Host ""
 Write-Host "All settings windows have been opened!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "  1. Sign in to Microsoft account (Lengkundee01@outlook.com) in Account Settings" -ForegroundColor White
+Write-Host "  1. Sign in to Microsoft account (keamouyleng@proton.me) in Account Settings" -ForegroundColor White
 Write-Host "  2. Enable sync in Sync Settings" -ForegroundColor White
 Write-Host "  3. Configure default apps in Default Apps Settings" -ForegroundColor White
 Write-Host "  4. Check Windows Security for any alerts" -ForegroundColor White

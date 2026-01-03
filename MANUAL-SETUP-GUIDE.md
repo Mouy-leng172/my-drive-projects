@@ -1,7 +1,7 @@
-# Manual Setup Guide for Lengkundee01
+# Manual Setup Guide for A6-9V
 ## Step-by-Step Instructions
 
-### Step 1: Sign in to Microsoft Account (Lengkundee01@outlook.com)
+### Step 1: Sign in to Microsoft Account (keamouyleng@proton.me)
 
 1. **Open Windows Settings**
    - Press `Windows Key + I`
@@ -13,7 +13,7 @@
 
 3. **Sign in to Microsoft Account**
    - Click "Sign in with a Microsoft account instead"
-   - Enter: `Lengkundee01@outlook.com`
+   - Enter: `keamouyleng@proton.me`
    - Enter your password
    - Follow the verification steps if prompted
 
@@ -36,7 +36,7 @@
    - Or search for "OneDrive" in Start Menu
 
 2. **Sign in**
-   - Enter: `Lengkundee01@outlook.com`
+   - Enter: `keamouyleng@proton.me`
    - Enter your password
    - Click "Sign in"
 
@@ -61,7 +61,7 @@
 
 2. **Sign in to Google Drive**
    - Open Google Drive from Start Menu
-   - Enter: `Lengkundee01@gmail.com`
+   - Enter: `keamouyleng@proton.me`
    - Enter your password
    - Follow the verification steps
 
@@ -111,7 +111,7 @@
 1. Open Chrome
 2. Click the profile icon (top right)
 3. Click "Sign in to Chrome"
-4. Enter: `Lengkundee01@gmail.com`
+4. Enter: `keamouyleng@proton.me`
 5. Enter your password
 6. Go to Settings (chrome://settings/)
 7. Click "Sync and Google services"
@@ -130,7 +130,7 @@
 1. Open Edge
 2. Click the profile icon (top right)
 3. Click "Sign in to sync data"
-4. Enter: `Lengkundee01@outlook.com`
+4. Enter: `keamouyleng@proton.me`
 5. Enter your password
 6. Go to Settings (edge://settings/)
 7. Click "Profiles" > "Sync"
@@ -214,9 +214,8 @@
 
 ## Your Accounts
 
-- **Microsoft/Outlook**: Lengkundee01@outlook.com
-- **Google/Gmail**: Lengkundee01@gmail.com
+- **Primary Email**: keamouyleng@proton.me
 
-Make sure both accounts are properly signed in and syncing!
+Make sure your account is properly signed in and syncing!
 
 

@@ -1,11 +1,11 @@
 #Requires -RunAsAdministrator
 <#
 .SYNOPSIS
-    Complete Windows Setup and Configuration for Lengkundee01
+    Complete Windows Setup and Configuration for A6-9V
 .DESCRIPTION
     This script analyzes and configures:
     1. Windows Settings and Profile
-    2. Account Sync (Lengkundee01@gmail.com and Lengkundee01@outlook.com)
+    2. Account Sync (keamouyleng@proton.me)
     3. Browser Defaults
     4. Default Apps
     5. Security Settings
@@ -20,14 +20,13 @@ if (-not $isAdmin) {
     exit 1
 }
 
-$userEmailGmail = "Lengkundee01@gmail.com"
-$userEmailOutlook = "Lengkundee01@outlook.com"
+$userEmail = "keamouyleng@proton.me"
 $currentUser = $env:USERNAME
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Complete Windows Setup & Configuration" -ForegroundColor Cyan
 Write-Host "  User: $currentUser" -ForegroundColor Cyan
-Write-Host "  Accounts: $userEmailGmail, $userEmailOutlook" -ForegroundColor Cyan
+Write-Host "  Account: $userEmail" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 

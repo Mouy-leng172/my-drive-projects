@@ -16,8 +16,7 @@ if (-not $isAdmin) {
 }
 
 # Configuration - Auto-detected values
-$userEmailGmail = "Lengkundee01@gmail.com"
-$userEmailOutlook = "Lengkundee01@outlook.com"
+$userEmail = "keamouyleng@proton.me"
 $currentUser = $env:USERNAME
 
 Write-Host "========================================" -ForegroundColor Cyan
