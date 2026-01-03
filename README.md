@@ -2,6 +2,27 @@
 
 This repository contains the complete device skeleton structure, project blueprints, and setup scripts for the NuNa Windows 11 automation system, including the ZOLO-A6-9VxNUNA trading system.
 
+## 🚀 Getting Started
+
+**New to this project?** Follow these steps:
+
+1. **Check Prerequisites** - Ensure your system meets the requirements
+   ```powershell
+   .\validate-setup.ps1
+   ```
+
+2. **Run Quick Start** - Interactive setup wizard (recommended for first-time users)
+   ```powershell
+   .\quick-start.ps1
+   ```
+
+3. **Read the Documentation**
+   - **[HOW-TO-RUN.md](HOW-TO-RUN.md)** - Complete step-by-step setup guide
+   - **[PREREQUISITES.md](PREREQUISITES.md)** - System requirements and dependencies
+   - **[README.md](README.md)** - This file, project overview
+
+**Already set up?** Jump to [Quick Start](#quick-start-1) below for common commands.
+
 ## 📁 Project Structure
 
 ```
@@ -49,6 +70,21 @@ This repository contains the complete device skeleton structure, project bluepri
 ```
 
 ## 🚀 Quick Start
+
+> **Note**: For detailed setup instructions, see **[HOW-TO-RUN.md](HOW-TO-RUN.md)**
+
+### First-Time Setup
+
+1. **Validate your system**:
+   ```powershell
+   .\validate-setup.ps1
+   ```
+
+2. **Run interactive setup**:
+   ```powershell
+   # Run as Administrator
+   .\quick-start.ps1
+   ```
 
 ### Complete Device Setup
 
