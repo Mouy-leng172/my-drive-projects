@@ -39,7 +39,8 @@ This repository contains the complete device skeleton structure, project bluepri
 │   └── MQL-IO-README.md             # MQL.io documentation
 ├── projects/                         # Active development projects
 │   ├── Google AI Studio/            # AI Studio related projects
-│   └── LiteWriter/                  # LiteWriter application
+│   ├── LiteWriter/                  # LiteWriter application
+│   └── Web-Dev-For-Beginners/       # Microsoft's web dev curriculum (via mouyleng/GenX_FX)
 ├── project-scanner/                  # Project Discovery & Execution System
 ├── system-setup/                     # System Configuration & Optimization
 ├── storage-management/               # Storage and drive management tools
@@ -122,6 +123,28 @@ See `trading-bridge/MQL-IO-README.md` for complete documentation.
 ```powershell
 .\setup-workspace.ps1
 ```
+
+### Web Development Learning (NEW)
+
+Set up Microsoft's Web-Dev-For-Beginners curriculum:
+
+```powershell
+# Run as Administrator
+.\setup-web-dev-fork.ps1
+# or
+.\SETUP-WEB-DEV-FORK.bat
+```
+
+**Fork Chain**: Microsoft → mouyleng/GenX_FX → A6-9V
+
+This provides:
+- ✅ 24 Lessons covering HTML, CSS, JavaScript
+- ✅ 12 Weeks of structured learning
+- ✅ Hands-on projects and exercises
+- ✅ Integration with A6-9V project ecosystem
+- ✅ Complete fork documentation and tracking
+
+See **WEB-DEV-FOR-BEGINNERS-FORK-GUIDE.md** for detailed instructions.
 
 ## 📋 Features
 
@@ -210,6 +233,7 @@ See **GITHUB-SECRETS-SETUP.md** for complete instructions on setting up GitHub r
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **GITHUB-SECRETS-SETUP.md** - GitHub secrets and OAuth setup
+- **WEB-DEV-FOR-BEGINNERS-FORK-GUIDE.md** - Web development learning fork setup
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
 
 ## 🏢 Organization
