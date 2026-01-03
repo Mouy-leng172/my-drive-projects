@@ -287,7 +287,7 @@ $summary += @"
 
 foreach ($oldRef in $referenceReplacements.Keys) {
     $newRef = $referenceReplacements[$oldRef]
-    $summary += "- ``$oldRef`` → ``$newRef```n"
+    $summary += "- ``$oldRef`` -> ``$newRef```n"
 }
 
 $summary += @"

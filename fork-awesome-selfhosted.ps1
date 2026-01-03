@@ -179,9 +179,9 @@ $summary = @"
 2. **Update mouyleng/GenX_FX**: Update any references to awesome-selfhosted
 3. **Update A6-9V/MQL5-Google-Onedrive**: Update any references to awesome-selfhosted
 4. **Sync Fork**: Periodically sync with upstream using:
-   ``````powershell
+   ```powershell
    gh repo sync A6-9V/awesome-selfhosted --source awesome-selfhosted/awesome-selfhosted
-   ``````
+   ```
 
 ## Repositories to Update
 
