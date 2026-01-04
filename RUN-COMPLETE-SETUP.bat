@@ -1,11 +1,10 @@
 @echo off
-title Complete Windows Setup - Lengkundee01
+title Complete Windows Setup - A6-9V
 color 0B
 echo.
 echo ========================================
 echo   Complete Windows Setup & Configuration
-echo   For: Lengkundee01@gmail.com
-echo        Lengkundee01@outlook.com
+echo   For: keamouyleng@proton.me
 echo ========================================
 echo.
 echo This will configure:

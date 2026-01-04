@@ -319,8 +319,7 @@ Managed by **A6-9V** organization for better control and collaboration.
 
 ## 📝 Accounts
 
-- **Microsoft/Outlook**: Lengkundee01@outlook.com
-- **Google/Gmail**: Lengkundee01@gmail.com
+- **Primary Email**: keamouyleng@proton.me
 - **GitHub**: Mouy-leng / A6-9V
 
 ## 🔧 System Information
@@ -553,7 +552,7 @@ This project is for personal use.
 
 ## Author
 
-Lengkundee01 / A6-9V
+A6-9V (keamouyleng@proton.me)
 
 ## Last Updated
 
