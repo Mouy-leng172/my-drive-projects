@@ -61,7 +61,7 @@ try {
       $title = if ($null -ne $req.title -and $req.title) { $req.title } else { $f.BaseName }
       $type = if ($null -ne $req.type -and $req.type) { $req.type } else { "unknown" }
       $priority = if ($null -ne $req.priority -and $req.priority) { $req.priority } else { "medium" }
-      $indexLines.Add("- **$type / $priority**: $title (`$($f.Name)` -> `$([IO.Path]::GetFileName($mdPath))`)")
+      $indexLines.Add("- **$type / $priority**: $title (``$($f.Name)`` -> ``$([IO.Path]::GetFileName($mdPath))``)")
     } catch {
       Write-Status -Level "WARNING" -Message "Failed rendering $($f.Name): $($_.Exception.Message)"
     }
