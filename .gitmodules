@@ -1,0 +1,12 @@
+[submodule "OS-application-support"]
+	path = OS-application-support
+	url = https://github.com/A6-9V/OS-application-support-.git
+
+[submodule "mql5-repo"]
+	path = mql5-repo
+	url = https://github.com/Mouy-leng/mql5-repo.git
+
+[submodule "my-drive-projects"]
+	path = my-drive-projects
+	url = https://github.com/A6-9V/my-drive-projects.git
+
