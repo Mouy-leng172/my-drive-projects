@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "created_at": "1970-01-01T00:00:00Z",
+  "type": "fix",
+  "priority": "high",
+  "title": "Fix <bug/issue>",
+  "instructions": "Describe the problem, expected behavior, and acceptance criteria. Include repro steps if known.",
+  "scope": {
+    "paths": [],
+    "notes": ""
+  },
+  "execution": {
+    "allowed": {
+      "read": true,
+      "write": true,
+      "execute": false,
+      "network": false
+    },
+    "commands": []
+  },
+  "constraints": {
+    "no_secrets": true,
+    "do_not_push": true,
+    "do_not_change_git_config": true
+  },
+  "routing": {
+    "targets": [
+      {
+        "name": "cursor",
+        "mode": "paste-prompt",
+        "notes": ""
+      }
+    ],
+    "github": {
+      "create_issue": false,
+      "labels": ["agent-request", "fix"],
+      "assignees": []
+    }
+  }
+}

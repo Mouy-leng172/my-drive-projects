@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "created_at": "1970-01-01T00:00:00Z",
+  "type": "debug",
+  "priority": "high",
+  "title": "Debug <symptom/failure>",
+  "instructions": "Provide symptoms, recent changes, logs, and what the debug output should include (root cause, fix, next steps).",
+  "scope": {
+    "paths": [],
+    "notes": ""
+  },
+  "execution": {
+    "allowed": {
+      "read": true,
+      "write": true,
+      "execute": true,
+      "network": false
+    },
+    "commands": []
+  },
+  "constraints": {
+    "no_secrets": true,
+    "do_not_push": true,
+    "do_not_change_git_config": true
+  },
+  "routing": {
+    "targets": [
+      {
+        "name": "cursor",
+        "mode": "paste-prompt",
+        "notes": ""
+      }
+    ],
+    "github": {
+      "create_issue": false,
+      "labels": ["agent-request", "debug"],
+      "assignees": []
+    }
+  }
+}

@@ -8,6 +8,7 @@ This folder provides a **standard request format** and **scripts** to generate/r
 - **Templates**: `agent-requests/templates/*.json`
 - **Create requests**: `agent-requests/new-agent-request.ps1`
 - **Render to prompt**: `agent-requests/render-agent-request.ps1`
+- **Render all requests**: `agent-requests/render-all-agent-requests.ps1`
 - **Submit to GitHub**: `agent-requests/submit-agent-request.ps1` (creates a GitHub issue via `gh`)
 
 ### Quick start (PowerShell)
@@ -27,6 +28,12 @@ Render an existing request to Markdown:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\agent-requests\render-agent-request.ps1 `
   -RequestPath ".\agent-requests\inbox\2025-12-19_debug_fix-startup.json"
+```
+
+Render all requests in `inbox/` (writes Markdown + index into `out/`):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\agent-requests\render-all-agent-requests.ps1
 ```
 
 Submit an existing request to GitHub Issues (optional):
