@@ -1,7 +1,7 @@
 ========================================
   Complete Windows Setup Instructions
-  For: Lengkundee01@gmail.com
-       Lengkundee01@outlook.com
+  For: A6-9V
+  Primary Email: keamouyleng@proton.me
 ========================================
 
 WHAT THIS SCRIPT DOES:
@@ -29,18 +29,18 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
 1. SIGN IN TO MICROSOFT ACCOUNT:
    - Open Settings (Windows + I)
    - Go to Accounts > Your info
-   - Sign in with: Lengkundee01@outlook.com
+   - Sign in with your Microsoft account
    - Enable sync in Settings > Accounts > Sync your settings
 
 2. CONFIGURE ONEDRIVE:
    - Open OneDrive from Start menu
-   - Sign in with: Lengkundee01@outlook.com
+   - Sign in with your Microsoft account
    - Choose folders to sync
    - Verify sync is working
 
 3. CONFIGURE GOOGLE DRIVE:
    - Open Google Drive File Stream
-   - Sign in with: Lengkundee01@gmail.com
+   - Sign in with your Google account
    - Verify sync is working
 
 4. CONFIGURE DROPBOX (if installed):
@@ -56,7 +56,7 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
 6. CONFIGURE DEFAULT APPS:
    - Settings > Apps > Default apps
    - Set defaults for:
-     * Email: Outlook (for Lengkundee01@outlook.com)
+     * Email: Your preferred email client
      * PDF files: Your preferred PDF reader
      * Images: Your preferred image viewer
      * Music: Your preferred music player
@@ -64,12 +64,12 @@ MANUAL STEPS REQUIRED AFTER RUNNING:
 
 7. ENABLE BROWSER SYNC:
    Chrome:
-   - Sign in with Lengkundee01@gmail.com
+   - Sign in with your Google account
    - Settings > Sync and Google services > Manage what you sync
    - Enable all sync options
    
    Edge:
-   - Sign in with Lengkundee01@outlook.com
+   - Sign in with your Microsoft account
    - Settings > Profiles > Sync > Turn on sync
    
    Firefox:
@@ -95,11 +95,13 @@ TROUBLESHOOTING:
 - If firewall blocks sync: Check Windows Security > Firewall & network protection
 - If Defender blocks files: Check Windows Security > Virus & threat protection > Exclusions
 
-YOUR ACCOUNTS:
+YOUR ACCOUNT:
 -------------
-- Gmail: Lengkundee01@gmail.com
-- Outlook: Lengkundee01@outlook.com
-- Make sure both accounts are properly signed in
+- Primary Email: keamouyleng@proton.me
+- For cloud services, use appropriate account types:
+  * OneDrive: Microsoft account
+  * Google Drive/Chrome: Google account
+  * Dropbox: Dropbox account
 
 ========================================
 Setup Complete!
