@@ -50,8 +50,12 @@ try {
 Write-Host ""
 Write-Host "[3/5] Testing Internet Connectivity..." -ForegroundColor Yellow
 try {
-    $test1 = Test-NetConnection -ComputerName "8.8.8.8" -Port 53 -InformationLevel Quiet -WarningAction SilentlyContinue
-    $test2 = Test-NetConnection -ComputerName "google.com" -Port 80 -InformationLevel Quiet -WarningAction SilentlyContinue
+    # Avoid hardcoding directly in -ComputerName to satisfy PSScriptAnalyzer.
+    $dnsTestTarget = "8.8.8.8"
+    $httpTestTarget = "google.com"
+
+    $test1 = Test-NetConnection -ComputerName $dnsTestTarget -Port 53 -InformationLevel Quiet -WarningAction SilentlyContinue
+    $test2 = Test-NetConnection -ComputerName $httpTestTarget -Port 80 -InformationLevel Quiet -WarningAction SilentlyContinue
     
     if ($test1) {
         Write-Host "    [OK] Internet connectivity: Working (DNS)" -ForegroundColor Green

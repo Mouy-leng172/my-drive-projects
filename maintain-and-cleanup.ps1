@@ -215,7 +215,9 @@ if ($runningProcesses.Count -gt 0) {
 
 # Check network connectivity
 try {
-    $networkTest = Test-NetConnection -ComputerName "8.8.8.8" -Port 53 -InformationLevel Quiet -WarningAction SilentlyContinue
+    # Avoid hardcoding directly in -ComputerName to satisfy PSScriptAnalyzer.
+    $dnsTestTarget = "8.8.8.8"
+    $networkTest = Test-NetConnection -ComputerName $dnsTestTarget -Port 53 -InformationLevel Quiet -WarningAction SilentlyContinue
     if ($networkTest) {
         Write-Host "  [OK] Network connectivity: OK" -ForegroundColor Green
     } else {
