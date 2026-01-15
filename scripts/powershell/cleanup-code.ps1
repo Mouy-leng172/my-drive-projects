@@ -7,14 +7,47 @@
     Consolidates VPS services and standardizes formatting
 #>
 
+param(
+    # By default this script is SAFE (dry run). Use -Apply to actually move/delete.
+    [switch]$Apply,
+
+    # Optional override (defaults to OneDrive if available, else current repo folder)
+    [string]$WorkspaceRoot
+)
+
 $ErrorActionPreference = "Continue"
 
-$workspaceRoot = "C:\Users\USER\OneDrive"
+$dryRun = -not $Apply
+
+if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    if (-not [string]::IsNullOrWhiteSpace($env:OneDrive) -and (Test-Path $env:OneDrive)) {
+        $workspaceRoot = $env:OneDrive
+    } elseif (-not [string]::IsNullOrWhiteSpace($env:USERPROFILE)) {
+        $candidate = Join-Path $env:USERPROFILE "OneDrive"
+        if (Test-Path $candidate) {
+            $workspaceRoot = $candidate
+        } else {
+            $workspaceRoot = $PSScriptRoot
+        }
+    } else {
+        $workspaceRoot = $PSScriptRoot
+    }
+} else {
+    $workspaceRoot = $WorkspaceRoot
+}
+
 $cleanupLog = Join-Path $workspaceRoot "cleanup-log_$(Get-Date -Format 'yyyyMMdd').txt"
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Code Cleanup" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+if ($dryRun) {
+    Write-Host "[INFO] Mode: DRY RUN (no move/delete will occur). Use -Apply to execute changes." -ForegroundColor Yellow
+} else {
+    Write-Host "[WARNING] Mode: APPLY (will move/delete files)." -ForegroundColor Yellow
+}
+Write-Host "[INFO] WorkspaceRoot: $workspaceRoot" -ForegroundColor Cyan
 Write-Host ""
 
 function Write-CleanupLog {
@@ -61,9 +94,15 @@ if ($duplicatesFound.Count -gt 0) {
     Write-Host "  Found $($duplicatesFound.Count) duplicate file(s)" -ForegroundColor Yellow
     foreach ($file in $duplicatesFound) {
         try {
-            Remove-Item -Path $file.FullName -Force -Recurse -ErrorAction Stop
+            if ($dryRun) {
+                Write-CleanupLog "DRY RUN: Would remove: $($file.FullName)"
+            } else {
+                Remove-Item -Path $file.FullName -Force -Recurse -ErrorAction Stop
+            }
             $cleanupActions.duplicates_removed++
-            Write-CleanupLog "Removed: $($file.FullName)"
+            if (-not $dryRun) {
+                Write-CleanupLog "Removed: $($file.FullName)"
+            }
         } catch {
             Write-CleanupLog "ERROR: Could not remove $($file.FullName) - $_"
         }
@@ -97,18 +136,30 @@ foreach ($dir in $duplicateDirs) {
                 # Copy unique files
                 $targetDir = Split-Path $targetFile -Parent
                 if (-not (Test-Path $targetDir)) {
-                    New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+                    if ($dryRun) {
+                        Write-CleanupLog "DRY RUN: Would create directory: $targetDir"
+                    } else {
+                        New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+                    }
                 }
-                Copy-Item -Path $file.FullName -Destination $targetFile -Force
-                Write-CleanupLog "Copied: $relativePath"
+                if ($dryRun) {
+                    Write-CleanupLog "DRY RUN: Would copy: $relativePath"
+                } else {
+                    Copy-Item -Path $file.FullName -Destination $targetFile -Force
+                    Write-CleanupLog "Copied: $relativePath"
+                }
                 $cleanupActions.files_organized++
             }
         }
         
         # Remove source directory after consolidation
         try {
-            Remove-Item -Path $sourcePath -Recurse -Force -ErrorAction SilentlyContinue
-            Write-CleanupLog "Removed duplicate directory: $($dir.source)"
+            if ($dryRun) {
+                Write-CleanupLog "DRY RUN: Would remove duplicate directory: $($dir.source)"
+            } else {
+                Remove-Item -Path $sourcePath -Recurse -Force -ErrorAction SilentlyContinue
+                Write-CleanupLog "Removed duplicate directory: $($dir.source)"
+            }
         } catch {
             Write-CleanupLog "WARNING: Could not remove $($dir.source) - may contain unique files"
         }
@@ -126,9 +177,15 @@ $emptyDirs = Get-ChildItem -Path $workspaceRoot -Directory -Recurse -ErrorAction
 
 foreach ($dir in $emptyDirs) {
     try {
-        Remove-Item -Path $dir.FullName -Force -ErrorAction Stop
+        if ($dryRun) {
+            Write-CleanupLog "DRY RUN: Would remove empty directory: $($dir.FullName)"
+        } else {
+            Remove-Item -Path $dir.FullName -Force -ErrorAction Stop
+        }
         $cleanupActions.empty_dirs_removed++
-        Write-CleanupLog "Removed empty directory: $($dir.FullName)"
+        if (-not $dryRun) {
+            Write-CleanupLog "Removed empty directory: $($dir.FullName)"
+        }
     } catch {
         # Ignore errors for empty dir removal
     }
@@ -157,9 +214,15 @@ foreach ($logDir in $logDirs) {
         
         foreach ($log in $oldLogs) {
             try {
-                Remove-Item -Path $log.FullName -Force -ErrorAction Stop
+                if ($dryRun) {
+                    Write-CleanupLog "DRY RUN: Would remove old log: $($log.FullName)"
+                } else {
+                    Remove-Item -Path $log.FullName -Force -ErrorAction Stop
+                }
                 $oldLogsRemoved++
-                Write-CleanupLog "Removed old log: $($log.Name)"
+                if (-not $dryRun) {
+                    Write-CleanupLog "Removed old log: $($log.Name)"
+                }
             } catch {
                 Write-CleanupLog "WARNING: Could not remove $($log.FullName)"
             }
@@ -189,8 +252,12 @@ foreach ($doc in $docFiles) {
     try {
         $targetPath = Join-Path $docsDir $doc.Name
         if (-not (Test-Path $targetPath)) {
-            Move-Item -Path $doc.FullName -Destination $targetPath -Force
-            Write-CleanupLog "Moved documentation: $($doc.Name)"
+            if ($dryRun) {
+                Write-CleanupLog "DRY RUN: Would move documentation: $($doc.FullName) -> $targetPath"
+            } else {
+                Move-Item -Path $doc.FullName -Destination $targetPath -Force
+                Write-CleanupLog "Moved documentation: $($doc.Name)"
+            }
             $cleanupActions.files_organized++
         }
     } catch {
@@ -240,10 +307,17 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Cleanup Summary" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Duplicates removed: $($cleanupActions.duplicates_removed)" -ForegroundColor Green
-Write-Host "Files organized: $($cleanupActions.files_organized)" -ForegroundColor Green
-Write-Host "Empty directories removed: $($cleanupActions.empty_dirs_removed)" -ForegroundColor Green
-Write-Host "Old files removed: $($cleanupActions.old_files_removed)" -ForegroundColor Green
+if ($dryRun) {
+    Write-Host "Duplicates to remove: $($cleanupActions.duplicates_removed)" -ForegroundColor Green
+    Write-Host "Files to organize: $($cleanupActions.files_organized)" -ForegroundColor Green
+    Write-Host "Empty directories to remove: $($cleanupActions.empty_dirs_removed)" -ForegroundColor Green
+    Write-Host "Old files to remove: $($cleanupActions.old_files_removed)" -ForegroundColor Green
+} else {
+    Write-Host "Duplicates removed: $($cleanupActions.duplicates_removed)" -ForegroundColor Green
+    Write-Host "Files organized: $($cleanupActions.files_organized)" -ForegroundColor Green
+    Write-Host "Empty directories removed: $($cleanupActions.empty_dirs_removed)" -ForegroundColor Green
+    Write-Host "Old files removed: $($cleanupActions.old_files_removed)" -ForegroundColor Green
+}
 Write-Host ""
 Write-Host "Cleanup log: $cleanupLog" -ForegroundColor Cyan
 Write-Host ""

@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "description": "Safe scheduled cleanup rules. Default mode is PLAN only. APPLY requires approval file.",
+  "rules": [
+    {
+      "name": "Old log files (repo logs)",
+      "enabled": true,
+      "targetType": "File",
+      "basePath": ".",
+      "recurse": true,
+      "includeGlobs": ["*.log"],
+      "excludeGlobs": ["**/.git/**", "**/node_modules/**"],
+      "olderThanDays": 30,
+      "action": "Delete",
+      "reviewRequired": true,
+      "maxItems": 5000
+    },
+    {
+      "name": "Temporary files (repo)",
+      "enabled": true,
+      "targetType": "File",
+      "basePath": ".",
+      "recurse": true,
+      "includeGlobs": ["*.tmp", "*.bak", "*.old", "*.temp"],
+      "excludeGlobs": ["**/.git/**", "**/node_modules/**"],
+      "olderThanDays": 7,
+      "action": "Delete",
+      "reviewRequired": true,
+      "maxItems": 5000
+    },
+    {
+      "name": "Windows clutter files (repo)",
+      "enabled": true,
+      "targetType": "File",
+      "basePath": ".",
+      "recurse": true,
+      "includeGlobs": ["Thumbs.db", "Desktop.ini"],
+      "excludeGlobs": ["**/.git/**", "**/node_modules/**"],
+      "action": "Delete",
+      "reviewRequired": true,
+      "maxItems": 5000
+    },
+    {
+      "name": "Old browser exports (repo folder)",
+      "enabled": true,
+      "targetType": "File",
+      "basePath": "Browser-Exports",
+      "recurse": true,
+      "includeGlobs": ["*.json", "*.db"],
+      "excludeGlobs": [],
+      "olderThanDays": 90,
+      "action": "Delete",
+      "reviewRequired": true,
+      "maxItems": 5000
+    },
+    {
+      "name": "Empty folders (repo only)",
+      "enabled": true,
+      "targetType": "Directory",
+      "basePath": ".",
+      "recurse": true,
+      "includeGlobs": [],
+      "excludeGlobs": ["**/.git/**", "**/node_modules/**"],
+      "olderThanDays": 30,
+      "action": "Delete",
+      "deleteOnlyIfEmpty": true,
+      "reviewRequired": true,
+      "maxItems": 5000
+    }
+  ]
+}
+

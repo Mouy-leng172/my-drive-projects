@@ -120,32 +120,6 @@ cleanup-log-*.log
 cleanup-log-*.txt
 Documentation/Reports/
 
-# VPS runtime logs
-vps-logs/
-
-# Agent request I/O (contains potentially sensitive prompts/outputs)
-agent-requests/inbox/
-agent-requests/out/
-
-# Temporary repository clones for injection
-injected-repos/
-
-# Repository automation generated files
-repo-automation-*.log
-repo-automation-*.md
-repo-automation-report-*.md
-
-# Docker
-.env
-docker-compose.override.yml
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-env/
-ENV/
-.venv
+# Scheduled cleanup runtime artifacts (keep config, ignore generated plan/approval)
+cleanup-config/*.plan.json
+cleanup-config/*.approval.json
