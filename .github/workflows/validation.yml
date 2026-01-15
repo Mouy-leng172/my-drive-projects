@@ -31,10 +31,8 @@ jobs:
           
           $requiredFiles = @(
             "README.md",
-            "HOW-TO-RUN.md",
-            "PREREQUISITES.md",
             "SECURITY.md",
-            "TROUBLESHOOTING.md",
+            "CONTRIBUTING.md",
             ".gitignore",
             ".env.example"
           )
@@ -65,7 +63,11 @@ jobs:
             "trading-bridge",
             "trading-bridge/python",
             "trading-bridge/config",
-            "vps-services",
+            "services/vps-services",
+            "scripts",
+            "scripts/powershell",
+            "docs",
+            "projects",
             ".cursor",
             ".github"
           )
@@ -175,7 +177,7 @@ jobs:
         run: |
           Write-Host "Checking PowerShell scripts..." -ForegroundColor Cyan
           
-          $scripts = Get-ChildItem -Path scripts/powershell -Filter "*.ps1" -File | Measure-Object
+          $scripts = Get-ChildItem -Path "scripts/powershell" -Filter "*.ps1" -File -ErrorAction SilentlyContinue | Measure-Object
           Write-Host "Found $($scripts.Count) PowerShell scripts" -ForegroundColor Green
       
       - name: Syntax check critical scripts
@@ -347,10 +349,10 @@ jobs:
           $readme = Get-Content README.md -Raw
           
           $requiredSections = @(
-            "Getting Started",
-            "Quick Start",
-            "Prerequisites",
-            "Documentation"
+            "Structure",
+            "How to Use",
+            "Documentation",
+            "Security"
           )
           
           foreach ($section in $requiredSections) {
@@ -377,9 +379,19 @@ jobs:
             $file = $file -replace '#.*$', ''
             
             if ($file -notmatch '^https?://') {
-              if (Test-Path $file) {
-                Write-Host "[OK] $file exists" -ForegroundColor Green
-              } else {
+              # Check if file exists in root or docs/
+              $filesToCheck = @($file, "docs/$file")
+              $found = $false
+              
+              foreach ($checkPath in $filesToCheck) {
+                if (Test-Path $checkPath) {
+                  Write-Host "[OK] $file exists" -ForegroundColor Green
+                  $found = $true
+                  break
+                }
+              }
+              
+              if (-not $found) {
                 Write-Host "[WARNING] $file referenced but not found" -ForegroundColor Yellow
               }
             }
