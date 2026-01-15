@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # Main trading automation service
+  trading-bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-drive-trading-bridge
+    restart: unless-stopped
+    environment:
+      # Telegram notifications
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      # Bitget API credentials
+      - BITGET_API_KEY=${BITGET_API_KEY:-}
+      - BITGET_API_SECRET=${BITGET_API_SECRET:-}
+      - BITGET_PASSPHRASE=${BITGET_PASSPHRASE:-}
+      # Exness API credentials
+      - EXNESS_API_KEY=${EXNESS_API_KEY:-}
+      - EXNESS_API_SECRET=${EXNESS_API_SECRET:-}
+      # Trading bridge configuration
+      - TRADINGBRIDGE_TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TRADINGBRIDGE_TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./trading-bridge/config:/repo/trading-bridge/config
+      - ./trading-bridge/logs:/repo/trading-bridge/logs
+      - ./trading-bridge/data:/repo/trading-bridge/data
+    ports:
+      - "5500:5500"  # Trading bridge ZeroMQ port
+    networks:
+      - trading-network
+    command: >
+      bash -c "
+        cd /repo/trading-bridge && 
+        python3 -m python.services.background_service
+      "
+    healthcheck:
+      test: ["CMD", "pwsh", "-Command", "Test-Path /repo/trading-bridge/logs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Notification service (standalone)
+  notifications:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-drive-notifications
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - TRADINGBRIDGE_TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TRADINGBRIDGE_TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    networks:
+      - trading-network
+    command: >
+      bash -c "
+        echo 'Notification service ready' && 
+        tail -f /dev/null
+      "
+
+  # Project scanner service
+  project-scanner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-drive-project-scanner
+    restart: unless-stopped
+    volumes:
+      - ./project-scanner:/repo/project-scanner
+    networks:
+      - trading-network
+    command: >
+      pwsh -NoProfile -Command "
+        Write-Host 'Project Scanner Service Ready' -ForegroundColor Green;
+        while ($true) { Start-Sleep -Seconds 60 }
+      "
+
+networks:
+  trading-network:
+    driver: bridge
+
+volumes:
+  trading-config:
+  trading-logs:
+  trading-data:

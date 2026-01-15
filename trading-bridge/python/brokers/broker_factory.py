@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .base_broker import BaseBroker, BrokerConfig
 from .exness_api import ExnessAPI
+from .bitget_api import BitgetAPI, BitgetConfig
 
 # Import credential manager
 import sys
@@ -20,6 +21,7 @@ class BrokerFactory:
     
     _broker_classes = {
         'EXNESS': ExnessAPI,
+        'BITGET': BitgetAPI,
         # Add more brokers here as they're implemented
     }
     

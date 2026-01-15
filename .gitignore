@@ -41,15 +41,6 @@ git-credentials.txt
 mql5-config.txt
 .env
 .env.local
-.env.*.local
-
-# Gemini CLI - Never commit API keys or session data
-.gemini/
-gemini-config.json
-gemini-config.local*
-*.gemini-key
-.gemini-cli/
-gemini-sessions/
 
 # Sensitive credentials and keys (from my-drive-projects)
 *.pem

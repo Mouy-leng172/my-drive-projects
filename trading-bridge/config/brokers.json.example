@@ -11,6 +11,21 @@
         "requests_per_minute": 60,
         "requests_per_second": 10
       }
+    },
+    {
+      "name": "BITGET",
+      "api_url": "https://api.bitget.com",
+      "account_id": "YOUR_UID",
+      "api_key": "YOUR_API_KEY_HERE",
+      "api_secret": "YOUR_API_SECRET_HERE",
+      "passphrase": "YOUR_PASSPHRASE_HERE",
+      "network": "Automatic",
+      "product_type": "USDT-FUTURES",
+      "enabled": true,
+      "rate_limit": {
+        "requests_per_minute": 120,
+        "requests_per_second": 20
+      }
     }
   ],
   "default_broker": "EXNESS"

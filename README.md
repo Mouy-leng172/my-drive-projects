@@ -2,9 +2,21 @@
 
 A personal monorepo containing automation scripts, learning projects, VPS services, and system configuration for the NuNa Windows 11 device.
 
-> **Important**: This repo is NOT a single application. It's a workspace/monorepo that organizes multiple independent projects and scripts.
+## 🎯 Latest Updates
 
-## Structure
+### New Features (December 2025)
+- 🐳 **Docker Support** - Full containerization with multi-service orchestration
+- 📱 **Telegram Notifications** - Real-time trading alerts and system notifications
+- 💱 **Bitget Integration** - Cryptocurrency trading via Bitget API
+- 🔧 **Enhanced MQL5 Compilation** - Direct MQL5.io integration and automation
+- 📚 **Code Consolidation** - Unified repository structure for all projects
+
+### Quick Start Guides
+- **Docker Deployment**: [DOCKER-SETUP-GUIDE.md](DOCKER-SETUP-GUIDE.md)
+- **Bitget Trading**: [BITGET-INTEGRATION-GUIDE.md](BITGET-INTEGRATION-GUIDE.md)
+- **Code Organization**: [CODE-CONSOLIDATION-GUIDE.md](CODE-CONSOLIDATION-GUIDE.md)
+
+## 📁 Project Structure
 
 ```
 .
@@ -108,77 +120,31 @@ This will:
 - ✅ Start MQL5 Forge Integration
 - ✅ Handle all errors automatically
 
-### AI Agents & Automation Setup (NEW)
+### Docker Container Deployment (New!)
 
-Set up AI agents, automatic dependency installation, and automation tools:
-
-```powershell
-# Run complete setup
-.\setup-ai-agents-and-automation.ps1
-```
-
-Or double-click: `SETUP-AI-AGENTS.bat`
-
-This will:
-- ✅ Install Node.js and npm
-- ✅ Set up Git hooks for auto-dependency installation
-- ✅ Install project dependencies
-- ✅ Collect and catalog PDFs
-- ✅ Prepare AI agent configurations
-
-**AI Agents Included:**
-- **Jules Agent** (Google AI) - Trading automation, code review, auto-merge
-- **Qodo Plugin** - Code quality, test generation
-- **Cursor Agent** - AI-assisted code editing
-- **Kombai Agent** - Design to code conversion
-
-See **[AI-AGENTS-SETUP-GUIDE.md](AI-AGENTS-SETUP-GUIDE.md)** for complete setup instructions.
-
-### MQL.io Service
-
-Start the MQL5 operations management service:
-
-```powershell
-.\start-mql-io-service.ps1
-```
-
-Or double-click: `START-MQL-IO-SERVICE.bat`
-
-MQL.io provides:
-- ✅ Expert Advisor monitoring and management
-- ✅ Script execution tracking
-- ✅ Indicator monitoring
-- ✅ Operations logging
-- ✅ API interface for programmatic access
-- ✅ Auto-recovery (optional)
-
-See `trading-bridge/MQL-IO-README.md` for complete documentation.
-
-### OpenBB Analytics Engine (NEW)
-
-Start the OpenBB Platform for financial data and market analytics:
+Run the entire system in Docker containers:
 
 ```bash
-# Option A: Start as a service (recommended)
-cd docker
-docker-compose up -d openbb
+# Copy environment configuration
+cp .env.example .env
 
-# Verify service is running
-curl http://localhost:8000/health
+# Edit .env with your credentials (Telegram, Bitget, etc.)
 
-# Sync market data
-python scripts/sync_market_data.py --symbols AAPL,MSFT,GOOGL --days 30
+# Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f trading-bridge
 ```
 
-OpenBB provides:
-- ✅ Financial data from multiple providers
-- ✅ Market analytics and indicators
-- ✅ Economic data and research tools
-- ✅ Technical analysis capabilities
-- ✅ REST API interface
-- ✅ Integration with trading system
+Services included:
+- ✅ Trading Bridge (Python-MQL5 automation)
+- ✅ Telegram Notifications
+- ✅ Multi-Broker Support (Exness, Bitget)
+- ✅ Project Scanner
+- ✅ 24/7 Background Services
 
-See `OPENBB-INTEGRATION.md` for detailed setup and connection options.
+See [DOCKER-SETUP-GUIDE.md](DOCKER-SETUP-GUIDE.md) for complete documentation.
 
 ### Windows Setup Automation
 
@@ -234,12 +200,34 @@ See `OPENBB-INTEGRATION.md` for detailed setup and connection options.
 
 ### VPS 24/7 Trading System
 - ✅ Exness MT5 Terminal (24/7 operation)
+- ✅ **Bitget Cryptocurrency Exchange** (Spot & Futures)
 - ✅ Web Research Automation (Perplexity AI)
 - ✅ GitHub Website Hosting (ZOLO-A6-9VxNUNA)
 - ✅ CI/CD Automation (Python projects)
 - ✅ MQL5 Forge Integration
+- ✅ **Telegram Notifications** (Real-time alerts)
 - ✅ Automated error handling
 - ✅ Auto-restart capabilities
+- ✅ **Docker Container Support**
+
+### Multi-Broker Trading Support
+- ✅ **Exness** - Forex and CFD trading
+- ✅ **Bitget** - Cryptocurrency spot and futures
+- ✅ Multi-symbol simultaneous trading
+- ✅ Network latency optimization
+- ✅ Automatic broker failover
+- ✅ Unified API interface
+- ✅ Real-time position monitoring
+- ✅ Risk management integration
+
+### Notification System
+- ✅ **Telegram Integration** - Real-time alerts
+- ✅ Trade execution notifications
+- ✅ System status updates
+- ✅ Error and warning alerts
+- ✅ Performance reports
+- ✅ Configurable alert levels
+- ✅ Multi-channel support ready
 
 ### AI Agents & Automation (NEW)
 - ✅ Jules Agent (Google AI) - Trading automation, code review, auto-merge
@@ -272,10 +260,25 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - `.pem` files (certificates and keys)
 - `.json` credential files
 - `.csv` data exports
+- `.env` files (Docker environment variables)
 - Log files
 - Screenshots
 - Temporary files
 - Personal directories and media files
+
+### Environment Variables (Docker)
+
+For Docker deployments, use environment variables in `.env` file:
+
+```bash
+# Copy example file
+cp .env.example .env
+
+# Edit with your credentials
+nano .env
+```
+
+Never commit the `.env` file - it's automatically excluded by `.gitignore`.
 
 ### GitHub Secrets Setup
 
@@ -295,27 +298,14 @@ $env:OAUTH_CLIENT_SECRET = "YOUR_CLIENT_SECRET"
 
 See **GITHUB-SECRETS-SETUP.md** for complete instructions on setting up GitHub repository secrets for secure credential management in GitHub Actions workflows.
 
-### AI Agent API Keys
-
-Store AI agent API keys securely:
-
-```powershell
-# Jules Agent (Google AI)
-[System.Environment]::SetEnvironmentVariable('GOOGLE_AI_API_KEY', 'YOUR_KEY', 'User')
-
-# Qodo Plugin (optional)
-[System.Environment]::SetEnvironmentVariable('QODO_API_KEY', 'YOUR_KEY', 'User')
-
-# Kombai Agent (optional)
-[System.Environment]::SetEnvironmentVariable('KOMBAI_API_KEY', 'YOUR_KEY', 'User')
-```
-
-**Never commit API keys to git!** Config files with keys are automatically gitignored.
-
 ## 📚 Documentation
 
-### Setup & Configuration
-- **AI-AGENTS-SETUP-GUIDE.md** - Complete AI agents and automation setup (NEW)
+### New Feature Guides (2025)
+- **DOCKER-SETUP-GUIDE.md** - Docker container deployment
+- **BITGET-INTEGRATION-GUIDE.md** - Bitget cryptocurrency exchange
+- **CODE-CONSOLIDATION-GUIDE.md** - Unified code organization
+
+### Setup Guides
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
@@ -330,11 +320,18 @@ Store AI agent API keys securely:
 
 ### System Automation
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
-- **CI-CD-BASICS.md** - CI/CD fundamentals and GitHub Actions guide
 - **AUTO-MERGE-SETUP-GUIDE.md** - Automatic PR merging setup
+- **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+
+### Configuration Guides
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **GITHUB-SECRETS-SETUP.md** - GitHub secrets and OAuth setup
+
+### Trading System Documentation
+- **trading-bridge/README.md** - Trading bridge system overview
+- **trading-bridge/CONFIGURATION.md** - Broker and symbol configuration
+- **trading-bridge/SECURITY.md** - Security best practices
 
 - **[docs/DEVICE-SKELETON.md](docs/DEVICE-SKELETON.md)** - Complete device structure
 - **[docs/PROJECT-BLUEPRINTS.md](docs/PROJECT-BLUEPRINTS.md)** - Project blueprints
