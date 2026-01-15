@@ -135,28 +135,17 @@ repo-automation-*.log
 repo-automation-*.md
 repo-automation-report-*.md
 
-# Python cache
+# Docker
+.env
+docker-compose.override.yml
+
+# Python
 __pycache__/
-*.pyc
-*.pyo
-
-# Node.js
-node_modules/
-package-lock.json
-yarn.lock
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# AI Agent Configuration (actual config files, not examples)
-.cursor/rules/ai-agents/jules-agent-config.json
-.cursor/rules/ai-agents/qodo-config.json
-.cursor/rules/ai-agents/kombai-config.json
-*-config.json
-!*.example.json
-
-# Generated components
-generated-components/
-
-# PDF collection notebook (generated file)
-PDF-Collection-Notebook.md
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv

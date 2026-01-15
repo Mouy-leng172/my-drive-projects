@@ -7,11 +7,12 @@ Complete automated trading system with Python-MQL5 bridge, multi-broker API supp
 This system provides:
 - **Python Trading Engine** - Strategy analysis and signal generation
 - **MQL5 Bridge** - ZeroMQ-based communication between Python and MQL5
-- **MQL.io Service** - Comprehensive MQL5 operations management
+- **FastAPI REST API** - HTTP interface for remote signal submission
 - **Multi-Broker Support** - Trade on Exness and other brokers with API access
 - **Multi-Symbol Trading** - Manage trading across multiple symbols simultaneously
 - **Background Service** - Runs 24/7 without user interaction
 - **Auto-Start** - Automatically starts on system boot
+- **Docker Support** - Easy deployment with Docker Desktop
 
 ## Architecture
 
@@ -30,10 +31,33 @@ This system provides:
               ┌──────▼──────┐
               │   Bridge    │
               │ Python↔MQL5│
+              └──────┬──────┘
+                     │
+              ┌──────▼──────┐
+              │  FastAPI    │
+              │  REST API   │
               └─────────────┘
 ```
 
-## Quick Start
+## Deployment Options
+
+### Option 1: Docker (Recommended for FastAPI)
+
+Quick start with Docker Desktop:
+
+```bash
+# Windows
+docker-quick-start.bat
+
+# Linux/Mac
+./docker-quick-start.sh
+```
+
+See **[DOCKER-DEPLOYMENT-GUIDE.md](../DOCKER-DEPLOYMENT-GUIDE.md)** for complete Docker setup.
+
+### Option 2: Native Windows Setup
+
+## Quick Start (Native Windows)
 
 ### 1. Setup Directory Structure
 

@@ -1,90 +1,61 @@
+# Docker Compose for Trading Bridge FastAPI Service
+# Provides easy deployment of FastAPI with MQL5 bridge connectivity
+
 version: '3.8'
 
 services:
-  # Main trading automation service
-  trading-bridge:
+  trading-bridge-api:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: my-drive-trading-bridge
-    restart: unless-stopped
-    environment:
-      # Telegram notifications
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
-      # Bitget API credentials
-      - BITGET_API_KEY=${BITGET_API_KEY:-}
-      - BITGET_API_SECRET=${BITGET_API_SECRET:-}
-      - BITGET_PASSPHRASE=${BITGET_PASSPHRASE:-}
-      # Exness API credentials
-      - EXNESS_API_KEY=${EXNESS_API_KEY:-}
-      - EXNESS_API_SECRET=${EXNESS_API_SECRET:-}
-      # Trading bridge configuration
-      - TRADINGBRIDGE_TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TRADINGBRIDGE_TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
-      - PYTHONUNBUFFERED=1
-    volumes:
-      - ./trading-bridge/config:/repo/trading-bridge/config
-      - ./trading-bridge/logs:/repo/trading-bridge/logs
-      - ./trading-bridge/data:/repo/trading-bridge/data
+      dockerfile: Dockerfile.fastapi
+    container_name: trading-bridge-api
     ports:
-      - "5500:5500"  # Trading bridge ZeroMQ port
+      - "8000:8000"   # FastAPI
+      - "5500:5500"   # MQL5 Bridge
+    environment:
+      # Production Mode (set to "true" for production)
+      - PRODUCTION_MODE=${PRODUCTION_MODE:-false}
+      
+      # API Configuration
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      
+      # CORS Configuration (comma-separated origins)
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost:8000}
+      
+      # Bridge Configuration
+      - BRIDGE_HOST=0.0.0.0
+      - BRIDGE_PORT=5500
+      
+      # API Key (CHANGE THIS!)
+      - TRADING_BRIDGE_API_KEY=${TRADING_BRIDGE_API_KEY:-dev-key-change-me}
+      
+      # Optional: Telegram Notifications
+      - TRADINGBRIDGE_TELEGRAM_BOT_TOKEN=${TRADINGBRIDGE_TELEGRAM_BOT_TOKEN:-}
+      - TRADINGBRIDGE_TELEGRAM_CHAT_ID=${TRADINGBRIDGE_TELEGRAM_CHAT_ID:-}
+    
+    volumes:
+      # Mount config directory (contains brokers.json, symbols.json)
+      - ./trading-bridge/config:/app/trading-bridge/config
+      
+      # Mount logs directory for persistence
+      - ./trading-bridge/logs:/app/trading-bridge/logs
+      
+      # Mount data directory for persistence
+      - ./trading-bridge/data:/app/trading-bridge/data
+    
+    restart: unless-stopped
+    
     networks:
       - trading-network
-    command: >
-      bash -c "
-        cd /repo/trading-bridge && 
-        python3 -m python.services.background_service
-      "
+    
     healthcheck:
-      test: ["CMD", "pwsh", "-Command", "Test-Path /repo/trading-bridge/logs"]
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5)"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 10s
-
-  # Notification service (standalone)
-  notifications:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: my-drive-notifications
-    restart: unless-stopped
-    environment:
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
-      - TRADINGBRIDGE_TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TRADINGBRIDGE_TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
-    networks:
-      - trading-network
-    command: >
-      bash -c "
-        echo 'Notification service ready' && 
-        tail -f /dev/null
-      "
-
-  # Project scanner service
-  project-scanner:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: my-drive-project-scanner
-    restart: unless-stopped
-    volumes:
-      - ./project-scanner:/repo/project-scanner
-    networks:
-      - trading-network
-    command: >
-      pwsh -NoProfile -Command "
-        Write-Host 'Project Scanner Service Ready' -ForegroundColor Green;
-        while ($true) { Start-Sleep -Seconds 60 }
-      "
+      start_period: 5s
 
 networks:
   trading-network:
     driver: bridge
-
-volumes:
-  trading-config:
-  trading-logs:
-  trading-data:

@@ -1,0 +1,83 @@
+# .dockerignore - Exclude files from Docker build context
+
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.vscode
+.cursor
+.cursorignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Documentation (except deployment guide)
+*.md
+!DOCKER-DEPLOYMENT-GUIDE.md
+!README.md
+
+# Logs
+*.log
+logs/
+trading-bridge/logs/
+
+# Data
+trading-bridge/data/
+*.db
+
+# Config (will be mounted)
+trading-bridge/config/brokers.json
+trading-bridge/config/symbols.json
+
+# Secrets
+Secrets/
+*.token
+*.secret
+*credentials*
+.env
+
+# Windows
+*.exe
+*.bat
+*.ps1
+Thumbs.db
+desktop.ini
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+
+# Media
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.pdf
+
+# Other projects
+projects/
+project-scanner/
+system-setup/
+storage-management/
+vps-services/
+mql5-repo/
+my-drive-projects/
+Documents/
+Google-Documents/
+TECHNO POVA 6 PRO/
+
+# Temp
+*.tmp
+*.temp
+core
