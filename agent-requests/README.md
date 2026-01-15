@@ -50,3 +50,8 @@ powershell -ExecutionPolicy Bypass -File .\agent-requests\submit-agent-request.p
 - **Do not put tokens/keys/passwords** into request JSON or prompts.
 - Requests are intended to be saved under `agent-requests/inbox/` and outputs under `agent-requests/out/` (both ignored by git).
 
+### Included templates
+
+- `agent-requests/templates/review.json`
+- `agent-requests/templates/fix.json`
+- `agent-requests/templates/debug.json`

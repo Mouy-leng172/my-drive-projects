@@ -1,19 +1,10 @@
 <#
 .SYNOPSIS
-  Submit an Agent Request to a destination (GitHub issue or paste prompt).
+Submits an agent request as a GitHub issue (optional workflow).
 
 .DESCRIPTION
-  Renders the request JSON to Markdown and optionally creates a GitHub issue
-  via the authenticated GitHub CLI (`gh`).
-
-.PARAMETER RequestPath
-  Path to the request JSON file.
-
-.PARAMETER Destination
-  github-issue | paste-prompt | other
-
-.PARAMETER Labels
-  Optional labels override for GitHub issues.
+Reads a request JSON, renders a prompt, and uses `gh` to create an issue.
+This is safe by default: it does not include secrets and does not push code.
 #>
 
 [CmdletBinding()]
@@ -21,12 +12,18 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$RequestPath,
 
-  [Parameter(Mandatory = $false)]
-  [ValidateSet("github-issue", "paste-prompt", "other")]
+  [Parameter()]
+  [ValidateSet("github-issue", "other")]
   [string]$Destination = "github-issue",
 
-  [Parameter(Mandatory = $false)]
-  [string[]]$Labels
+  [Parameter()]
+  [string]$Repo,
+
+  [Parameter()]
+  [string[]]$Labels = @("agent-request"),
+
+  [Parameter()]
+  [string[]]$Assignees = @()
 )
 
 function Write-Status {
@@ -34,67 +31,57 @@ function Write-Status {
     [Parameter(Mandatory = $true)][ValidateSet("OK", "INFO", "WARNING", "ERROR")][string]$Level,
     [Parameter(Mandatory = $true)][string]$Message
   )
-  $color = switch ($Level) {
-    "OK" { "Green" }
-    "INFO" { "Cyan" }
-    "WARNING" { "Yellow" }
-    "ERROR" { "Red" }
+  $color = "White"
+  switch ($Level) {
+    "OK" { $color = "Green" }
+    "INFO" { $color = "Cyan" }
+    "WARNING" { $color = "Yellow" }
+    "ERROR" { $color = "Red" }
   }
-  Write-Host "[$Level] $Message" -ForegroundColor $color
+  Write-Host ("[{0}] {1}" -f $Level, $Message) -ForegroundColor $color
 }
 
 try {
-  if (-not (Test-Path -LiteralPath $RequestPath)) {
-    throw "Request file not found: $RequestPath"
+  if (-not (Test-Path $RequestPath)) { throw "RequestPath not found: $RequestPath" }
+
+  if ($Destination -ne "github-issue") {
+    throw "Unsupported -Destination '$Destination'. Only 'github-issue' is implemented."
   }
 
-  $jsonRaw = Get-Content -LiteralPath $RequestPath -Raw
-  $request = $jsonRaw | ConvertFrom-Json
+  $gh = Get-Command gh -ErrorAction SilentlyContinue
+  if ($null -eq $gh) { throw "GitHub CLI (gh) not found on PATH." }
+
+  if ([string]::IsNullOrWhiteSpace($Repo)) {
+    $repoJson = & gh repo view --json nameWithOwner 2>$null
+    if ([string]::IsNullOrWhiteSpace($repoJson)) {
+      throw "Could not determine repo automatically. Pass -Repo owner/name."
+    }
+    $Repo = ($repoJson | ConvertFrom-Json).nameWithOwner
+  }
+
+  $raw = Get-Content -Path $RequestPath -Raw
+  $req = $raw | ConvertFrom-Json
 
   $renderScript = Join-Path $PSScriptRoot "render-agent-request.ps1"
-  if (-not (Test-Path -LiteralPath $renderScript)) {
-    throw "Render script not found: $renderScript"
-  }
-
+  if (-not (Test-Path $renderScript)) { throw "render-agent-request.ps1 not found next to this script." }
   $body = & $renderScript -RequestPath $RequestPath
-  $title = $request.title
 
-  if ($Destination -eq "paste-prompt" -or $Destination -eq "other") {
-    Write-Status -Level "INFO" -Message "Rendered prompt (copy/paste):"
-    $body
-    exit 0
-  }
+  $finalLabels = @()
+  if ($Labels) { $finalLabels += $Labels }
+  if ($null -ne $req.type -and -not $finalLabels.Contains([string]$req.type)) { $finalLabels += [string]$req.type }
 
-  # github-issue
-  if (-not (Get-Command -Name "gh" -ErrorAction SilentlyContinue)) {
-    throw "GitHub CLI (gh) not found in PATH."
-  }
+  $args = @("issue", "create", "--repo", $Repo, "--title", [string]$req.title, "--body", $body)
+  foreach ($l in $finalLabels) { $args += @("--label", $l) }
+  foreach ($a in $Assignees) { $args += @("--assignee", $a) }
 
-  $issueLabels = @()
-  if ($Labels -and $Labels.Count -gt 0) {
-    $issueLabels = @($Labels)
-  } elseif ($null -ne $request.routing -and $null -ne $request.routing.github -and $null -ne $request.routing.github.labels) {
-    $issueLabels = @($request.routing.github.labels | ForEach-Object { "$_" })
-  } else {
-    $issueLabels = @("agent-request", "$($request.type)")
-  }
+  Write-Status -Level "INFO" -Message ("Creating issue in {0}..." -f $Repo)
+  $url = & gh @args
+  if ([string]::IsNullOrWhiteSpace($url)) { throw "Issue creation did not return a URL." }
 
-  $labelArgs = @()
-  foreach ($l in $issueLabels) {
-    if ($l) { $labelArgs += @("--label", $l) }
-  }
-
-  Write-Status -Level "INFO" -Message "Creating GitHub issue via gh..."
-  $cmd = @("issue", "create", "--title", $title, "--body", $body) + $labelArgs
-  $result = & gh @cmd
-
-  if ($LASTEXITCODE -ne 0) {
-    throw "gh issue create failed."
-  }
-
-  Write-Status -Level "OK" -Message "Created issue: $result"
-} catch {
+  Write-Status -Level "OK" -Message ("Issue created: {0}" -f $url.Trim())
+}
+catch {
   Write-Status -Level "ERROR" -Message $_.Exception.Message
-  exit 1
+  throw
 }
 
