@@ -1,0 +1,19 @@
+# Git Submodules Configuration for My Drive Projects
+# Uncomment and modify the sections below once you have access to fork the repositories
+
+# [submodule "my-drive-projects/ZOLO-A6-9VxNUNA"]
+# 	path = my-drive-projects/ZOLO-A6-9VxNUNA
+# 	url = https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git
+#	branch = main
+
+# [submodule "my-drive-projects/MQL5-Google-Onedrive"]
+# 	path = my-drive-projects/MQL5-Google-Onedrive
+# 	url = https://github.com/A6-9V/MQL5-Google-Onedrive.git
+#	branch = main
+
+# To activate submodules:
+# 1. Uncomment the sections above
+# 2. Rename this file from .gitmodules.template to .gitmodules
+# 3. Run: git submodule init
+# 4. Run: git submodule update
+# 5. Commit the .gitmodules file
