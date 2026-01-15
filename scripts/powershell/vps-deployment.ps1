@@ -323,26 +323,11 @@ try {
 
 function Start-VPSService {
     param([string]`$ServiceName, [string]`$ScriptPath)
-
-    if (-not (Test-Path `$ScriptPath)) {
-        Write-Host "[`$(Get-Date)] WARNING: Service script not found: `$ServiceName (`$ScriptPath)" | Out-File -Append "`$logsPath\master-controller.log"
-        return
-    }
-
-    `$alreadyRunning = `$false
-    try {
-        `$procs = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue
-        foreach (`$p in (`$procs | Where-Object { `$_.CommandLine })) {
-            if (`$p.CommandLine -like "*`$ScriptPath*" -or `$p.CommandLine -like "*`$ServiceName*") {
-                `$alreadyRunning = `$true
-                break
-            }
-        }
-    } catch {
-        `$alreadyRunning = `$false
-    }
-
-    if (-not `$alreadyRunning) {
+    
+    `$process = Get-Process -Name "powershell" -ErrorAction SilentlyContinue | 
+        Where-Object { `$_.CommandLine -like "*`$ServiceName*" }
+    
+    if (-not `$process) {
         Start-Process powershell.exe -ArgumentList @(
             "-ExecutionPolicy", "Bypass",
             "-WindowStyle", "Hidden",
@@ -366,9 +351,6 @@ Start-VPSService -ServiceName "cicd-service" -ScriptPath "`$vpsServicesPath\cicd
 Start-Sleep -Seconds 2
 
 Start-VPSService -ServiceName "mql5-service" -ScriptPath "`$vpsServicesPath\mql5-service.ps1"
-Start-Sleep -Seconds 2
-
-Start-VPSService -ServiceName "trading-bridge-service" -ScriptPath "`$vpsServicesPath\trading-bridge-service.ps1"
 
 Write-Host "[`$(Get-Date)] All services started" | Out-File -Append "`$logsPath\master-controller.log"
 
@@ -381,7 +363,6 @@ while (`$true) {
     Start-VPSService -ServiceName "website-service" -ScriptPath "`$vpsServicesPath\website-service.ps1"
     Start-VPSService -ServiceName "cicd-service" -ScriptPath "`$vpsServicesPath\cicd-service.ps1"
     Start-VPSService -ServiceName "mql5-service" -ScriptPath "`$vpsServicesPath\mql5-service.ps1"
-    Start-VPSService -ServiceName "trading-bridge-service" -ScriptPath "`$vpsServicesPath\trading-bridge-service.ps1"
 }
 "@
     

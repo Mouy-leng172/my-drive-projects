@@ -49,7 +49,7 @@ This document provides instructions for working with this Windows automation and
 
 - Scripts: `*.ps1` files in project root
 - Documentation: `*.md` files for rules and guides
-- Configuration: `git-credentials.txt` (gitignored, PAT fallback only; prefer `gh auth login` OAuth)
+- Configuration: `git-credentials.txt` (gitignored)
 - Rules: `.cursor/rules/` directory for project-specific rules
 
 ## References

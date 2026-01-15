@@ -7,22 +7,37 @@ A personal monorepo containing automation scripts, learning projects, VPS servic
 ## Structure
 
 ```
-my-drive-projects/
-├── scripts/              → Automation and utility scripts
-│   ├── powershell/      → Windows PowerShell scripts
-│   ├── bash/            → Linux/Unix shell scripts
-│   └── batch/           → Windows batch files
-├── projects/            → Independent development projects
-│   ├── google-ai-studio/
-│   └── (other projects)
-├── services/            → VPS background services
-│   └── vps-services/    → 24/7 trading system services
-├── docs/                → All documentation
-├── trading-bridge/      → MQL5 trading bridge system
-├── project-scanner/     → Project discovery tool
-├── system-setup/        → System configuration
-├── storage-management/  → Drive management utilities
-└── archive/             → Historical/unused files
+.
+├── .cursor/                          # Cursor IDE Configuration
+│   └── rules/                        # AI Assistant Rules
+├── Scripts/                          # PowerShell Automation Scripts
+│   ├── Setup Scripts/
+│   ├── Git Scripts/
+│   ├── Security Scripts/
+│   ├── GitHub Desktop Scripts/
+│   └── Utility Scripts/
+├── Documentation/                    # Project Documentation
+│   ├── DEVICE-SKELETON.md           # Complete device structure
+│   ├── PROJECT-BLUEPRINTS.md         # Project blueprints
+│   ├── SYSTEM-INFO.md               # System specifications
+│   ├── WORKSPACE-SETUP.md           # Workspace setup guide
+│   └── SET-REPOS-PRIVATE.md         # Instructions for private repos
+├── vps-services/                     # VPS 24/7 Trading System Services
+│   ├── exness-service.ps1           # Exness MT5 Terminal service
+│   ├── research-service.ps1         # Perplexity AI research service
+│   ├── website-service.ps1          # GitHub website service
+│   ├── cicd-service.ps1             # CI/CD automation service
+│   ├── mql5-service.ps1              # MQL5 Forge integration
+│   └── master-controller.ps1       # Master service controller
+├── projects/                         # Active development projects
+│   ├── Google AI Studio/            # AI Studio related projects
+│   └── LiteWriter/                  # LiteWriter application
+├── project-scanner/                  # Project Discovery & Execution System
+├── system-setup/                     # System Configuration & Optimization
+├── storage-management/               # Storage and drive management tools
+├── Document,sheed,PDF, PICTURE/     # Documentation and media
+├── Secrets/                          # Protected credentials (not tracked in git)
+└── TECHNO POVA 6 PRO/                # Device-specific files
 ```
 
 ## How to Use
@@ -60,9 +75,98 @@ Each project in `projects/` can be used independently:
 .\scripts\powershell\auto-start-vps-admin.ps1
 ```
 
+Or double-click: `AUTO-START-VPS.bat`
+
+This will:
+- ✅ Deploy all VPS services
+- ✅ Start Exness MT5 Terminal
+- ✅ Start Web Research Service (Perplexity AI)
+- ✅ Start GitHub Website Service (ZOLO-A6-9VxNUNA)
+- ✅ Start CI/CD Automation Service
+- ✅ Start MQL5 Forge Integration
+- ✅ Handle all errors automatically
+
+### Windows Setup Automation
+
+```powershell
+# Run as Administrator
+.\auto-setup.ps1
+# or
+.\complete-windows-setup.ps1
+```
+
+### Workspace Verification
+
+```powershell
+.\setup-workspace.ps1
+```
+
+## 📋 Features
+
+### Windows Setup Scripts
+- ✅ Configure Windows Account Sync
+- ✅ Set up File Explorer preferences
+- ✅ Configure default browser and apps
+- ✅ Windows Defender exclusions for cloud folders
+- ✅ Windows Firewall rules for cloud services
+- ✅ Windows Security (Controlled Folder Access) configuration
+- ✅ Cloud sync service verification (OneDrive, Google Drive, Dropbox)
+
+### Git Automation
+- ✅ Multi-remote repository support
+- ✅ Automated git operations
+- ✅ Secure credential management
+
+### Security Validation
+- ✅ Comprehensive security checks
+- ✅ Token security validation
+- ✅ Script integrity verification
+
+### VPS 24/7 Trading System
+- ✅ Exness MT5 Terminal (24/7 operation)
+- ✅ Web Research Automation (Perplexity AI)
+- ✅ GitHub Website Hosting (ZOLO-A6-9VxNUNA)
+- ✅ CI/CD Automation (Python projects)
+- ✅ MQL5 Forge Integration
+- ✅ Automated error handling
+- ✅ Auto-restart capabilities
+
+### Project Scanner
+- ✅ Scan all local drives for development projects
+- ✅ Discover scripts, applications, and code projects
+- ✅ Execute projects in the background
+- ✅ Generate comprehensive reports
+
+### System Setup & Optimization
+- ✅ Drive cleanup and optimization
+- ✅ Drive role assignment and permissions
+- ✅ Registry optimizations
+- ✅ Cursor IDE configuration
+- ✅ MCP (Model Context Protocol) setup
+
+## 🔒 Security
+
+Sensitive files including credentials, API keys, certificates, and logs are automatically excluded from version control via `.gitignore`.
+
+**Protected file types:**
+- `.pem` files (certificates and keys)
+- `.json` credential files
+- `.csv` data exports
+- Log files
+- Screenshots
+- Temporary files
+- Personal directories and media files
+
 ## 📚 Documentation
 
-All documentation is organized in the `docs/` directory:
+- **DEVICE-SKELETON.md** - Complete device structure blueprint
+- **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
+- **SYSTEM-INFO.md** - System specifications
+- **WORKSPACE-SETUP.md** - Workspace setup guide
+- **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
+- **AUTOMATION-RULES.md** - Automation patterns
+- **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
+- **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
 
 - **[docs/DEVICE-SKELETON.md](docs/DEVICE-SKELETON.md)** - Complete device structure
 - **[docs/PROJECT-BLUEPRINTS.md](docs/PROJECT-BLUEPRINTS.md)** - Project blueprints
@@ -112,24 +216,22 @@ This is a workspace repository. Individual projects may have their own:
 
 Refer to project-specific READMEs for details.
 
-## 🤝 Contributing
+## 🔐 Making Repositories Private
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+See **SET-REPOS-PRIVATE.md** for instructions on making repositories private.
 
-## 📄 License
+## 📝 Notes
 
-Personal use project.
+- This workspace is synchronized with OneDrive and Google Drive
+- Duplicate files are excluded from version control
+- All sensitive data is gitignored for security
+- Complete device skeleton structure and blueprints included
+- VPS 24/7 trading system fully automated
 
-## 👤 Author
+## License
 
-A6-9V (keamouyleng@proton.me)
+This project is for personal use.
 
----
+## Author
 
-**Note**: This repository is organized as a monorepo for easier maintenance and collaboration. Each component is independent and can be used separately.
-└─────────────┘
-```
-
----
-
-**Note**: This repository is organized as a monorepo for easier maintenance and collaboration. Each component is independent and can be used separately.
+Lengkundee01 / A6-9V

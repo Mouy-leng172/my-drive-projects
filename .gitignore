@@ -31,10 +31,6 @@ documents/
 .DS_Store
 .849C9593-D756-4E56-8D6E-42412F2A707B
 
-# Linux core dumps (can appear as a file named "core")
-core
-core.*
-
 # Security - Never commit tokens or secrets
 *.token
 *.secret
@@ -72,15 +68,10 @@ flash-student-*
 
 # Secrets directory
 Secrets/
-# Allow README.md in Secrets directory for documentation
-!Secrets/README.md
 
 # Project scanner output files (keep config, ignore results)
 log-summary.txt
 logs/
-
-# Browser exports (contain sensitive history/bookmarks)
-Browser-Exports/
 
 # Temporary files
 *_tmp.*
@@ -101,17 +92,6 @@ chrome_qrcode_*.png
 
 # Archives
 *.zip
-*.7z
-*.7zip
-*.rar
-*.tar
-*.tar.gz
-*.tgz
-
-# Encrypted/backup outputs (keep out of git by default)
-Backups/
-backup/
-backups/
 
 # Large executables and installers
 *.deb
@@ -121,59 +101,3 @@ backups/
 
 # Cursor (optional - uncomment if you don't want to track Cursor rules)
 # .cursor/
-
-# Trading Bridge - Security and Configuration
-trading-bridge/config/brokers.json
-trading-bridge/config/symbols.json
-trading-bridge/config/mql_io.json
-trading-bridge/config/*.key
-trading-bridge/config/*.secret
-trading-bridge/logs/*.log
-trading-bridge/data/*.db
-trading-bridge/data/logs/
-trading-bridge/data/mql_io/
-trading-bridge/*.db
-trading-bridge/**/*.key
-trading-bridge/**/*.secret
-trading-bridge/**/credentials.json
-
-# Network Configuration
-network-config.json
-Network-Shortcuts/
-cleanup-log_*.txt
-cleanup-log-*.log
-cleanup-log-*.txt
-Documentation/Reports/
-
-# VPS runtime logs
-vps-logs/
-
-# Agent request I/O (contains potentially sensitive prompts/outputs)
-agent-requests/inbox/
-agent-requests/out/
-
-# Temporary repository clones for injection
-injected-repos/
-
-# Repository automation generated files
-repo-automation-*.log
-repo-automation-*.md
-repo-automation-report-*.md
-
-# Fork and update reference summaries
-fork-summary-*.md
-update-references-summary-*.md
-
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-
-# Python virtual environment
-venv/
-.venv/
-env/
-.env/
-ENV/
-env.bak/
-venv.bak/

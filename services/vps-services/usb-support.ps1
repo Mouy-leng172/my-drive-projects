@@ -195,11 +195,3 @@ if ($MyInvocation.MyCommand.ModuleName) {
     Export-ModuleMember -Function Get-USBDrives, Get-PreferredUSBDrive, Initialize-USBForMQL5, Sync-MQL5ToUSB
 }
 
-
-
-
-
-
-
-
-

@@ -341,10 +341,3 @@ Write-Host ""
 Write-Host "Review report: $reportPath" -ForegroundColor Cyan
 Write-Host ""
 
-
-
-
-
-
-
-

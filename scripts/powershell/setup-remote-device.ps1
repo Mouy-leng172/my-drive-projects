@@ -45,7 +45,7 @@ if ($UseADB) {
         
         if ($DeviceIP) {
             Write-Host "[INFO] Connecting via ADB to $DeviceIP`:$DevicePort..." -ForegroundColor Yellow
-            & adb connect "$DeviceIP`:$DevicePort"
+            & adb connect "$DeviceIP`:$DeviceIP"
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "    [OK] Connected via ADB" -ForegroundColor Green
             }

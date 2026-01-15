@@ -218,8 +218,6 @@ Create `%APPDATA%\Cursor\User\globalStorage\mcp.json`:
 }
 ```
 
-**Security note**: keep tokens local-only (never commit). Preferred: authenticate via GitHub CLI OAuth (`gh auth login`) and use `gh auth token` to obtain a token value for MCP if needed.
-
 ### Cursor Integration
 
 1. Open Cursor Settings
@@ -309,7 +307,7 @@ main().catch(console.error);
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.cwd": "D:\\my-drive-projects",
   "workbench.startupEditor": "newUntitledFile",
-  "workbench.colorTheme": "Default Light+",
+  "workbench.colorTheme": "Default Dark+",
   "extensions.autoUpdate": true,
   "mcp.enabled": true,
   "mcp.servers": {

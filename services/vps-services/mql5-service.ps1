@@ -1,14 +1,12 @@
-﻿# MQL5 Forge Integration Service
+# MQL5 Forge Integration Service - Repository Sync with API Token and USB Support
 $ErrorActionPreference = "Continue"
 $workspaceRoot = "C:\Users\USER\OneDrive"
 $logsPath = "C:\Users\USER\OneDrive\vps-logs"
-$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/A6-9V_VL6-N9.git"
-
-# Configuration variables (with defaults if not set)
-$mql5ConfigFile = Join-Path $workspaceRoot ".mql5-config"
 $usbSupportScript = Join-Path $workspaceRoot "vps-services\usb-support.ps1"
+$mql5RepoUrl = "https://forge.mql5.io/LengKundee/mql5.git"
 $mql5RepoPath = Join-Path $workspaceRoot "mql5-repo"
-$mql5RepoUrl = "https://github.com/Mouy-leng/mql5-repo.git"
+$mql5ConfigFile = Join-Path $workspaceRoot "mql5-config.txt"
+$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/mql5"
 
 # USB Support Configuration
 $useUSBForMQL5 = $true  # Enable USB support for MQL5 repository
@@ -72,7 +70,7 @@ function Sync-MQL5Repository {
                 Write-Host "[$(Get-Date)] MQL5 repository updated successfully" | Out-File -Append "$logsPath\mql5-service.log"
                 
                 # Check for new MQL5 files and log them
-                $newFiles = git diff --name-only "HEAD@{1}" HEAD 2>&1
+                $newFiles = git diff --name-only HEAD@ { 1 } HEAD 2>&1
                 if ($newFiles) {
                     Write-Host "[$(Get-Date)] New/updated files:" | Out-File -Append "$logsPath\mql5-service.log"
                     $newFiles | Out-File -Append "$logsPath\mql5-service.log"
@@ -132,11 +130,6 @@ function Sync-MQL5Repository {
     }
 }
 
-# Alias for backward compatibility
-function Sync-MQL5Forge {
-    Sync-MQL5Repository
-}
-
 # Function to open MQL5 Forge in browser (optional)
 function Open-MQL5Forge {
     $firefoxPath = Get-Command firefox -ErrorAction SilentlyContinue
@@ -151,18 +144,32 @@ function Open-MQL5Forge {
                 break
             }
         }
-    } else {
+    }
+    else {
         $firefoxPath = $firefoxPath.Source
     }
     
     if ($firefoxPath) {
         Start-Process -FilePath $firefoxPath -ArgumentList $mql5ForgeUrl
-        Write-Host "[$(Get-Date)] Opened MQL5 Forge" | Out-File -Append "$logsPath\mql5-service.log"
+        Write-Host "[$(Get-Date)] Opened MQL5 Forge in browser" | Out-File -Append "$logsPath\mql5-service.log"
     }
 }
 
-# Run sync every 12 hours
+# Initial sync
+Write-Host "[$(Get-Date)] Starting MQL5 Forge Integration Service" | Out-File -Append "$logsPath\mql5-service.log"
+Sync-MQL5Repository
+
+# Run sync every 6 hours (more frequent updates)
+$syncCounter = 0
 while ($true) {
-    Sync-MQL5Repository
-    Start-Sleep -Seconds 43200  # Wait 12 hours
+    $syncCounter++
+    
+    # Sync repository every 6 hours
+    if ($syncCounter -ge 2) {
+        Sync-MQL5Repository
+        $syncCounter = 0
+    }
+    
+    Start-Sleep -Seconds 21600  # Wait 6 hours (21600 seconds)
 }
+

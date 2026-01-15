@@ -116,10 +116,3 @@ try {
 Write-Host ""
 Write-Host "Script execution completed." -ForegroundColor Green
 
-
-
-
-
-
-
-

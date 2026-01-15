@@ -1,0 +1,52 @@
+name: Repo Backup
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # daily at 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create ZIP of repository
+        shell: powershell
+        run: |
+          $date = Get-Date -Format yyyyMMdd
+          $zip = "backup-$date.zip"
+          Write-Output "Creating $zip from repository contents..."
+          Compress-Archive -Path * -DestinationPath $zip -Force
+          Write-Output "Created: $zip"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-backup-${{ github.run_id }}
+          path: backup-*.zip
+
+      - name: (Optional) Upload to remote if secrets provided
+        shell: pwsh
+        env:
+          BACKUP_REMOTE_URL: ${{ secrets.BACKUP_REMOTE_URL }}
+          BACKUP_REMOTE_PAT: ${{ secrets.BACKUP_REMOTE_PAT }}
+        run: |
+          # Check if secrets are provided
+          if ([string]::IsNullOrEmpty($env:BACKUP_REMOTE_URL) -or [string]::IsNullOrEmpty($env:BACKUP_REMOTE_PAT)) {
+            Write-Output "Backup remote URL or PAT not provided. Skipping remote upload."
+            exit 0
+          }
+          $date = Get-Date -Format yyyyMMdd
+          $zip = Get-ChildItem -Path . -Filter "backup-$date.zip" -Recurse | Select-Object -First 1
+          if (-not $zip) { Write-Error "No backup file found"; exit 1 }
+          $url = $env:BACKUP_REMOTE_URL
+          $pat = $env:BACKUP_REMOTE_PAT
+          Write-Output "Uploading $($zip.FullName) to $url"
+          # This is an example POST. The remote endpoint must accept raw file upload with Authorization header.
+          $headers = @{ Authorization = "token $pat" }
+          Invoke-RestMethod -Uri $url -Method Post -Headers $headers -InFile $zip.FullName -ContentType "application/zip"
