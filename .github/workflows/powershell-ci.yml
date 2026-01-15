@@ -1,0 +1,186 @@
+---
+name: PowerShell CI
+
+# Trigger on push to main branch and pull requests
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.ps1'
+      - '.github/workflows/powershell-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.ps1'
+      - '.github/workflows/powershell-ci.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint:
+    name: Lint PowerShell Scripts
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Write-Host "[INFO] Installing PSScriptAnalyzer module..." -ForegroundColor Cyan
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -Verbose
+          Write-Host "[OK] PSScriptAnalyzer installed successfully" -ForegroundColor Green
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Write-Host "[INFO] Running PSScriptAnalyzer on PowerShell scripts..." -ForegroundColor Cyan
+          
+          # Get all PowerShell scripts
+          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -Recurse | 
+                     Where-Object { $_.FullName -notlike '*\.git\*' -and 
+                                    $_.FullName -notlike '*\node_modules\*' -and 
+                                    $_.FullName -notlike '*\vendor\*' }
+          
+          Write-Host "[INFO] Found $($scripts.Count) PowerShell scripts to analyze" -ForegroundColor Cyan
+          
+          # Run analysis
+          $results = @()
+          foreach ($script in $scripts) {
+            Write-Host "Analyzing: $($script.Name)" -ForegroundColor Yellow
+            $scriptResults = Invoke-ScriptAnalyzer -Path $script.FullName -Settings PSGallery
+            if ($scriptResults) {
+              $results += $scriptResults
+            }
+          }
+          
+          # Display results
+          if ($results) {
+            Write-Host "`n[WARNING] PSScriptAnalyzer found $($results.Count) issue(s)" -ForegroundColor Yellow
+            $results | Format-Table -AutoSize
+            
+            # Group by severity
+            $errors = $results | Where-Object { $_.Severity -eq 'Error' }
+            $warnings = $results | Where-Object { $_.Severity -eq 'Warning' }
+            $info = $results | Where-Object { $_.Severity -eq 'Information' }
+            
+            Write-Host "`n[SUMMARY]" -ForegroundColor Cyan
+            Write-Host "Errors: $($errors.Count)" -ForegroundColor Red
+            Write-Host "Warnings: $($warnings.Count)" -ForegroundColor Yellow
+            Write-Host "Information: $($info.Count)" -ForegroundColor Cyan
+            
+            # Only fail on errors, not warnings
+            if ($errors.Count -gt 0) {
+              Write-Host "`n[ERROR] Critical issues found. Please fix errors before merging." -ForegroundColor Red
+              exit 1
+            } else {
+              Write-Host "`n[OK] No critical errors found. Warnings are informational only." -ForegroundColor Green
+            }
+          } else {
+            Write-Host "`n[OK] No issues found. All scripts pass PSScriptAnalyzer checks!" -ForegroundColor Green
+          }
+
+      - name: Check for syntax errors
+        shell: pwsh
+        run: |
+          Write-Host "[INFO] Checking PowerShell scripts for syntax errors..." -ForegroundColor Cyan
+          
+          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -Recurse | 
+                     Where-Object { $_.FullName -notlike '*\.git\*' -and 
+                                    $_.FullName -notlike '*\node_modules\*' -and 
+                                    $_.FullName -notlike '*\vendor\*' }
+          
+          $syntaxErrors = @()
+          foreach ($script in $scripts) {
+            $errors = $null
+            $null = [System.Management.Automation.PSParser]::Tokenize(
+              (Get-Content $script.FullName -Raw), 
+              [ref]$errors
+            )
+            
+            if ($errors) {
+              Write-Host "[ERROR] Syntax errors in: $($script.Name)" -ForegroundColor Red
+              $syntaxErrors += $errors
+              $errors | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
+            }
+          }
+          
+          if ($syntaxErrors.Count -gt 0) {
+            Write-Host "`n[ERROR] Found $($syntaxErrors.Count) syntax error(s)" -ForegroundColor Red
+            exit 1
+          } else {
+            Write-Host "[OK] No syntax errors found!" -ForegroundColor Green
+          }
+
+  validate:
+    name: Validate Script Structure
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for required patterns
+        shell: pwsh
+        run: |
+          Write-Host "[INFO] Validating PowerShell script structure..." -ForegroundColor Cyan
+          
+          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -Recurse | 
+                     Where-Object { 
+                       $_.FullName -notlike '*\.git\*' -and
+                       $_.FullName -notlike '*\node_modules\*' -and
+                       $_.FullName -notlike '*\vendor\*' -and
+                       $_.Length -gt 100  # Only check substantial scripts
+                     }
+          
+          $issues = @()
+          
+          foreach ($script in $scripts) {
+            $content = Get-Content $script.FullName -Raw
+            
+            # Check for error handling (try-catch blocks)
+            if ($content -match 'Invoke-|Start-Process|Remove-Item|Set-|New-' -and 
+                $content -notmatch 'try\s*\{') {
+              $issues += "[INFO] $($script.Name): Consider adding try-catch blocks for better error handling"
+            }
+            
+            # Check for Write-Host usage for status messages
+            if ($content -match 'Write-Output.*\[(OK|ERROR|INFO|WARNING)\]') {
+              $issues += "[INFO] $($script.Name): Consider using Write-Host with -ForegroundColor for status messages"
+            }
+          }
+          
+          if ($issues) {
+            Write-Host "`n[INFO] Recommendations:" -ForegroundColor Cyan
+            $issues | ForEach-Object { Write-Host "  - $_" -ForegroundColor Yellow }
+            Write-Host "`nThese are informational only and won't fail the build." -ForegroundColor Cyan
+          } else {
+            Write-Host "[OK] All scripts follow recommended patterns!" -ForegroundColor Green
+          }
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [lint, validate]
+    if: always()
+    
+    steps:
+      - name: Check job results
+        run: |
+          echo "### CI/CD Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Lint Status:** ${{ needs.lint.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Validation Status:** ${{ needs.validate.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.lint.result }}" == "success" ] && [ "${{ needs.validate.result }}" == "success" ]; then
+            echo "✅ All checks passed!" >> $GITHUB_STEP_SUMMARY
+            echo "::notice::PowerShell CI passed successfully"
+          else
+            echo "❌ Some checks failed. Please review the logs above." >> $GITHUB_STEP_SUMMARY
+            echo "::error::PowerShell CI failed"
+            exit 1
+          fi

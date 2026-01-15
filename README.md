@@ -211,6 +211,13 @@ See `OPENBB-INTEGRATION.md` for detailed setup and connection options.
 - ✅ Automated git operations
 - ✅ Secure credential management
 
+### CI/CD Automation
+- ✅ Automated PowerShell script validation
+- ✅ Documentation linting and link checking
+- ✅ Continuous integration on push and pull requests
+- ✅ Automated quality checks and reporting
+- ✅ GitHub Actions workflow orchestration
+
 ### Security Validation
 - ✅ Comprehensive security checks
 - ✅ Token security validation
@@ -323,6 +330,8 @@ Store AI agent API keys securely:
 
 ### System Automation
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
+- **CI-CD-BASICS.md** - CI/CD fundamentals and GitHub Actions guide
+- **AUTO-MERGE-SETUP-GUIDE.md** - Automatic PR merging setup
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **GITHUB-SECRETS-SETUP.md** - GitHub secrets and OAuth setup

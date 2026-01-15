@@ -1,0 +1,258 @@
+---
+name: Documentation CI
+
+# Trigger on push to main branch and pull requests affecting documentation
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.md'
+      - '.github/workflows/docs-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.md'
+      - '.github/workflows/docs-ci.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  markdown-lint:
+    name: Lint Markdown Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        run: |
+          echo "📦 Installing markdownlint-cli..."
+          npm install -g markdownlint-cli
+          echo "✅ markdownlint-cli installed successfully"
+
+      - name: Create markdownlint config
+        run: |
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": false,
+            "MD033": false,
+            "MD041": false,
+            "MD034": false
+          }
+          EOF
+          echo "✅ Created markdownlint configuration"
+
+      - name: Run markdownlint
+        run: |
+          echo "🔍 Linting Markdown files..."
+          markdownlint '**/*.md' \
+            --ignore node_modules \
+            --ignore vendor \
+            --ignore .git || echo "⚠️ Some markdown issues found (non-blocking)"
+          echo "✅ Markdown lint check completed"
+
+  link-check:
+    name: Check Broken Links
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdown-link-check
+        run: |
+          echo "📦 Installing markdown-link-check..."
+          npm install -g markdown-link-check
+          echo "✅ markdown-link-check installed successfully"
+
+      - name: Create link-check config
+        run: |
+          cat > .markdown-link-check.json << 'EOF'
+          {
+            "ignorePatterns": [
+              {
+                "pattern": "^http://localhost"
+              },
+              {
+                "pattern": "^https://localhost"
+              },
+              {
+                "pattern": "^file://"
+              }
+            ],
+            "timeout": "20s",
+            "retryOn429": true,
+            "retryCount": 3,
+            "fallbackRetryDelay": "30s",
+            "aliveStatusCodes": [200, 206, 301, 302, 307, 308]
+          }
+          EOF
+          echo "✅ Created link-check configuration"
+
+      - name: Check links in markdown files
+        run: |
+          echo "🔗 Checking links in Markdown files..."
+          
+          EXIT_CODE=0
+          for file in $(find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./vendor/*"); do
+            echo "Checking: $file"
+            markdown-link-check "$file" --config .markdown-link-check.json || EXIT_CODE=1
+          done
+          
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "✅ All links are valid!"
+          else
+            echo "⚠️ Some links may be broken (non-critical)"
+          fi
+          
+          # Don't fail the build on broken links (they might be intentional or temporary)
+          exit 0
+
+  validate-structure:
+    name: Validate Documentation Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for required documentation
+        run: |
+          echo "📋 Checking for required documentation files..."
+          
+          REQUIRED_DOCS=(
+            "README.md"
+            "CI-CD-BASICS.md"
+          )
+          
+          MISSING_DOCS=()
+          for doc in "${REQUIRED_DOCS[@]}"; do
+            if [ ! -f "$doc" ]; then
+              MISSING_DOCS+=("$doc")
+            else
+              echo "✅ Found: $doc"
+            fi
+          done
+          
+          if [ ${#MISSING_DOCS[@]} -gt 0 ]; then
+            echo "❌ Missing required documentation:"
+            for doc in "${MISSING_DOCS[@]}"; do
+              echo "  - $doc"
+            done
+            exit 1
+          else
+            echo "✅ All required documentation files are present"
+          fi
+
+      - name: Check README structure
+        run: |
+          echo "📖 Validating README.md structure..."
+          
+          # Check for key sections in README
+          REQUIRED_SECTIONS=(
+            "Quick Start"
+            "Project Structure"
+          )
+          
+          README_CONTENT=$(cat README.md)
+          MISSING_SECTIONS=()
+          
+          for section in "${REQUIRED_SECTIONS[@]}"; do
+            if echo "$README_CONTENT" | grep -q "$section"; then
+              echo "✅ Found section: $section"
+            else
+              MISSING_SECTIONS+=("$section")
+            fi
+          done
+          
+          if [ ${#MISSING_SECTIONS[@]} -gt 0 ]; then
+            echo "⚠️ README.md is missing recommended sections:"
+            for section in "${MISSING_SECTIONS[@]}"; do
+              echo "  - $section"
+            done
+            echo "This is informational only and won't fail the build."
+          else
+            echo "✅ README.md has all recommended sections"
+          fi
+
+      - name: Check for documentation consistency
+        run: |
+          echo "🔍 Checking documentation consistency..."
+          
+          # Check for consistent heading styles
+          INCONSISTENT_FILES=()
+          for file in $(find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*"); do
+            # Check if file has mix of ATX (#) and Setext (=== or ---) headers
+            if grep -q "^#" "$file" && grep -q "^===" "$file"; then
+              INCONSISTENT_FILES+=("$file")
+            fi
+          done
+          
+          if [ ${#INCONSISTENT_FILES[@]} -gt 0 ]; then
+            echo "⚠️ Files with inconsistent heading styles (informational):"
+            for file in "${INCONSISTENT_FILES[@]}"; do
+              echo "  - $file"
+            done
+          else
+            echo "✅ All markdown files use consistent heading styles"
+          fi
+
+  spelling:
+    name: Check Spelling
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check spelling
+        uses: crate-ci/typos@v1.16.23
+        with:
+          files: '**/*.md'
+        continue-on-error: true  # Don't fail on spelling issues
+
+  summary:
+    name: Documentation CI Summary
+    runs-on: ubuntu-latest
+    needs: [markdown-lint, link-check, validate-structure, spelling]
+    if: always()
+    
+    steps:
+      - name: Generate summary
+        run: |
+          echo "### Documentation CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Markdown Lint | ${{ needs.markdown-lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Link Check | ${{ needs.link-check.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Structure Validation | ${{ needs.validate-structure.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Spelling Check | ${{ needs.spelling.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Check if any critical checks failed
+          if [ "${{ needs.validate-structure.result }}" != "success" ]; then
+            echo "❌ Documentation validation failed!" >> $GITHUB_STEP_SUMMARY
+            echo "::error::Documentation CI failed - structure validation failed"
+            exit 1
+          elif [ "${{ needs.markdown-lint.result }}" != "success" ]; then
+            echo "⚠️ Some non-critical checks failed, but documentation structure is valid." >> $GITHUB_STEP_SUMMARY
+            echo "::warning::Some documentation checks failed (non-critical)"
+          else
+            echo "✅ All critical documentation checks passed!" >> $GITHUB_STEP_SUMMARY
+            echo "::notice::Documentation CI passed successfully"
+          fi
