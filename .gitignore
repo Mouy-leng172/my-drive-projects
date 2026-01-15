@@ -145,9 +145,18 @@ __pycache__/
 *.pyc
 *.pyo
 
-# My Drive Projects - Forked Repositories
-# Note: If using direct clones (not submodules), uncomment the lines below
-# my-drive-projects/ZOLO-A6-9VxNUNA/
-# my-drive-projects/MQL5-Google-Onedrive/
-# If using Git submodules, these should NOT be in .gitignore
 
+# OpenBB Integration
+data/market/
+logs/*.log
+*.db
+*.sqlite
+external/openbb/
+.env
+configs/.env
+docker/.env
+
+# Python virtual environments
+venv/
+env/
+.venv/

@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  # OpenBB Platform Service
+  openbb:
+    build:
+      context: .
+      dockerfile: openbb.Dockerfile
+    container_name: openbb-service
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENBB_API_KEY=${OPENBB_API_KEY}
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./configs/openbb.yaml:/app/config/openbb.yaml:ro
+      - openbb-data:/app/data
+      - openbb-logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Main Application Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: my-drive-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - OPENBB_BASE_URL=http://openbb:8000
+      - OPENBB_API_KEY=${OPENBB_API_KEY}
+    volumes:
+      - ./backend:/app
+      - ./configs:/app/configs:ro
+    depends_on:
+      openbb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    command: redis-server --appendonly yes
+
+  # Optional: PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME:-mydrivedb}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  openbb-data:
+    driver: local
+  openbb-logs:
+    driver: local
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local

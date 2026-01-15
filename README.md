@@ -27,8 +27,30 @@ A personal monorepo containing automation scripts, learning projects, VPS servic
 │   ├── research-service.ps1         # Perplexity AI research service
 │   ├── website-service.ps1          # GitHub website service
 │   ├── cicd-service.ps1             # CI/CD automation service
-│   ├── mql5-service.ps1              # MQL5 Forge integration
-│   └── master-controller.ps1       # Master service controller
+│   ├── mql5-service.ps1             # MQL5 Forge integration
+│   └── master-controller.ps1        # Master service controller
+├── trading-bridge/                   # Trading Bridge & MQL.io System
+│   ├── python/                      # Python trading components
+│   │   ├── bridge/                  # MQL5 bridge
+│   │   ├── brokers/                 # Broker APIs
+│   │   ├── mql_io/                  # MQL.io service (NEW)
+│   │   ├── services/                # Background services
+│   │   └── trader/                  # Multi-symbol trader
+│   ├── mql5/                        # MQL5 Expert Advisors
+│   ├── config/                      # Configuration
+│   └── MQL-IO-README.md             # MQL.io documentation
+├── backend/                          # Backend Services & APIs (NEW)
+│   ├── services/                    # Service integrations
+│   │   └── openbb_service.py        # OpenBB analytics integration
+│   ├── api/                         # REST API endpoints
+│   └── workers/                     # Background workers
+├── configs/                          # Configuration files (NEW)
+│   └── openbb.yaml                  # OpenBB Platform configuration
+├── docker/                           # Docker infrastructure (NEW)
+│   ├── docker-compose.yml           # Service orchestration
+│   └── openbb.Dockerfile            # OpenBB service container
+├── scripts/                          # Automation scripts (NEW)
+│   └── sync_market_data.py          # Market data synchronization
 ├── projects/                         # Active development projects
 │   ├── Google AI Studio/            # AI Studio related projects
 │   └── LiteWriter/                  # LiteWriter application
@@ -86,6 +108,52 @@ This will:
 - ✅ Start MQL5 Forge Integration
 - ✅ Handle all errors automatically
 
+### MQL.io Service (NEW)
+
+Start the MQL5 operations management service:
+
+```powershell
+.\start-mql-io-service.ps1
+```
+
+Or double-click: `START-MQL-IO-SERVICE.bat`
+
+MQL.io provides:
+- ✅ Expert Advisor monitoring and management
+- ✅ Script execution tracking
+- ✅ Indicator monitoring
+- ✅ Operations logging
+- ✅ API interface for programmatic access
+- ✅ Auto-recovery (optional)
+
+See `trading-bridge/MQL-IO-README.md` for complete documentation.
+
+### OpenBB Analytics Engine (NEW)
+
+Start the OpenBB Platform for financial data and market analytics:
+
+```bash
+# Option A: Start as a service (recommended)
+cd docker
+docker-compose up -d openbb
+
+# Verify service is running
+curl http://localhost:8000/health
+
+# Sync market data
+python scripts/sync_market_data.py --symbols AAPL,MSFT,GOOGL --days 30
+```
+
+OpenBB provides:
+- ✅ Financial data from multiple providers
+- ✅ Market analytics and indicators
+- ✅ Economic data and research tools
+- ✅ Technical analysis capabilities
+- ✅ REST API interface
+- ✅ Integration with trading system
+
+See `OPENBB-INTEGRATION.md` for detailed setup and connection options.
+
 ### Windows Setup Automation
 
 ```powershell
@@ -121,6 +189,15 @@ This will:
 - ✅ Comprehensive security checks
 - ✅ Token security validation
 - ✅ Script integrity verification
+
+### OpenBB Analytics Engine Integration (NEW)
+- ✅ Financial data retrieval
+- ✅ Market analytics
+- ✅ Research tools integration
+- ✅ Service-based architecture (Option A)
+- ✅ Submodule support (Option B)
+- ✅ Docker containerization
+- ✅ Automated market data synchronization
 
 ### VPS 24/7 Trading System
 - ✅ Exness MT5 Terminal (24/7 operation)
@@ -163,6 +240,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
 - **WORKSPACE-SETUP.md** - Workspace setup guide
+- **OPENBB-INTEGRATION.md** - OpenBB analytics engine integration guide (NEW)
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration

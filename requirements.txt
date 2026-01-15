@@ -1,0 +1,33 @@
+# Backend Python Dependencies for my-drive-projects
+# 
+# Install with: pip install -r requirements.txt
+#
+
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+
+# OpenBB Platform (choose one option)
+# Option 1: Install OpenBB from PyPI (stable)
+openbb>=4.0.0
+
+# Option 2: Install from GitHub (uncomment for latest dev version)
+# git+https://github.com/OpenBB-finance/OpenBB.git@develop
+
+# Web framework (for future API endpoints)
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.4.0
+
+# Database support
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0  # PostgreSQL
+redis>=5.0.0
+
+# Data processing
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Utilities
+python-json-logger>=2.0.0

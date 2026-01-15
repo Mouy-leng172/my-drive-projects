@@ -1,0 +1,156 @@
+# OpenBB Configuration
+# 
+# This configuration file defines settings for OpenBB Platform integration
+# 
+
+# Service Configuration
+service:
+  # Base URL for OpenBB API service
+  base_url: "http://localhost:8000"
+  
+  # API key for authentication (optional)
+  # Store sensitive keys in environment variables or secrets manager
+  api_key: "${OPENBB_API_KEY}"
+  
+  # Request timeout in seconds
+  timeout: 30
+  
+  # Maximum retries for failed requests
+  max_retries: 3
+  
+  # Enable/disable SSL verification
+  verify_ssl: true
+
+# Data Configuration
+data:
+  # Default data providers
+  default_provider: "yfinance"
+  
+  # Supported providers (in order of preference)
+  providers:
+    - "yfinance"
+    - "polygon"
+    - "alphavantage"
+    - "fmp"
+  
+  # Cache settings
+  cache:
+    enabled: true
+    ttl: 3600  # Time to live in seconds (1 hour)
+    max_size: 1000  # Maximum number of cached items
+
+# Market Data Settings
+market:
+  # Default market symbols to track
+  watchlist:
+    - "SPY"  # S&P 500 ETF
+    - "QQQ"  # NASDAQ ETF
+    - "DIA"  # Dow Jones ETF
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+  
+  # Default timeframe for historical data
+  default_timeframe: "1d"
+  
+  # Number of days to fetch by default
+  default_days: 365
+
+# Technical Analysis Settings
+technical:
+  # Default technical indicators
+  indicators:
+    - name: "RSI"
+      period: 14
+    - name: "MACD"
+      fast: 12
+      slow: 26
+      signal: 9
+    - name: "SMA"
+      periods: [20, 50, 200]
+    - name: "EMA"
+      periods: [12, 26]
+  
+  # Default chart settings
+  chart:
+    theme: "dark"
+    width: 1200
+    height: 600
+
+# Economy Settings
+economy:
+  # Default country for economic indicators
+  default_country: "US"
+  
+  # Economic indicators to track
+  indicators:
+    - "GDP"
+    - "inflation"
+    - "unemployment"
+    - "interest_rates"
+    - "consumer_confidence"
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Log file settings
+  file:
+    enabled: true
+    path: "logs/openbb.log"
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+
+# Rate Limiting
+rate_limit:
+  enabled: true
+  requests_per_minute: 60
+  burst_size: 10
+
+# Feature Flags
+features:
+  enable_caching: true
+  enable_retry: true
+  enable_logging: true
+  enable_metrics: true
+  enable_alerts: false
+
+# Alerts Configuration (if enabled)
+alerts:
+  # Email notifications
+  email:
+    enabled: false
+    smtp_host: "smtp.gmail.com"
+    smtp_port: 587
+    from_address: "${EMAIL_FROM}"
+    to_addresses:
+      - "${EMAIL_TO}"
+  
+  # Webhook notifications
+  webhook:
+    enabled: false
+    url: "${WEBHOOK_URL}"
+    
+  # Alert conditions
+  conditions:
+    price_change_percent: 5.0  # Alert if price changes more than 5%
+    volume_spike_multiplier: 3.0  # Alert if volume is 3x average
+
+# Database Configuration (for caching and storage)
+database:
+  type: "sqlite"  # sqlite, postgresql, mysql
+  
+  # SQLite configuration
+  sqlite:
+    path: "data/openbb.db"
+  
+  # PostgreSQL configuration (if type is postgresql)
+  postgresql:
+    host: "${DB_HOST}"
+    port: 5432
+    database: "${DB_NAME}"
+    user: "${DB_USER}"
+    password: "${DB_PASSWORD}"
