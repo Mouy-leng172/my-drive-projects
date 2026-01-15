@@ -108,7 +108,33 @@ This will:
 - ✅ Start MQL5 Forge Integration
 - ✅ Handle all errors automatically
 
-### MQL.io Service (NEW)
+### AI Agents & Automation Setup (NEW)
+
+Set up AI agents, automatic dependency installation, and automation tools:
+
+```powershell
+# Run complete setup
+.\setup-ai-agents-and-automation.ps1
+```
+
+Or double-click: `SETUP-AI-AGENTS.bat`
+
+This will:
+- ✅ Install Node.js and npm
+- ✅ Set up Git hooks for auto-dependency installation
+- ✅ Install project dependencies
+- ✅ Collect and catalog PDFs
+- ✅ Prepare AI agent configurations
+
+**AI Agents Included:**
+- **Jules Agent** (Google AI) - Trading automation, code review, auto-merge
+- **Qodo Plugin** - Code quality, test generation
+- **Cursor Agent** - AI-assisted code editing
+- **Kombai Agent** - Design to code conversion
+
+See **[AI-AGENTS-SETUP-GUIDE.md](AI-AGENTS-SETUP-GUIDE.md)** for complete setup instructions.
+
+### MQL.io Service
 
 Start the MQL5 operations management service:
 
@@ -208,6 +234,16 @@ See `OPENBB-INTEGRATION.md` for detailed setup and connection options.
 - ✅ Automated error handling
 - ✅ Auto-restart capabilities
 
+### AI Agents & Automation (NEW)
+- ✅ Jules Agent (Google AI) - Trading automation, code review, auto-merge
+- ✅ Qodo Plugin - Code quality and test generation
+- ✅ Cursor Agent - AI-assisted code editing
+- ✅ Kombai Agent - Design to code conversion
+- ✅ Auto-dependency installation on git pull
+- ✅ Node.js and npm automated setup
+- ✅ PDF collection and cataloging
+- ✅ Git hooks for automatic workflow
+
 ### Project Scanner
 - ✅ Scan all local drives for development projects
 - ✅ Discover scripts, applications, and code projects
@@ -234,17 +270,62 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - Temporary files
 - Personal directories and media files
 
+### GitHub Secrets Setup
+
+For OAuth credentials and other sensitive configuration, use GitHub Secrets:
+
+```powershell
+# Automated setup with your credentials
+.\setup-github-secrets.ps1 `
+    -ClientId "YOUR_CLIENT_ID" `
+    -ClientSecret "YOUR_CLIENT_SECRET"
+
+# Or use environment variables
+$env:OAUTH_CLIENT_ID = "YOUR_CLIENT_ID"
+$env:OAUTH_CLIENT_SECRET = "YOUR_CLIENT_SECRET"
+.\SETUP-GITHUB-SECRETS.bat
+```
+
+See **GITHUB-SECRETS-SETUP.md** for complete instructions on setting up GitHub repository secrets for secure credential management in GitHub Actions workflows.
+
+### AI Agent API Keys
+
+Store AI agent API keys securely:
+
+```powershell
+# Jules Agent (Google AI)
+[System.Environment]::SetEnvironmentVariable('GOOGLE_AI_API_KEY', 'YOUR_KEY', 'User')
+
+# Qodo Plugin (optional)
+[System.Environment]::SetEnvironmentVariable('QODO_API_KEY', 'YOUR_KEY', 'User')
+
+# Kombai Agent (optional)
+[System.Environment]::SetEnvironmentVariable('KOMBAI_API_KEY', 'YOUR_KEY', 'User')
+```
+
+**Never commit API keys to git!** Config files with keys are automatically gitignored.
+
 ## 📚 Documentation
 
+### Setup & Configuration
+- **AI-AGENTS-SETUP-GUIDE.md** - Complete AI agents and automation setup (NEW)
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
 - **WORKSPACE-SETUP.md** - Workspace setup guide
-- **OPENBB-INTEGRATION.md** - OpenBB analytics engine integration guide (NEW)
+- **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+
+### AI Agents (NEW)
+- **.cursor/rules/ai-agents/JULES-AGENT.md** - Jules agent documentation
+- **.cursor/rules/ai-agents/QODO-PLUGIN.md** - Qodo plugin guide
+- **.cursor/rules/ai-agents/CURSOR-AGENT.md** - Cursor agent reference
+- **.cursor/rules/ai-agents/KOMBAI-AGENT.md** - Kombai agent manual
+
+### System Automation
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
-- **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+- **GITHUB-SECRETS-SETUP.md** - GitHub secrets and OAuth setup
 
 - **[docs/DEVICE-SKELETON.md](docs/DEVICE-SKELETON.md)** - Complete device structure
 - **[docs/PROJECT-BLUEPRINTS.md](docs/PROJECT-BLUEPRINTS.md)** - Project blueprints
