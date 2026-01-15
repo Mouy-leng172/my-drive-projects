@@ -310,8 +310,56 @@ while (`$true) {
     Write-Host "    [ERROR] Failed to create MQL5 service: $_" -ForegroundColor Red
 }
 
-# Step 7: Create Master Service Controller
-Write-Host "[7/8] Creating master service controller..." -ForegroundColor Yellow
+# Step 7: Create Trading System Heartbeat Service
+Write-Host "[7/9] Creating trading system heartbeat service..." -ForegroundColor Yellow
+try {
+    $heartbeatServiceScript = @"
+# Trading System Heartbeat Service - Runs 24/7
+`$ErrorActionPreference = "Continue"
+`$workspaceRoot = "$workspaceRoot"
+`$logsPath = "$logsPath"
+
+if (-not (Test-Path `"$logsPath`")) {
+    New-Item -ItemType Directory -Path `"$logsPath`" -Force | Out-Null
+}
+
+`$heartbeatFile = Join-Path `"$logsPath`" "trading-system-heartbeat.json"
+`$heartbeatLog = Join-Path `"$logsPath`" "trading-heartbeat.log"
+
+function Write-Heartbeat {
+    param([string]`$Status = "RUNNING")
+    `$payload = [ordered]@{
+        timestamp = (Get-Date).ToString("o")
+        status    = `$Status
+        pid       = `$PID
+        hostname  = `$env:COMPUTERNAME
+        user      = `$env:USERNAME
+    }
+    try {
+        (`$payload | ConvertTo-Json -Depth 3) | Out-File -FilePath `$heartbeatFile -Encoding UTF8 -Force
+        Write-Host "[`$(Get-Date)] Heartbeat: `$Status" | Out-File -Append `$heartbeatLog
+    } catch {
+        try {
+            Write-Host "[`$(Get-Date)] WARNING: Heartbeat write failed: `$_" | Out-File -Append `$heartbeatLog
+        } catch { }
+    }
+}
+
+Write-Heartbeat -Status "STARTED"
+while (`$true) {
+    Write-Heartbeat -Status "RUNNING"
+    Start-Sleep -Seconds 30
+}
+"@
+
+    $heartbeatServiceScript | Out-File -FilePath "$vpsServicesPath\trading-heartbeat-service.ps1" -Encoding UTF8
+    Write-Host "    [OK] Trading heartbeat service script created" -ForegroundColor Green
+} catch {
+    Write-Host "    [ERROR] Failed to create trading heartbeat service: $_" -ForegroundColor Red
+}
+
+# Step 8: Create Master Service Controller
+Write-Host "[8/9] Creating master service controller..." -ForegroundColor Yellow
 try {
     $masterControllerScript = @"
 #Requires -RunAsAdministrator
@@ -351,6 +399,10 @@ Start-VPSService -ServiceName "cicd-service" -ScriptPath "`$vpsServicesPath\cicd
 Start-Sleep -Seconds 2
 
 Start-VPSService -ServiceName "mql5-service" -ScriptPath "`$vpsServicesPath\mql5-service.ps1"
+Start-Sleep -Seconds 2
+
+# Trading system heartbeat (liveness signal)
+Start-VPSService -ServiceName "trading-heartbeat" -ScriptPath "`$vpsServicesPath\trading-heartbeat-service.ps1"
 
 Write-Host "[`$(Get-Date)] All services started" | Out-File -Append "`$logsPath\master-controller.log"
 
@@ -363,6 +415,7 @@ while (`$true) {
     Start-VPSService -ServiceName "website-service" -ScriptPath "`$vpsServicesPath\website-service.ps1"
     Start-VPSService -ServiceName "cicd-service" -ScriptPath "`$vpsServicesPath\cicd-service.ps1"
     Start-VPSService -ServiceName "mql5-service" -ScriptPath "`$vpsServicesPath\mql5-service.ps1"
+    Start-VPSService -ServiceName "trading-heartbeat" -ScriptPath "`$vpsServicesPath\trading-heartbeat-service.ps1"
 }
 "@
     
@@ -372,8 +425,8 @@ while (`$true) {
     Write-Host "    [ERROR] Failed to create master controller: $_" -ForegroundColor Red
 }
 
-# Step 8: Create Scheduled Task for Auto-Start
-Write-Host "[8/8] Creating Windows Scheduled Task for auto-start..." -ForegroundColor Yellow
+# Step 9: Create Scheduled Task for Auto-Start
+Write-Host "[9/9] Creating Windows Scheduled Task for auto-start..." -ForegroundColor Yellow
 try {
     $taskName = "VPS-Trading-System-24-7"
     $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" `
@@ -411,6 +464,7 @@ Write-Host "  [OK] Web Research Service (Perplexity AI)" -ForegroundColor White
 Write-Host "  [OK] GitHub Website Service (ZOLO-A6-9VxNUNA)" -ForegroundColor White
 Write-Host "  [OK] CI/CD Automation Service" -ForegroundColor White
 Write-Host "  [OK] MQL5 Forge Integration Service" -ForegroundColor White
+Write-Host "  [OK] Trading System Heartbeat Service" -ForegroundColor White
 Write-Host "  [OK] Master Controller" -ForegroundColor White
 Write-Host ""
 Write-Host "To start all services:" -ForegroundColor Cyan

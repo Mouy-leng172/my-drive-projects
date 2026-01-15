@@ -73,6 +73,10 @@ Secrets/
 log-summary.txt
 logs/
 
+# Generated text extraction output
+extracted_text/
+text_extraction/__pycache__/
+
 # Temporary files
 *_tmp.*
 qr_tmp.*

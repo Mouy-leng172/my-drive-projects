@@ -26,7 +26,7 @@ $logsPath = "$workspaceRoot\vps-logs"
 $allServicesRunning = $true
 
 # Check Exness Terminal
-Write-Host "[1/6] Checking Exness MT5 Terminal..." -ForegroundColor Yellow
+Write-Host "[1/7] Checking Exness MT5 Terminal..." -ForegroundColor Yellow
 $exnessProcess = Get-Process -Name "terminal64" -ErrorAction SilentlyContinue
 if ($exnessProcess) {
     Write-Host "    [OK] Exness Terminal is running (PID: $($exnessProcess.Id))" -ForegroundColor Green
@@ -36,7 +36,7 @@ if ($exnessProcess) {
 }
 
 # Check Research Service
-Write-Host "[2/6] Checking Web Research Service..." -ForegroundColor Yellow
+Write-Host "[2/7] Checking Web Research Service..." -ForegroundColor Yellow
 $researchProcess = Get-Process -Name "powershell" -ErrorAction SilentlyContinue | 
     Where-Object { $_.CommandLine -like "*research-service*" }
 if ($researchProcess) {
@@ -46,7 +46,7 @@ if ($researchProcess) {
 }
 
 # Check Website Service
-Write-Host "[3/6] Checking GitHub Website Service..." -ForegroundColor Yellow
+Write-Host "[3/7] Checking GitHub Website Service..." -ForegroundColor Yellow
 $websiteProcess = Get-Process -Name "powershell" -ErrorAction SilentlyContinue | 
     Where-Object { $_.CommandLine -like "*website-service*" }
 if ($websiteProcess) {
@@ -56,7 +56,7 @@ if ($websiteProcess) {
 }
 
 # Check CI/CD Service
-Write-Host "[4/6] Checking CI/CD Automation Service..." -ForegroundColor Yellow
+Write-Host "[4/7] Checking CI/CD Automation Service..." -ForegroundColor Yellow
 $cicdProcess = Get-Process -Name "powershell" -ErrorAction SilentlyContinue | 
     Where-Object { $_.CommandLine -like "*cicd-service*" }
 if ($cicdProcess) {
@@ -66,7 +66,7 @@ if ($cicdProcess) {
 }
 
 # Check MQL5 Service
-Write-Host "[5/6] Checking MQL5 Forge Service..." -ForegroundColor Yellow
+Write-Host "[5/7] Checking MQL5 Forge Service..." -ForegroundColor Yellow
 $mql5Process = Get-Process -Name "powershell" -ErrorAction SilentlyContinue | 
     Where-Object { $_.CommandLine -like "*mql5-service*" }
 if ($mql5Process) {
@@ -75,8 +75,27 @@ if ($mql5Process) {
     Write-Host "    [WARNING] MQL5 Service may not be running" -ForegroundColor Yellow
 }
 
+# Check Heartbeat Service (file-based liveness)
+Write-Host "[6/7] Checking Trading System Heartbeat..." -ForegroundColor Yellow
+$heartbeatFile = Join-Path $logsPath "trading-system-heartbeat.json"
+if (Test-Path $heartbeatFile) {
+    try {
+        $lastWrite = (Get-Item $heartbeatFile).LastWriteTime
+        $ageSeconds = [math]::Round(((Get-Date) - $lastWrite).TotalSeconds, 0)
+        if ($ageSeconds -le 120) {
+            Write-Host "    [OK] Heartbeat is active (last update: $ageSeconds seconds ago)" -ForegroundColor Green
+        } else {
+            Write-Host "    [WARNING] Heartbeat file is stale (last update: $ageSeconds seconds ago)" -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "    [WARNING] Heartbeat file found but couldn't read timestamp" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "    [WARNING] Heartbeat file not found yet: $heartbeatFile" -ForegroundColor Yellow
+}
+
 # Check Master Controller
-Write-Host "[6/6] Checking Master Controller..." -ForegroundColor Yellow
+Write-Host "[7/7] Checking Master Controller..." -ForegroundColor Yellow
 $masterProcess = Get-Process -Name "powershell" -ErrorAction SilentlyContinue | 
     Where-Object { $_.CommandLine -like "*master-controller*" }
 if ($masterProcess) {

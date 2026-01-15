@@ -1,4 +1,4 @@
-﻿#Requires -RunAsAdministrator
+#Requires -RunAsAdministrator
 # Master Service Controller - Manages all 24/7 services
 $ErrorActionPreference = "Continue"
 $workspaceRoot = "C:\Users\USER\OneDrive"
@@ -35,6 +35,10 @@ Start-VPSService -ServiceName "cicd-service" -ScriptPath "$vpsServicesPath\cicd-
 Start-Sleep -Seconds 2
 
 Start-VPSService -ServiceName "mql5-service" -ScriptPath "$vpsServicesPath\mql5-service.ps1"
+Start-Sleep -Seconds 2
+
+# Trading system heartbeat (liveness signal)
+Start-VPSService -ServiceName "trading-heartbeat" -ScriptPath "$vpsServicesPath\trading-heartbeat-service.ps1"
 
 Write-Host "[$(Get-Date)] All services started" | Out-File -Append "$logsPath\master-controller.log"
 
@@ -47,4 +51,5 @@ while ($true) {
     Start-VPSService -ServiceName "website-service" -ScriptPath "$vpsServicesPath\website-service.ps1"
     Start-VPSService -ServiceName "cicd-service" -ScriptPath "$vpsServicesPath\cicd-service.ps1"
     Start-VPSService -ServiceName "mql5-service" -ScriptPath "$vpsServicesPath\mql5-service.ps1"
+    Start-VPSService -ServiceName "trading-heartbeat" -ScriptPath "$vpsServicesPath\trading-heartbeat-service.ps1"
 }
