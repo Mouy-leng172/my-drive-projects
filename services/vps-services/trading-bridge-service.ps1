@@ -12,7 +12,7 @@ if (-not (Test-Path $logsPath)) {
 }
 
 function Sync-FromGitHub {
-    """Sync trading bridge code from GitHub"""
+    # Sync trading bridge code from GitHub
     try {
         Set-Location $tradingBridgePath
         git pull origin main 2>&1 | Out-File -Append "$logsPath\trading-bridge-sync.log"

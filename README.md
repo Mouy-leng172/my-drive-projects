@@ -8,12 +8,12 @@ This repository contains the complete device skeleton structure, project bluepri
 
 1. **Check Prerequisites** - Ensure your system meets the requirements
    ```powershell
-   .\validate-setup.ps1
+   .\scripts\powershell\validate-setup.ps1
    ```
 
 2. **Run Quick Start** - Interactive setup wizard (recommended for first-time users)
    ```powershell
-   .\quick-start.ps1
+   .\scripts\powershell\quick-start.ps1
    ```
 
 3. **Read the Documentation**
@@ -29,45 +29,37 @@ This repository contains the complete device skeleton structure, project bluepri
 .
 ├── .cursor/                          # Cursor IDE Configuration
 │   └── rules/                        # AI Assistant Rules
-├── Scripts/                          # PowerShell Automation Scripts
-│   ├── Setup Scripts/
-│   ├── Git Scripts/
-│   ├── Security Scripts/
-│   ├── GitHub Desktop Scripts/
-│   └── Utility Scripts/
-├── Documentation/                    # Project Documentation
-│   ├── DEVICE-SKELETON.md           # Complete device structure
-│   ├── PROJECT-BLUEPRINTS.md         # Project blueprints
-│   ├── SYSTEM-INFO.md               # System specifications
-│   ├── WORKSPACE-SETUP.md           # Workspace setup guide
-│   └── SET-REPOS-PRIVATE.md         # Instructions for private repos
-├── vps-services/                     # VPS 24/7 Trading System Services
-│   ├── exness-service.ps1           # Exness MT5 Terminal service
-│   ├── research-service.ps1         # Perplexity AI research service
-│   ├── website-service.ps1          # GitHub website service
-│   ├── cicd-service.ps1             # CI/CD automation service
-│   ├── mql5-service.ps1             # MQL5 Forge integration
-│   └── master-controller.ps1        # Master service controller
-├── trading-bridge/                   # Trading Bridge & MQL.io System
-│   ├── python/                      # Python trading components
-│   │   ├── bridge/                  # MQL5 bridge
-│   │   ├── brokers/                 # Broker APIs
-│   │   ├── mql_io/                  # MQL.io service (NEW)
-│   │   ├── services/                # Background services
-│   │   └── trader/                  # Multi-symbol trader
-│   ├── mql5/                        # MQL5 Expert Advisors
-│   ├── config/                      # Configuration
-│   └── MQL-IO-README.md             # MQL.io documentation
+├── scripts/                          # Automation Scripts
+│   ├── powershell/                   # PowerShell Scripts
+│   ├── bash/                         # Bash Scripts
+│   └── python/                       # Python Scripts
+├── docs/                             # Project Documentation
+│   ├── documents/                    # General documents
+│   ├── google-documents/             # Google Documents files
+│   └── media-files/                  # Documentation media
+├── services/                         # Background Services
+│   └── vps-services/                 # VPS 24/7 Trading System Services
 ├── projects/                         # Active development projects
-│   ├── Google AI Studio/            # AI Studio related projects
-│   ├── LiteWriter/                  # LiteWriter application
-│   ├── Web-Dev-For-Beginners/       # Microsoft's web dev curriculum (via mouyleng/GenX_FX)
+│   └── google-ai-studio/             # AI Studio related projects
+├── trading-bridge/                   # Trading Bridge & MQL.io System
+│   ├── python/                       # Python trading components
+│   │   ├── bridge/                   # MQL5 bridge
+│   │   ├── brokers/                  # Broker APIs
+│   │   ├── mql_io/                   # MQL.io service
+│   │   ├── services/                 # Background services
+│   │   └── trader/                   # Multi-symbol trader
+│   ├── mql5/                         # MQL5 Expert Advisors
+│   ├── config/                       # Configuration
+│   └── MQL-IO-README.md              # MQL.io documentation
+├── assets/                           # Project assets
+├── archive/                          # Archived files
+│   └── techno-pova-6-pro/            # Archived device files
 ├── project-scanner/                  # Project Discovery & Execution System
 ├── system-setup/                     # System Configuration & Optimization
 ├── storage-management/               # Storage and drive management tools
-├── Document,sheed,PDF, PICTURE/     # Documentation and media
-├── Secrets/                          # Protected credentials (not tracked in git)
-└── TECHNO POVA 6 PRO/                # Device-specific files
+├── .github/                          # GitHub configuration
+├── README.md                         # This file
+└── .gitmodules                       # Git submodules
 ```
 
 ## 🚀 Quick Start
@@ -78,13 +70,13 @@ This repository contains the complete device skeleton structure, project bluepri
 
 1. **Validate your system**:
    ```powershell
-   .\validate-setup.ps1
+   .\scripts\powershell\validate-setup.ps1
    ```
 
 2. **Run interactive setup**:
    ```powershell
    # Run as Administrator
-   .\quick-start.ps1
+   .\scripts\powershell\quick-start.ps1
    ```
 
 ### Complete Device Setup
@@ -93,7 +85,7 @@ Run the comprehensive device setup script:
 
 ```powershell
 # Run as Administrator
-.\complete-device-setup.ps1
+.\scripts\powershell\complete-device-setup.ps1
 ```
 
 This will set up:
@@ -111,7 +103,7 @@ Start the complete 24/7 automated trading system:
 
 ```powershell
 # Run as Administrator (fully automated, no user interaction)
-.\auto-start-vps-admin.ps1
+.\scripts\powershell\auto-start-vps-admin.ps1
 ```
 
 Or double-click: `AUTO-START-VPS.bat`
@@ -130,7 +122,7 @@ This will:
 Start the MQL5 operations management service:
 
 ```powershell
-.\start-mql-io-service.ps1
+.\scripts\powershell\start-mql-io-service.ps1
 ```
 
 Or double-click: `START-MQL-IO-SERVICE.bat`
@@ -151,7 +143,7 @@ Install AI-powered command-line assistant for code analysis, automation, and dev
 
 ```bash
 # Linux/macOS
-./install-gemini-cli.sh
+./scripts/bash/install-gemini-cli.sh
 
 # Windows (Run as Administrator)
 INSTALL-GEMINI-CLI.bat
@@ -159,7 +151,7 @@ INSTALL-GEMINI-CLI.bat
 
 Or use PowerShell directly:
 ```powershell
-.\install-gemini-cli.ps1
+.\scripts\powershell\install-gemini-cli.ps1
 ```
 
 Gemini CLI provides:
@@ -176,15 +168,15 @@ See `GEMINI-CLI-SETUP-GUIDE.md` for complete documentation and `GEMINI-CLI-QUICK
 
 ```powershell
 # Run as Administrator
-.\auto-setup.ps1
+.\scripts\powershell\auto-setup.ps1
 # or
-.\complete-windows-setup.ps1
+.\scripts\powershell\complete-windows-setup.ps1
 ```
 
 ### Workspace Verification
 
 ```powershell
-.\setup-workspace.ps1
+.\scripts\powershell\setup-workspace.ps1
 ```
 
 ### Web Development Learning (NEW)
@@ -193,7 +185,7 @@ Set up Microsoft's Web-Dev-For-Beginners curriculum:
 
 ```powershell
 # Run as Administrator
-.\setup-web-dev-fork.ps1
+.\scripts\powershell\setup-web-dev-fork.ps1
 # or
 .\SETUP-WEB-DEV-FORK.bat
 ```
@@ -281,7 +273,7 @@ For OAuth credentials and other sensitive configuration, use GitHub Secrets:
 
 ```powershell
 # Automated setup with your credentials
-.\setup-github-secrets.ps1 `
+.\scripts\powershell\setup-github-secrets.ps1 `
     -ClientId "YOUR_CLIENT_ID" `
     -ClientSecret "YOUR_CLIENT_SECRET"
 
@@ -345,13 +337,13 @@ The MQL5 Forge repository is automatically configured as an additional remote fo
 
 ```powershell
 # Setup MQL5 Forge remote for current repository
-.\setup-mql5-forge-remote.ps1
+.\scripts\powershell\setup-mql5-forge-remote.ps1
 
 # Setup MQL5 Forge remote for all repositories on all drives
-.\setup-mql5-forge-remote.ps1 -AllDrives
+.\scripts\powershell\setup-mql5-forge-remote.ps1 -AllDrives
 
 # Setup MQL5 Forge remote for specific repository
-.\setup-mql5-forge-remote.ps1 -RepoPath "C:\Users\USER\OneDrive"
+.\scripts\powershell\setup-mql5-forge-remote.ps1 -RepoPath "C:\Users\USER\OneDrive"
 ```
 
 The MQL5 Forge remote allows:

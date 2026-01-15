@@ -175,7 +175,7 @@ jobs:
         run: |
           Write-Host "Checking PowerShell scripts..." -ForegroundColor Cyan
           
-          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -File | Measure-Object
+          $scripts = Get-ChildItem -Path scripts/powershell -Filter "*.ps1" -File | Measure-Object
           Write-Host "Found $($scripts.Count) PowerShell scripts" -ForegroundColor Green
       
       - name: Syntax check critical scripts
@@ -184,8 +184,8 @@ jobs:
           Write-Host "Running syntax checks..." -ForegroundColor Cyan
           
           $criticalScripts = @(
-            "validate-setup.ps1",
-            "quick-start.ps1"
+            "scripts/powershell/validate-setup.ps1",
+            "scripts/powershell/quick-start.ps1"
           )
           
           foreach ($script in $criticalScripts) {
