@@ -19,14 +19,14 @@ $githubToken = $null
 $githubUser = $null
 
 if (Test-Path $credFile) {
-    $credentials = Get-Content $credFile | Where-Object { $_ -match "^GITHUB_TOKEN=" }
-    if ($credentials) {
-        $githubToken = ($credentials[0] -split "=")[1].Trim()
-    }
-    
-    $userLine = Get-Content $credFile | Where-Object { $_ -match "^GITHUB_USER=" }
-    if ($userLine) {
-        $githubUser = ($userLine[0] -split "=")[1].Trim()
+    $credRaw = Get-Content $credFile -Raw -ErrorAction SilentlyContinue
+    foreach ($line in ($credRaw -split "(\r?\n)")) {
+        if ($line -match "^GITHUB_TOKEN=(.+)$") {
+            $githubToken = $Matches[1].Trim()
+        }
+        if ($line -match "^GITHUB_USER=(.+)$") {
+            $githubUser = $Matches[1].Trim()
+        }
     }
 }
 
@@ -80,12 +80,19 @@ if ($status) {
     
     # Configure git credential helper for this push
     Write-Host "[6] Configuring credentials..." -ForegroundColor Yellow
-    
-    # Set up credential helper to use token
-    $remoteUrl = "https://${githubUser}:${githubToken}@github.com/Mouy-leng/Window-setup.git"
-    git remote set-url origin $remoteUrl 2>&1 | Out-Null
-    
-    Write-Host "    [OK] Credentials configured" -ForegroundColor Green
+
+    # Keep remote URL clean (never embed tokens in git config).
+    $cleanRemoteUrl = "https://github.com/Mouy-leng/Window-setup.git"
+    git remote set-url origin $cleanRemoteUrl 2>&1 | Out-Null
+
+    # Store credentials in Windows Credential Manager (preferred) if available.
+    $cmdkeyCmd = Get-Command cmdkey -ErrorAction SilentlyContinue
+    if ($cmdkeyCmd) {
+        cmdkey /generic:git:https://github.com /user:$githubUser /pass:$githubToken 2>&1 | Out-Null
+        Write-Host "    [OK] Credentials saved securely" -ForegroundColor Green
+    } else {
+        Write-Host "    [WARNING] cmdkey not available; git may prompt for credentials" -ForegroundColor Yellow
+    }
     
     # Push to repository
     Write-Host "[7] Pushing to GitHub..." -ForegroundColor Yellow
@@ -94,16 +101,15 @@ if ($status) {
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "    [OK] Successfully pushed to GitHub!" -ForegroundColor Green
-        
-        # Reset remote URL to remove token from URL (store in credential manager instead)
-        git remote set-url origin "https://github.com/Mouy-leng/Window-setup.git" 2>&1 | Out-Null
-        
-        # Store credentials in Windows Credential Manager
-        cmdkey /generic:git:https://github.com /user:$githubUser /pass:$githubToken 2>&1 | Out-Null
-        Write-Host "    [OK] Credentials saved securely" -ForegroundColor Green
     } else {
         Write-Host "    [ERROR] Failed to push" -ForegroundColor Red
-        Write-Host "    Output: $pushResult" -ForegroundColor Yellow
+        # Sanitize any accidental token echoes in git output.
+        $pushText = ($pushResult | Out-String)
+        if ($githubToken) {
+            $pushText = $pushText -replace [regex]::Escape($githubToken), "***"
+        }
+        $preview = ($pushText -split "`r?`n" | Select-Object -First 15) -join "`n"
+        Write-Host "    Output (first lines):`n$preview" -ForegroundColor Yellow
     }
 } else {
     Write-Host "[5] No changes to commit" -ForegroundColor Yellow
@@ -112,3 +118,6 @@ if ($status) {
 
 Write-Host ""
 Write-Host "Automated Git Push Complete!" -ForegroundColor Cyan
+
+# Best-effort cleanup
+$githubToken = $null
