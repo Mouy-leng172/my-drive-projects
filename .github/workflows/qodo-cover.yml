@@ -1,0 +1,24 @@
+
+name: Qodo Cover Agent
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  cover_agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Cover Agent
+        run: pip install git+https://github.com/Codium-ai/cover-agent.git
+      - name: Run Cover Agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          cover-agent-full-repo             --project-language="python"             --project-root="."             --code-coverage-report-path="coverage.xml"             --test-command="pytest --cov=. --cov-report=xml"             --model="gpt-4o"
